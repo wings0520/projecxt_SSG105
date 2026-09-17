@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Em Mơ · Showroom & Bách Khoa Phân Loại Nhân Vật Túi Mù Mùa Lễ Hội</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Showroom và bách khoa phân loại nhân vật đặc thù đèn lồng túi mù mùa lễ hội. Phân tích chi tiết 6 mẫu đèn lồng, cơ chế tỉ lệ hiếm và công cụ giả lập mở túi 3D. Dự án nghiên cứu nhóm TECHCORN - FPT University.">
+  <meta name="keywords"
+    content="túi mù, phân loại nhân vật, đèn lồng trung thu, rarity tier, TECHCORN, FPT University, gacha simulator, bách khoa nhân vật">
+  <meta property="og:title" content="Em Mơ · Showroom & Bách Khoa Phân Loại Nhân Vật Túi Mù">
+  <meta property="og:description"
+    content="Khám phá 6 mẫu nhân vật đèn lồng độc đáo với 3 cấp độ hiếm (Phổ biến, Hiếm, Cực hiếm). Trải nghiệm giả lập khui túi 3D sống động.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css?v=3.8_red_curtain">
+</head>
+
+<body>
+
+  <!-- Top Reading / Scroll Progress Bar -->
+  <div class="site-scroll-progress" id="siteScrollProgress" role="progressbar" aria-label="Tiến độ cuộn trang"
+    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="scroll-progress-glow"></div>
+  </div>
+
+  <!-- Mid-Autumn Festive Preloader Screen -->
+  <aside class="site-preloader" id="sitePreloader" role="dialog" aria-label="Màn hình tải dữ liệu Em Mơ">
+    <div class="preloader-backdrop"></div>
+    <div class="preloader-moon-aura"></div>
+    <div class="preloader-sparkles" aria-hidden="true">
+      <span class="sparkle sp-1">✨</span>
+      <span class="sparkle sp-2">⭐</span>
+      <span class="sparkle sp-3">✨</span>
+      <span class="sparkle sp-4">🏮</span>
+    </div>
+
+    <div class="preloader-content">
+      <div class="preloader-lantern-wrap">
+        <div class="preloader-lantern-tassel top-tassel"></div>
+        <div class="preloader-lantern-body">
+          <div class="preloader-lantern-ribs"></div>
+          <span class="preloader-lantern-icon">🏮</span>
+          <div class="preloader-lantern-core-glow"></div>
+        </div>
+        <div class="preloader-lantern-tassel bottom-tassel"></div>
+      </div>
+
+      <div class="preloader-brand">
+        <div class="preloader-tag">TECHCORN · FPT UNIVERSITY SSG105</div>
+        <h2 class="preloader-title">Em Mơ</h2>
+        <p class="preloader-subtitle">Túi Mù Mùa Lễ Hội · Bách Khoa Phân Loại & Showroom</p>
+      </div>
+
+      <div class="preloader-bar-wrap">
+        <div class="preloader-bar-track">
+          <div class="preloader-bar-fill" id="preloaderBarFill" style="width: 0%;">
+            <div class="preloader-bar-shimmer"></div>
+          </div>
+        </div>
+        <div class="preloader-status-row">
+          <span class="preloader-milestone" id="preloaderMilestoneText">🏮 Đang thắp sáng lồng đèn & chuẩn bị giấy
+            dó...</span>
+          <span class="preloader-percent" id="preloaderPercent">0%</span>
+        </div>
+      </div>
+
+      <button type="button" class="btn-skip-preloader" id="btnSkipPreloader" title="Bỏ qua màn hình tải">
+        <span>Vào xem ngay</span>
+        <span class="skip-arrow">➔</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Grand Theatrical Red Opening Curtain (Khai Màn Lễ Hội) -->
+  <div class="grand-stage-curtain" id="grandStageCurtain" aria-hidden="true">
+    <div class="stage-curtain-half curtain-half-left">
+      <div class="curtain-texture texture-left"></div>
+      <div class="curtain-sheen"></div>
+    </div>
+    <div class="stage-curtain-half curtain-half-right">
+      <div class="curtain-texture texture-right"></div>
+      <div class="curtain-sheen"></div>
+    </div>
+    <div class="stage-curtain-center-seal" id="stageCurtainSeal">
+      <div class="seal-halo"></div>
+      <div class="seal-lantern">🏮</div>
+      <div class="seal-brand">EM MƠ</div>
+      <div class="seal-tassel"></div>
+    </div>
+    <div class="stage-curtain-light-beam" id="stageCurtainLightBeam"></div>
+  </div>
+
+  <!-- Cinematic Page & Section Transition Curtain -->
+  <div class="page-transition-curtain" id="pageTransitionCurtain" aria-hidden="true">
+    <div class="curtain-panel curtain-panel-top">
+      <div class="curtain-fringe fringe-top"></div>
+    </div>
+    <div class="curtain-panel curtain-panel-bottom">
+      <div class="curtain-fringe fringe-bottom"></div>
+    </div>
+    <div class="curtain-center-badge" id="curtainCenterBadge">
+      <div class="curtain-badge-halo"></div>
+      <div class="curtain-badge-lantern">🏮</div>
+      <div class="curtain-badge-lead">KHÔNG GIAN LỄ HỘI EM MƠ</div>
+      <div class="curtain-badge-title" id="curtainTargetTitle">Đang Chuyển Phân Khu...</div>
+      <div class="curtain-badge-sub" id="curtainTargetDesc">Hòa cùng sắc màu ánh trăng Trung Thu</div>
+      <div class="curtain-badge-spinner"></div>
+    </div>
+  </div>
+
+  <!-- Ambient Festival Star Canvas -->
+  <canvas id="starsCanvas"></canvas>
+
+  <!-- Ambient Glow Effects -->
+  <div class="ambient-glow ambient-glow-1"></div>
+  <div class="ambient-glow ambient-glow-2"></div>
+  <div class="ambient-glow ambient-glow-3"></div>
+
+  <!-- Apple-style Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="#hero" class="brand-badge" id="brandLogo">
+        <div class="brand-icon">🏮</div>
+        <div class="brand-text">
+          <h1>Em Mơ</h1>
+          <span>Blind Bag · TECHCORN FPT</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#ti-le" class="nav-link">Rarity</a></li>
+          <li><a href="#showroom" class="nav-link">Showroom</a></li>
+          <li><a href="#gacha" class="nav-link">Simulator</a></li>
+          <li><a href="#tinh-xac-suat" class="nav-link">Calculator</a></li>
+          <li><a href="#so-sanh" class="nav-link">Compare</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-icon" id="btnAudioToggle" title="Bật/Tắt âm thanh tương tác" aria-label="Toggle Sound">
+          🔔
+        </button>
+        <button class="btn-codex-trigger" id="btnOpenCodex" aria-label="Mở sổ tay sưu tập">
+          <span>📖 Codex</span>
+          <span class="badge-count" id="codexBadgeCount">0/6</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section (Apple Keynote Product Showcase) -->
+  <section class="hero-section" id="hero">
+    <!-- Interactive Background Layers (Spotlight / Flashlight Reveal on Cursor Move) -->
+    <div class="hero-bg-layer hero-bg-dark"></div>
+    <div class="hero-bg-layer hero-bg-reveal" id="heroSpotlightReveal"></div>
+    <div class="hero-lantern-light" id="lanternCursorLight"></div>
+
+    <div class="container hero-grid">
+      <div class="hero-text-col">
+        <div class="hero-tag">
+          <span>🏮</span>
+          <span>Dự Án Bán Hàng Gây Quỹ Thiện Nguyện & Trưng Bày SSG105 · TECHCORN TEAM FPT</span>
+        </div>
+
+        <h1 class="hero-title">
+          <span class="hero-brand-highlight">Em Mơ</span>
+          <span class="hero-title-sub">Túi Mù Mùa Lễ Hội</span>
+        </h1>
+
+        <p class="hero-slogan">
+          Mỗi túi một bất ngờ,<br>
+          mỗi lần mở là một câu chuyện.
+        </p>
+
+        <p class="hero-lead">
+          Sáu mẫu đèn lồng Trung Thu được TECHCORN chọn lọc, chia theo ba mức độ hiếm. Toàn bộ lợi nhuận ròng sau vận
+          hành được dành cho hoạt động thiện nguyện tại các trường tiểu học, mẫu giáo.
+        </p>
+
+        <div class="hero-meta-strip">
+          <div class="meta-item">
+            <div class="meta-num">6</div>
+            <div class="meta-label">Mẫu đèn lồng</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-num">3</div>
+            <div class="meta-label">Mức độ hiếm</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-num">SSG105</div>
+            <div class="meta-label">FPT University</div>
+          </div>
+        </div>
+
+        <div class="hero-cta-group">
+          <a href="#showroom" class="btn btn-primary" id="btnExploreShowroom">
+            <span>✨ Khám Phá Showroom</span>
+          </a>
+          <a href="#gacha" class="btn btn-secondary" id="btnTryGacha">
+            <span>🎲 Giả Lập Mở Túi Ảo</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-showcase">
+        <div class="hero-showcase-card" id="heroShowcaseCard" onclick="window.app.openLegendModal()"
+          title="Nhấp để xem Giai thoại Chú Cuội Cung Trăng" style="cursor: pointer;">
+          <img src="asset/2e14bcdc-1ac5-4136-96bd-afb84cd3220e.png" alt="Bộ sưu tập đèn lồng Em Mơ TECHCORN">
+          <div class="hero-card-badge">
+            <div class="badge-text-group">
+              <div class="badge-name">Em Mơ · 6 Mẫu Đèn Lồng</div>
+              <div class="badge-desc">✨ Bấm để đọc Giai thoại Cung Trăng</div>
+            </div>
+            <span class="card-tier-pill pill-epic badge-pill">Đọc Tích Cổ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rarity Matrix Section (Google Material Metrics) -->
+  <section class="section" id="ti-le">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Thang Đo Phân Loại</div>
+        <h2 class="section-title">Tỉ lệ xuất hiện theo phân cấp độ hiếm</h2>
+        <p class="section-sub">
+          Mỗi túi mù là một ẩn số. Dưới đây là cơ chế phân phối xác suất của từng nhóm nhân vật — công khai khoa học, rõ
+          ràng và tuyệt đối không đoán mò.
+        </p>
+      </div>
+
+      <div class="rarity-overview-grid">
+        <!-- Common Tier -->
+        <div class="rarity-tier-card tier-common">
+          <div class="tier-top-tag">
+            <span class="tier-badge">Tier 1 · Phổ biến</span>
+            <span style="font-size: 0.85rem; color: var(--ink-tertiary);">2 nhân vật</span>
+          </div>
+          <div class="tier-rate-huge">55%</div>
+          <p class="tier-summary">
+            Nhóm mẫu nền tảng với biểu tượng dân gian thân thuộc. Số lượng phân bổ nhiều nhất, thanh thoát và mang đậm
+            phong vị hoài niệm.
+          </p>
+          <div class="tier-bar-track">
+            <div class="tier-bar-fill" style="width: 55%"></div>
+          </div>
+          <div class="tier-characters-preview">
+            <span>Gồm có:</span>
+            <strong>Cá Vàng Phát Lộc (30%)</strong> · <strong>Ngôi Sao Như Ý (25%)</strong>
+          </div>
+        </div>
+
+        <!-- Rare Tier -->
+        <div class="rarity-tier-card tier-rare">
+          <div class="tier-top-tag">
+            <span class="tier-badge">Tier 2 · Hiếm</span>
+            <span style="font-size: 0.85rem; color: var(--ink-tertiary);">2 nhân vật</span>
+          </div>
+          <div class="tier-rate-huge">35%</div>
+          <p class="tier-summary">
+            Đường nét uốn nhiệt và chạm trổ đa tầng phức tạp hơn. Đi kèm các phụ kiện truyền thống như nút thắt cát
+            tường và tua rua tơ óng ả.
+          </p>
+          <div class="tier-bar-track">
+            <div class="tier-bar-fill" style="width: 35%"></div>
+          </div>
+          <div class="tier-characters-preview">
+            <span>Gồm có:</span>
+            <strong>Ngựa Phi Vân (20%)</strong> · <strong>Thỏ Ngọc Trung Thu (15%)</strong>
+          </div>
+        </div>
+
+        <!-- Epic Tier -->
+        <div class="rarity-tier-card tier-epic">
+          <div class="tier-top-tag">
+            <span class="tier-badge">Tier 3 · Cực hiếm (SSR)</span>
+            <span style="font-size: 0.85rem; color: var(--gold-bright);">Giới hạn 2 mẫu</span>
+          </div>
+          <div class="tier-rate-huge">10%</div>
+          <p class="tier-summary">
+            Kiệt tác chạm khắc công phu và phiên bản giao thoa đặc biệt. Số lượng tối thiểu, chế tác sơn mài dát nhũ
+            vàng kim cương độc bản.
+          </p>
+          <div class="tier-bar-track">
+            <div class="tier-bar-fill" style="width: 10%"></div>
+          </div>
+          <div class="tier-characters-preview">
+            <span>Gồm có:</span>
+            <strong>Doraemon Đèn Lồng (7%)</strong> · <strong>Đầu Lân Vàng (3%)</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Character Showroom (Apple 3D Tilt Cards) -->
+  <section class="section" id="showroom">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Bộ Sưu Tập Chính</div>
+        <h2 class="section-title">Showroom Hồ Sơ Nhân Vật 3D</h2>
+        <p class="section-sub">
+          Di chuột qua các thẻ để trải nghiệm phản quang góc nghiêng 3D. Nhấp vào từng nhân vật để mở hồ sơ chi tiết và
+          phân tích câu chuyện nghệ thuật.
+        </p>
+      </div>
+
+      <!-- Controls: Filter Pills & Search -->
+      <div class="showroom-controls">
+        <div class="filter-pills" role="tablist">
+          <button class="filter-pill active" data-filter="all">Tất cả (6)</button>
+          <button class="filter-pill" data-filter="common">Phổ biến (55%)</button>
+          <button class="filter-pill" data-filter="rare">Hiếm (35%)</button>
+          <button class="filter-pill" data-filter="epic">Cực hiếm (10%)</button>
+        </div>
+
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="characterSearch" placeholder="Tìm tên nhân vật, vật liệu..."
+            aria-label="Tìm kiếm nhân vật">
+        </div>
+      </div>
+
+      <!-- Card Grid dynamically rendered by app.js -->
+      <div class="characters-grid" id="charactersGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Gacha Simulator Section (Google Interactive Utility) -->
+  <section class="section" id="gacha">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Trải Nghiệm Tương Tác</div>
+        <h2 class="section-title">Giả lập khui túi mù 3D thử vận may</h2>
+        <p class="section-sub">
+          Trải nghiệm cảm giác hồi hộp mở túi mù ngẫu nhiên dựa trên thuật toán phân phối xác suất thực tế (55% Phổ
+          biến, 35% Hiếm, 10% Cực hiếm).
+        </p>
+      </div>
+
+      <div class="simulator-box">
+        <!-- Suspense flash overlay for 3s reveal moment -->
+        <div class="suspense-flash-overlay" id="suspenseFlashOverlay"></div>
+
+        <div class="sim-visual-stage">
+          <!-- Background Atmospheric Light & Spinning Sunburst Rays -->
+          <div class="bag-light-rays" id="bagLightRays"></div>
+          <div class="sunburst-rays" id="sunburstRays"></div>
+
+          <!-- Tear Status & Step Indicators -->
+          <div class="tear-status-box" id="tearStatusBox">
+            <div class="tear-hint-badge" id="tearHintBadge">
+              <span class="tear-hint-icon">✂️</span>
+              <span class="tear-hint-text" id="tearHintText">Nhấn 5 lần hoặc kéo chuột qua đường xé để mở túi!</span>
+            </div>
+
+            <!-- 3-Second Suspense Countdown Banner (Shown during suspense phase) -->
+            <div class="suspense-countdown-badge" id="suspenseCountdownBadge" style="display: none;">
+              <span class="countdown-spinner">🏮</span>
+              <span class="countdown-text" id="countdownText">Đang giải mã nhân vật... 3.0s</span>
+            </div>
+
+            <div class="tear-progress-wrapper">
+              <div class="tear-progress-bar">
+                <div class="tear-progress-fill" id="tearProgressFill" style="width: 0%;"></div>
+              </div>
+              <div class="tear-step-indicators" id="tearStepIndicators">
+                <div class="tear-step-pill active" data-step="0">Sẵn sàng</div>
+                <div class="tear-step-pill" data-step="1">Nhịp 1 (20%)</div>
+                <div class="tear-step-pill" data-step="2">Nhịp 2 (40%)</div>
+                <div class="tear-step-pill" data-step="3">Nhịp 3 (60%)</div>
+                <div class="tear-step-pill" data-step="4">Nhịp 4 (80%)</div>
+                <div class="tear-step-pill" data-step="5">Xé tung!</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Realistic Kraft Paper Blind Bag & Interactive Stage -->
+          <div class="blind-bag-wrapper" id="interactiveBag" role="button" tabindex="0"
+            aria-label="Túi mù Em Mơ - Nhấn 5 lần hoặc kéo chuột để xé">
+            <div class="blind-bag-stage" id="blindBagStage">
+              <!-- Golden light ray leaking from tear -->
+              <div class="bag-internal-glow" id="bagInternalGlow"></div>
+
+              <!-- Main Kraft Paper Bag Container with Two-Part Separation -->
+              <div class="bag-image-container" id="bagImageContainer">
+                <!-- 1. Interior Bag Cavity (Revealed between the split parts) -->
+                <div class="bag-interior-cavity" id="bagInteriorCavity">
+                  <div class="bag-cavity-bg"></div>
+                  <div class="bag-cavity-gold-glow"></div>
+                </div>
+
+                <!-- 2. Suspense Peek Card (Nested inside the cavity, rises up when torn) -->
+                <div class="suspense-peek-card" id="suspensePeekCard">
+                  <div class="peek-card-inner">
+                    <span class="peek-lantern-icon">🏮</span>
+                    <div class="peek-aura"></div>
+                    <span class="peek-text">MỞ BÍ ẨN</span>
+                  </div>
+                </div>
+
+                <!-- 3. Bottom Part of Bag (Pouch Body below tear line) -->
+                <div class="bag-split-part bag-part-bottom" id="bagPartBottom">
+                  <img src="asset/blind_bag_kraft.png" alt="Thân túi mù Em Mơ" class="bag-kraft-img" draggable="false">
+                  <div class="bag-torn-fringe bag-torn-fringe-bottom" id="tornFringeBottom"></div>
+                </div>
+
+                <!-- 4. Top Part of Bag (Folded Flap above tear line - Separates and Lifts) -->
+                <div class="bag-split-part bag-part-top" id="bagPartTop">
+                  <img src="asset/blind_bag_kraft.png" alt="Nắp túi mù Em Mơ" class="bag-kraft-img" draggable="false">
+                  <div class="bag-torn-fringe bag-torn-fringe-top" id="tornFringeTop"></div>
+                </div>
+
+                <!-- 5. Enhanced Jagged Tear Strip Zone Across Paper Fold -->
+                <div class="tear-strip-zone" id="tearStripZone" title="Kéo chuột ngang hoặc chạm vào đây để xé túi!">
+                  <div class="tear-line-guide">
+                    <!-- Dashed Perforation Teeth -->
+                    <div class="tear-paper-perforation"></div>
+
+                    <!-- Jagged Glowing Cut Seam -->
+                    <div class="tear-line-cut" id="tearLineCut" style="width: 0%;">
+                      <div class="tear-jagged-core"></div>
+                      <div class="tear-edge-fibers"></div>
+                    </div>
+
+                    <!-- Sliding Scissor Zipper Knob -->
+                    <div class="tear-zipper" id="tearZipper" style="left: 0%;">
+                      <div class="zipper-blade-core">
+                        <span class="zipper-blade">✂️</span>
+                      </div>
+                      <span class="zipper-label">XÉ TÚI</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 6. Paper Shred Particles Container -->
+                <div class="paper-shreds-container" id="paperShredsContainer"></div>
+              </div>
+            </div>
+
+            <!-- Lotus Pedestal Platform -->
+            <div class="bag-lotus-pedestal">
+              <div class="pedestal-ring pedestal-ring-outer"></div>
+              <div class="pedestal-ring pedestal-ring-inner"></div>
+              <div class="pedestal-light-disc"></div>
+            </div>
+
+            <div class="bag-interactive-tag" id="bagInteractiveTag">
+              <span class="pulse-dot"></span>
+              <span id="bagTagText">Chạm 5 lần hoặc kéo chuột xé ngang</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sim-actions">
+          <button class="btn btn-primary" id="btnPull1">
+            <span>🎲 Mở 1 Túi Ngẫu Nhiên</span>
+          </button>
+          <button class="btn btn-secondary" id="btnPull5">
+            <span>✨ Mở Combo 5 Túi Liên Tiếp</span>
+          </button>
+        </div>
+
+        <div class="sim-stats-strip">
+          <div>
+            <div class="sim-stat-val" id="statTotalPulls">0</div>
+            <div class="sim-stat-lbl">Tổng số túi đã thử mở</div>
+          </div>
+          <div>
+            <div class="sim-stat-val" id="statEpicPulls">0</div>
+            <div class="sim-stat-lbl">Số lần trúng Cực Hiếm (SSR)</div>
+          </div>
+          <div>
+            <div class="sim-stat-val">55% / 35% / 10%</div>
+            <div class="sim-stat-lbl">Thuật toán xác suất chuẩn</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Probability Calculator (Google-style Smart Tool) -->
+  <section class="section" id="tinh-xac-suat">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Công Cụ Toán Học</div>
+        <h2 class="section-title">Máy tính xác suất trúng nhân vật hiếm</h2>
+        <p class="section-sub">
+          Kéo thanh trượt số lượng túi dự kiến để mô phỏng toán học xác suất xuất hiện ít nhất một mẫu Hiếm hoặc Cực
+          Hiếm.
+        </p>
+      </div>
+
+      <div class="calc-card">
+        <div>
+          <h3
+            style="font-family: 'Fraunces', serif; font-size: 1.5rem; color: var(--gold-bright); margin-bottom: 12px;">
+            Số lượng túi mù thử nghiệm
+          </h3>
+          <p style="color: var(--ink-secondary); font-size: 0.95rem; line-height: 1.6;">
+            Dựa trên phân phối nhị thức xác suất: <em>P(≥ 1) = 1 - (1 - p)<sup>n</sup></em>. Hãy xem cơ hội của bạn thay
+            đổi như thế nào khi mở nhiều túi!
+          </p>
+
+          <div class="slider-group">
+            <div class="slider-label-row">
+              <span style="font-size: 0.9rem; color: var(--ink-tertiary);">Số túi thử nghiệm:</span>
+              <span class="slider-count-display" id="sliderCountDisplay">3 túi</span>
+            </div>
+            <input type="range" class="custom-slider" id="bagCountSlider" min="1" max="20" value="3" step="1">
+            <div
+              style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--ink-faint); margin-top:8px;">
+              <span>1 túi</span>
+              <span>5 túi</span>
+              <span>10 túi</span>
+              <span>20 túi</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-results-panel">
+          <div class="result-metric-row">
+            <div>
+              <div class="metric-name">Cơ hội trúng ít nhất 1 Cực Hiếm (SSR)</div>
+              <div style="font-size: 0.78rem; color: var(--ink-tertiary); margin-top: 4px;">Tỉ lệ cơ sở: 10% mỗi túi
+              </div>
+            </div>
+            <div class="metric-pct" id="calcEpicPct">27.1%</div>
+          </div>
+
+          <div class="result-metric-row">
+            <div>
+              <div class="metric-name">Cơ hội trúng mẫu Hiếm trở lên</div>
+              <div style="font-size: 0.78rem; color: var(--ink-tertiary); margin-top: 4px;">Tỉ lệ cơ sở: 45% mỗi túi
+              </div>
+            </div>
+            <div class="metric-pct" id="calcRarePct">83.4%</div>
+          </div>
+
+          <div class="result-metric-row">
+            <div>
+              <div class="metric-name">Số mẫu Cực Hiếm kỳ vọng</div>
+              <div style="font-size: 0.78rem; color: var(--ink-tertiary); margin-top: 4px;">Kỳ vọng toán học trung bình
+              </div>
+            </div>
+            <div class="metric-pct" style="color: var(--tier-common);" id="calcExpectedEpic">0.3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Matrix (Apple-style Specifications Comparison) -->
+  <section class="section" id="so-sanh">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Bảng Ma Trận</div>
+        <h2 class="section-title">So sánh đặc thù 6 nhân vật</h2>
+        <p class="section-sub">
+          Xem xét toàn diện các thuộc tính vật lý, độ tinh xảo chạm khắc và vật liệu cấu thành của từng mẫu đèn lồng
+          trong bộ sưu tập.
+        </p>
+      </div>
+
+      <div class="table-responsive">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Nhân vật</th>
+              <th>Phân cấp</th>
+              <th>Tỉ lệ</th>
+              <th>Độ tinh xảo</th>
+              <th>Đặc thù nổi bật</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="compareTableBody">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Academic & Cultural Project Context -->
+  <section class="section" style="padding-top: 40px;">
+    <div class="container">
+      <div
+        style="background: rgba(255,255,255,0.03); border: var(--glass-border); border-radius: var(--radius-lg); padding: 40px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center;">
+        <div>
+          <span
+            style="font-size: 0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--gold-bright);">Ý
+            Nghĩa Đề Tài & Văn Hóa Dân Gian</span>
+          <h3 style="font-family:'Fraunces', serif; font-size:1.8rem; margin:12px 0 16px; color:var(--ink-primary);">
+            Bảo tồn nghệ thuật đèn lồng truyền thống qua góc nhìn hiện đại
+          </h3>
+          <p style="color:var(--ink-secondary); font-size:0.95rem; line-height:1.7; margin-bottom:16px;">
+            Đồ án được nghiên cứu và thực hiện bởi nhóm sinh viên <strong>TECHCORN — FPT University</strong> trong khuôn
+            khổ môn học <strong>SSG105</strong>. Dự án kết hợp giữa văn hóa rước đèn Trung Thu cổ truyền với mô hình túi
+            mù (blind bag) đương đại.
+          </p>
+          <p style="color:var(--ink-tertiary); font-size:0.9rem; line-height:1.6;">
+            Toàn bộ các mẫu đèn lồng sau đợt trưng bày được nhóm dành tặng cho các em học sinh tại các trường tiểu học
+            và mầm non vùng khó khăn, mang ánh sáng rằm tháng Tám ấm áp đến với trẻ thơ.
+          </p>
+        </div>
+
+        <div
+          style="background: rgba(0,0,0,0.3); border-radius: var(--radius-md); padding: 24px; border: 1px solid rgba(255,255,255,0.06);">
+          <div style="font-family:'Fraunces', serif; font-size:1.2rem; color:var(--gold-bright); margin-bottom:12px;">
+            Đơn Vị Thực Hiện</div>
+          <div style="font-size:0.9rem; color:var(--ink-secondary); line-height:1.8;">
+            <div>• <strong>Nhóm:</strong> TECHCORN</div>
+            <div>• <strong>Trường:</strong> Đại học FPT (FPT University)</div>
+            <div>• <strong>Môn học:</strong> SSG105 (Giao tiếp & Kỹ năng)</div>
+            <div>• <strong>Chủ đề:</strong> Phân loại nhân vật & Văn hóa Lễ hội Em Mơ</div>
+            <div>• <strong>Phiên bản:</strong> 2.0 Codex Edition</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>Em Mơ — Bách Khoa Nhân Vật Mùa Lễ Hội</h4>
+          <p>
+            Dự án môn học SSG105 do nhóm TECHCORN, Đại học FPT thực hiện. Trang web được xây dựng nhằm mục đích nghiên
+            cứu, phân loại nhân vật đặc thù và mô phỏng cơ chế phân phối ngẫu nhiên, không phục vụ mục đích thương mại.
+          </p>
+        </div>
+        <div class="footer-credits">
+          <div>Trung Thu · Halloween · Lễ Hội Cổ Truyền</div>
+          <div>Thiết kế & Lập trình giao diện đạt chuẩn quốc tế</div>
+          <div>Bản quyền nội dung thuộc về nhóm TECHCORN - FPT University</div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 TECHCORN FPT University. All rights reserved.</div>
+        <div>Non-commercial Academic Showcase & Character Codex.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       MODALS & DRAWERS
+       ========================================================================= -->
+
+  <!-- Character Inspect Modal (Apple Inspection View) -->
+  <div class="modal-overlay" id="inspectModal" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <button class="modal-close-btn" id="btnCloseInspect" aria-label="Đóng hồ sơ">✕</button>
+      <div id="inspectContent">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Gacha Reveal Modal (Google Celebration Popup) -->
+  <div class="modal-overlay" id="revealModal" role="dialog" aria-modal="true">
+    <div class="modal-dialog" style="max-width: 680px;">
+      <button class="modal-close-btn" id="btnCloseReveal" aria-label="Đóng kết quả">✕</button>
+      <div class="reveal-content" id="revealSingleContent">
+        <!-- Rendered dynamically by gacha-simulator.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Moon Legend Modal (Giai Thoại Chú Cuội Cung Trăng) -->
+  <div class="modal-overlay" id="legendModal" role="dialog" aria-modal="true">
+    <div class="modal-dialog" style="max-width: 740px;">
+      <button class="modal-close-btn" id="btnCloseLegend" aria-label="Đóng giai thoại">✕</button>
+      <div class="legend-modal-content">
+        <div class="legend-modal-header">
+          <div class="legend-modal-tag">🏮 Tích Cổ Dân Gian Việt Nam</div>
+          <h2 class="legend-modal-title">Giai Thoại Cung Trăng · Sự Tích Chú Cuội & Cây Đa Thần</h2>
+        </div>
+
+        <div class="legend-modal-body">
+          <div class="legend-modal-art">
+            <img src="asset/2e14bcdc-1ac5-4136-96bd-afb84cd3220e.png" alt="Chú Cuội Cung Trăng Em Mơ">
+            <div class="legend-art-caption">Đêm rằm tháng Tám — Ánh trăng rằm và rước đèn lồng tuổi thơ</div>
+          </div>
+
+          <div class="legend-story-card">
+            <div class="legend-quote-mark">“</div>
+            <p class="legend-story-text">
+              Chú Cuội có một cây đa thần, lá có thể cải tử hoàn sinh. Cuội dặn vợ tuyệt đối không được tưới nước bẩn
+              vào gốc cây, nhưng vợ Cuội quên lời, cây đa bật gốc bay thẳng lên trời. Cuội chạy theo ôm lấy rễ cây, bị
+              cuốn lên cung trăng luôn từ đó. Vì vậy, đêm rằm nhìn lên mặt trăng, người ta nói có thể thấy bóng chú Cuội
+              ngồi dưới gốc cây đa — và trẻ con rước đèn đêm Trung Thu cũng là để "gọi" Cuội cùng chị Hằng xuống trần
+              chơi với chúng.
+            </p>
+          </div>
+
+          <div class="legend-cultural-significance">
+            <div class="significance-icon">🏮</div>
+            <div class="significance-text">
+              <strong>Ý nghĩa dự án Em Mơ:</strong> Mỗi chiếc đèn lồng được thắp sáng không chỉ thắp lên niềm vui rước
+              hội của tuổi thơ mà còn là nhịp cầu lưu giữ bản sắc văn hóa dân gian Việt, hướng tới mục tiêu thiện nguyện
+              gây quỹ mang lồng đèn trao tặng các em nhỏ vùng khó khăn.
+            </div>
+          </div>
+        </div>
+
+        <div class="legend-modal-footer">
+          <button class="btn btn-primary"
+            onclick="document.getElementById('legendModal').classList.remove('active'); if(window.app && window.app.transitionTo){ window.app.transitionTo('#showroom'); } else { window.location.href='#showroom'; }">
+            ✨ Khám Phá 6 Mẫu Đèn Lồng
+          </button>
+          <button class="btn btn-secondary"
+            onclick="document.getElementById('legendModal').classList.remove('active');">
+            Đóng Lại
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal Codex Drawer (Sổ Tay Sưu Tập Cá Nhân) -->
+  <div class="codex-drawer" id="codexDrawer" role="dialog" aria-modal="true">
+    <div class="drawer-header">
+      <div class="drawer-title">📖 Sổ Tay Sưu Tập</div>
+      <button class="modal-close-btn" id="btnCloseCodex" style="position:static;" aria-label="Đóng sổ tay">✕</button>
+    </div>
+
+    <div class="drawer-body">
+      <div class="codex-progress-box">
+        <div id="codexProgressText"
+          style="font-size:0.9rem; font-weight:600; color:var(--ink-secondary); margin-bottom:8px;">
+          Đã khám phá 0/6 nhân vật (0%)
+        </div>
+        <div class="tier-bar-track" style="margin-bottom:0;">
+          <div class="tier-bar-fill" id="codexProgressBar" style="width:0%; background: var(--gold-gradient);"></div>
+        </div>
+      </div>
+
+      <p style="font-size:0.82rem; color:var(--ink-tertiary); margin-bottom:16px;">
+        Mỗi khi bạn mở túi mù tại khu vực Giả Lập, nhân vật tương ứng sẽ được tự động mở khóa và lưu vào sổ tay trên
+        trình duyệt của bạn!
+      </p>
+
+      <div class="codex-grid" id="codexGrid">
+        <!-- Rendered dynamically by codex.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/codex.js"></script>
+  <script src="js/gacha-simulator.js?v=3.8_red_curtain"></script>
+  <script src="js/app.js?v=3.8_red_curtain"></script>
+</body>
+
+</html>
