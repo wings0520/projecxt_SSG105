@@ -451,6 +451,22 @@
 
                 <!-- 6. Paper Shred Particles Container -->
                 <div class="paper-shreds-container" id="paperShredsContainer"></div>
+
+                <!-- 7. Cinematic Laser Slice Beam & Anamorphic Flare (Inspired by Gacha Video) -->
+                <div class="laser-flare-slice" id="laserFlareSlice">
+                  <div class="laser-beam-core"></div>
+                  <div class="laser-beam-flare"></div>
+                  <div class="laser-spark-burst"></div>
+                </div>
+
+                <!-- 8. Volumetric Slit God-Rays (Erupting from opened seam) -->
+                <div class="slit-god-rays" id="slitGodRays">
+                  <div class="god-ray ray-1"></div>
+                  <div class="god-ray ray-2"></div>
+                  <div class="god-ray ray-3"></div>
+                  <div class="god-ray ray-4"></div>
+                  <div class="god-ray ray-5"></div>
+                </div>
               </div>
             </div>
 
@@ -676,11 +692,11 @@
     </div>
   </div>
 
-  <!-- Gacha Reveal Modal (Google Celebration Popup) -->
-  <div class="modal-overlay" id="revealModal" role="dialog" aria-modal="true">
-    <div class="modal-dialog" style="max-width: 680px;">
-      <button class="modal-close-btn" id="btnCloseReveal" aria-label="Đóng kết quả">✕</button>
-      <div class="reveal-content" id="revealSingleContent">
+  <!-- Gacha Reveal Modal (Cinematic Unboxing & 3D Card Flip Stage) -->
+  <div class="modal-overlay gacha-stage-overlay" id="revealModal" role="dialog" aria-modal="true">
+    <div class="modal-dialog gacha-theater-dialog">
+      <button class="modal-close-btn gacha-close-btn" id="btnCloseReveal" aria-label="Đóng kết quả">✕</button>
+      <div class="gacha-theater-stage" id="revealSingleContent">
         <!-- Rendered dynamically by gacha-simulator.js -->
       </div>
     </div>

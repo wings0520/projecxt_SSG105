@@ -385,6 +385,177 @@ class AudioSynthesizer {
       osc.stop(now + 0.15 + idx * 0.08 + 1.25);
     });
   }
+
+  // Futuristic Laser Beam Slice Sound (Sharp cutting transient + resonant energy sizzle)
+  playLaserSlice() {
+    if (!this.enabled) return;
+    this.init();
+    const now = this.ctx.currentTime;
+    const duration = 0.45;
+
+    // 1. High energy laser oscillator pitch drop
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(2400, now);
+    osc.frequency.exponentialRampToValueAtTime(160, now + duration);
+
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+    // Resonant bandpass filter
+    const bp = this.ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.setValueAtTime(3200, now);
+    bp.frequency.exponentialRampToValueAtTime(800, now + duration);
+    bp.Q.setValueAtTime(5.0, now);
+
+    osc.connect(bp);
+    bp.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + duration);
+
+    // 2. High-speed white noise laser sizzle
+    const sampleRate = this.ctx.sampleRate;
+    const bufferSize = Math.floor(sampleRate * 0.22);
+    const buffer = this.ctx.createBuffer(1, bufferSize, sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+    const hp = this.ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.setValueAtTime(3000, now);
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.4, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
+    noise.connect(hp);
+    hp.connect(noiseGain);
+    noiseGain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+  // Card Deal Flying Slide Sound
+  playCardDeal(idx = 0) {
+    if (!this.enabled) return;
+    this.init();
+    const now = this.ctx.currentTime + idx * 0.08;
+    const duration = 0.14;
+
+    const sampleRate = this.ctx.sampleRate;
+    const bufferSize = Math.floor(sampleRate * duration);
+    const buffer = this.ctx.createBuffer(1, bufferSize, sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      const t = i / bufferSize;
+      data[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * t);
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+    const bp = this.ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.setValueAtTime(1400, now);
+    bp.frequency.exponentialRampToValueAtTime(3200, now + duration);
+    bp.Q.setValueAtTime(2.0, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
+
+    noise.connect(bp);
+    bp.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+  // Interactive 3D Card Flip Snap + Tier-Specific Resonance
+  playCardFlip(tier = 'common') {
+    if (!this.enabled) return;
+    this.init();
+    const now = this.ctx.currentTime;
+
+    // 1. Snappy card flip click transient
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(450, now);
+    osc.frequency.exponentialRampToValueAtTime(90, now + 0.07);
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.07);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.08);
+
+    // 2. Chime according to rarity
+    if (tier === 'epic') {
+      const notes = [659.25, 830.61, 987.77, 1318.51]; // E5, G#5, B5, E6 (Brilliant Golden Chime)
+      notes.forEach((freq, i) => {
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(freq, now + 0.02 + i * 0.05);
+        g.gain.setValueAtTime(0, now + 0.02 + i * 0.05);
+        g.gain.linearRampToValueAtTime(0.35, now + 0.02 + i * 0.05 + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.02 + i * 0.05 + 0.85);
+        o.connect(g);
+        g.connect(this.ctx.destination);
+        o.start(now + 0.02 + i * 0.05);
+        o.stop(now + 0.02 + i * 0.05 + 0.9);
+      });
+    } else if (tier === 'rare') {
+      const notes = [587.33, 880.00, 1174.66]; // D5, A5, D6 (Crystal Cyan Chime)
+      notes.forEach((freq, i) => {
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(freq, now + 0.02 + i * 0.05);
+        g.gain.setValueAtTime(0, now + 0.02 + i * 0.05);
+        g.gain.linearRampToValueAtTime(0.28, now + 0.02 + i * 0.05 + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.02 + i * 0.05 + 0.65);
+        o.connect(g);
+        g.connect(this.ctx.destination);
+        o.start(now + 0.02 + i * 0.05);
+        o.stop(now + 0.02 + i * 0.05 + 0.7);
+      });
+    } else {
+      // Warm folk bell tone
+      const o = this.ctx.createOscillator();
+      const g = this.ctx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(523.25, now + 0.02);
+      g.gain.setValueAtTime(0.2, now + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+      o.connect(g);
+      g.connect(this.ctx.destination);
+      o.start(now + 0.02);
+      o.stop(now + 0.42);
+    }
+  }
+
+  // Grand Fanfare when an Epic / SSR character is discovered
+  playEpicFanfare() {
+    if (!this.enabled) return;
+    this.init();
+    const now = this.ctx.currentTime;
+    const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98]; // C5, E5, G5, C6, E6, G6
+    notes.forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+      gain.gain.setValueAtTime(0, now + idx * 0.08);
+      gain.gain.linearRampToValueAtTime(0.32, now + idx * 0.08 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 1.2);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now + idx * 0.08);
+      osc.stop(now + idx * 0.08 + 1.25);
+    });
+  }
 }
 
 class GachaSimulator {
@@ -431,6 +602,8 @@ class GachaSimulator {
     this.peekCard = document.getElementById('suspensePeekCard');
     this.flashOverlay = document.getElementById('suspenseFlashOverlay');
     this.shredsContainer = document.getElementById('paperShredsContainer');
+    this.laserFlare = document.getElementById('laserFlareSlice');
+    this.slitGodRays = document.getElementById('slitGodRays');
 
     this.btnPull1 = document.getElementById('btnPull1');
     this.btnPull5 = document.getElementById('btnPull5');
@@ -769,34 +942,46 @@ class GachaSimulator {
     }, 120);
   }
 
-  // --- 3-SECOND DRAMATIC SUSPENSE SEQUENCE ---
+  // --- 3-SECOND DRAMATIC SUSPENSE SEQUENCE (Cinematic Upgrade) ---
   startSuspenseSequence(count = 1) {
     this.isRolling = true;
     this.tearStep = 5;
     this.tearProgress = 1.0;
     this.updateVisuals(1.0);
 
-    // 1. Play big tear rip + 3.0s suspense crescendo audio
+    // 1. Play big tear rip + Laser slice + 3.0s suspense crescendo audio
     this.audio.playTear();
+    this.audio.playLaserSlice();
     this.audio.playSuspenseCharge(3.0);
 
-    // 2. Visual bag levitation & tearing animation
+    // 2. Activate Laser Flare Beam & Volumetric Slit God-Rays
+    if (this.laserFlare) {
+      this.laserFlare.classList.remove('active');
+      void this.laserFlare.offsetWidth;
+      this.laserFlare.classList.add('active');
+    }
+    if (this.slitGodRays) {
+      this.slitGodRays.classList.add('active');
+    }
+
+    // 3. Visual bag levitation & tearing animation + confetti burst
     if (this.bagStage) {
       this.bagStage.classList.remove('shake-step-1', 'shake-step-2', 'shake-step-3', 'shake-step-4');
       this.bagStage.classList.add('bag-ripping-open');
     }
+    this.spawnPaperShreds(0.5, 18);
 
-    // 3. Activate spinning sunburst rays
+    // 4. Activate spinning sunburst rays
     if (this.sunburstRays) {
       this.sunburstRays.classList.add('active');
     }
 
-    // 4. Mystery Peek Card floats out of the torn bag opening
+    // 5. Mystery Peek Card floats out of the torn bag opening
     if (this.peekCard) {
       this.peekCard.classList.add('peeking');
     }
 
-    // 5. Show 3-second live countdown HUD
+    // 6. Show 3-second live countdown HUD
     if (this.hintBadge) this.hintBadge.style.display = 'none';
     if (this.countdownBadge) this.countdownBadge.style.display = 'inline-flex';
 
@@ -811,7 +996,7 @@ class GachaSimulator {
       }
     }, 100);
 
-    // 6. Exactly at 3.0 seconds: Screen flash + Finish Unboxing
+    // 7. Exactly at 3.0 seconds: Screen flash + Finish Unboxing
     setTimeout(() => {
       if (this.flashOverlay) {
         this.flashOverlay.classList.add('flashing');
@@ -842,7 +1027,6 @@ class GachaSimulator {
       }
     }
 
-    this.audio.playReveal(bestTier);
     this.showReveal(results, bestTier);
     this.updateStats();
   }
@@ -864,6 +1048,12 @@ class GachaSimulator {
     }
     if (this.flashOverlay) {
       this.flashOverlay.classList.remove('flashing');
+    }
+    if (this.laserFlare) {
+      this.laserFlare.classList.remove('active');
+    }
+    if (this.slitGodRays) {
+      this.slitGodRays.classList.remove('active');
     }
     if (this.hintBadge) {
       this.hintBadge.style.display = 'inline-flex';
@@ -909,44 +1099,189 @@ class GachaSimulator {
     if (this.statEpicEl) this.statEpicEl.textContent = this.epicPulls;
   }
 
+  // ==========================================================================
+  // CINEMATIC GACHA THEATER REVEAL & 3D INTERACTIVE CARD FLIP
+  // ==========================================================================
   showReveal(items, bestTier) {
     if (!this.revealModal || !this.revealContent) return;
 
     const titleText = bestTier === 'epic' 
-      ? '✨ CHÚC MỪNG! BẠN ĐÃ MỞ TRÚNG MẪU CỰC HIẾM! ✨' 
+      ? '✨ CHÚC MỪNG! BẠN ĐÃ MỞ TRÚNG MẪU CỰC HIẾM (SSR)! ✨' 
       : bestTier === 'rare'
-      ? '⭐ TUYỆT VỜI! BẠN NHẬN ĐƯỢC MẪU HIẾM! ⭐'
-      : '🏮 KẾT QUẢ MỞ TÚI THÀNH CÔNG!';
+      ? '⭐ TUYỆT VỜI! BẠN NHẬN ĐƯỢC MẪU HIẾM (SR)! ⭐'
+      : '🏮 KẾT QUẢ MỞ TÚI MÙ THÀNH CÔNG!';
 
+    const totalCards = items.length;
+
+    // Render HTML layout
     this.revealContent.innerHTML = `
-      <div class="reveal-heading">${titleText}</div>
-      <p style="color: var(--ink-secondary); font-size: 0.95rem;">Các nhân vật đã tự động được lưu vào <strong>Sổ Tay Sưu Tập</strong> của bạn.</p>
-      
-      <div class="reveal-card-display">
-        ${items.map(item => `
-          <div class="reveal-single-item" style="border-color: ${item.tier === 'epic' ? 'var(--gold-bright)' : item.tier === 'rare' ? 'var(--tier-rare)' : 'rgba(255,255,255,0.2)'}; box-shadow: ${item.tier === 'epic' ? '0 0 25px rgba(246,209,102,0.4)' : 'none'};">
-            <span class="card-tier-pill pill-${item.tier}" style="position:static; display:inline-block; margin-bottom:8px;">${item.tierLabel}</span>
-            <img src="${item.image}" alt="${item.name}" class="reveal-thumb">
-            <div class="reveal-item-name">${item.name}</div>
-            <div style="font-size:0.8rem; color:var(--gold-bright); font-weight:600;">Tỉ lệ: ${item.odds}%</div>
-            <button class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.78rem; margin-top: 8px; width: 100%;" onclick="window.app.inspectCharacter('${item.id}')">
-              Hồ sơ chi tiết
-            </button>
+      <div class="gacha-stage-header">
+        <div class="stage-title-wrap">
+          <div class="gacha-stage-title">${titleText}</div>
+          <div class="gacha-stage-subtitle" id="gachaStageSub">
+            ${totalCards === 1 ? 'Chạm vào lá bài để lật mở bí ẩn!' : `Đang chia ${totalCards} thẻ bài... Chạm vào thẻ hoặc bấm "BỎ QUA" để giải mã!`}
+          </div>
+        </div>
+        <button class="btn-gacha-skip" id="btnGachaSkip" title="Lật mở toàn bộ thẻ bài ngay lập tức">
+          <span class="skip-icon">⏩</span> BỎ QUA
+        </button>
+      </div>
+
+      <div class="gacha-cards-stage" id="gachaCardsStage">
+        ${items.map((item, idx) => `
+          <div class="gacha-card-item tier-${item.tier}" data-index="${idx}" style="animation-delay: ${idx * 0.08}s;">
+            <div class="gacha-card-inner">
+              <div class="card-flip-flash"></div>
+
+              <!-- Mặt Úp: Họa Tiết Hoàng Kim & Lồng Đèn Cổ Phong -->
+              <div class="card-face card-face-back">
+                <div class="card-back-sheen"></div>
+                <div class="back-crest-top">🏮 EM MƠ</div>
+                <div class="back-emblem-center">
+                  <div class="back-lantern-icon">${item.tier === 'epic' ? '👑' : (item.tier === 'rare' ? '⭐' : '🏮')}</div>
+                  <div class="back-mystery-badge">${item.tier === 'epic' ? 'CỰC PHẨM' : (item.tier === 'rare' ? 'HIẾM CÓ' : 'BÍ ẨN')}</div>
+                </div>
+                <div class="back-tap-hint">✦ CHẠM ĐỂ LẬT ✦</div>
+              </div>
+
+              <!-- Mặt Ngửa: Nhân Vật Đã Mở Khóa -->
+              <div class="card-face card-face-front">
+                <span class="card-tier-pill pill-${item.tier}" style="position:static; margin-bottom:4px; font-size:0.7rem; padding:3px 10px;">
+                  ${item.tierLabel}
+                </span>
+                <div class="front-thumb-wrap">
+                  <img src="${item.image}" alt="${item.name}" draggable="false" loading="lazy">
+                </div>
+                <div class="front-item-name" title="${item.name}">${item.name}</div>
+                <div class="front-odds-tag">Tỉ lệ xuất hiện: ${item.odds}%</div>
+                <button class="front-inspect-btn" onclick="event.stopPropagation(); window.app.inspectCharacter('${item.id}')">
+                  Hồ sơ chi tiết
+                </button>
+              </div>
+            </div>
           </div>
         `).join('')}
       </div>
 
-      <div style="display:flex; justify-content:center; gap:14px; margin-top: 24px;">
-        <button class="btn btn-primary" onclick="document.getElementById('revealModal').classList.remove('active'); if(window.app && window.app.gacha) window.app.gacha.resetBag();">
-          Xé túi khác
+      <div class="gacha-stage-actions">
+        <button class="btn btn-primary" id="btnRevealPullAgain">
+          🎲 Xé túi khác
         </button>
-        <button class="btn btn-secondary" onclick="document.getElementById('revealModal').classList.remove('active'); window.app.openCodex(); if(window.app && window.app.gacha) window.app.gacha.resetBag();">
-          Xem Sổ Tay (${this.codex.getUnlockedCount()}/${this.codex.getTotalCharacters()})
+        <button class="btn btn-secondary" id="btnRevealPull5Combo">
+          ✨ Mở Combo 5 túi
+        </button>
+        <button class="btn btn-secondary" id="btnRevealOpenCodex">
+          📖 Xem Sổ Tay (${this.codex.getUnlockedCount()}/${this.codex.getTotalCharacters()})
         </button>
       </div>
     `;
 
     this.revealModal.classList.add('active');
+
+    // Play card deal sound for each card
+    items.forEach((_, idx) => {
+      this.audio.playCardDeal(idx);
+    });
+
+    const cardEls = this.revealContent.querySelectorAll('.gacha-card-item');
+    const btnSkip = document.getElementById('btnGachaSkip');
+    const subTitleEl = document.getElementById('gachaStageSub');
+
+    let flippedCount = 0;
+
+    const checkAllFlipped = () => {
+      if (flippedCount >= totalCards) {
+        if (btnSkip) btnSkip.style.display = 'none';
+        if (subTitleEl) {
+          subTitleEl.innerHTML = `Đã mở hoàn tất <strong>${totalCards}</strong> thẻ! Các nhân vật đã tự động cập nhật vào Sổ Tay.`;
+        }
+        this.audio.playReveal(bestTier);
+        if (bestTier === 'epic') {
+          this.audio.playEpicFanfare();
+        }
+      } else {
+        if (subTitleEl) {
+          subTitleEl.textContent = `Tiến độ giải mã: ${flippedCount}/${totalCards} thẻ bài. Chạm tiếp để mở!`;
+        }
+      }
+    };
+
+    const flipSingleCard = (cardEl, item) => {
+      if (cardEl.classList.contains('flipped')) return;
+      cardEl.classList.add('flipped');
+      flippedCount++;
+
+      // Flash FX
+      const flash = cardEl.querySelector('.card-flip-flash');
+      if (flash) {
+        flash.classList.remove('trigger');
+        void flash.offsetWidth;
+        flash.classList.add('trigger');
+      }
+
+      // Audio feedback
+      this.audio.playCardFlip(item.tier);
+
+      checkAllFlipped();
+    };
+
+    // Attach click listeners to individual cards
+    cardEls.forEach((cardEl) => {
+      cardEl.addEventListener('click', (e) => {
+        // If clicking the inspect button, let the inspect modal handle it
+        if (e.target.closest('.front-inspect-btn')) return;
+
+        const idx = parseInt(cardEl.dataset.index, 10);
+        const item = items[idx];
+        if (item) flipSingleCard(cardEl, item);
+      });
+    });
+
+    // Skip button logic: Fast cascade reveal
+    if (btnSkip) {
+      btnSkip.addEventListener('click', () => {
+        btnSkip.style.pointerEvents = 'none';
+        btnSkip.style.opacity = '0.5';
+
+        cardEls.forEach((cardEl, idx) => {
+          if (!cardEl.classList.contains('flipped')) {
+            setTimeout(() => {
+              const itemIdx = parseInt(cardEl.dataset.index, 10);
+              const item = items[itemIdx];
+              if (item) flipSingleCard(cardEl, item);
+            }, idx * 100);
+          }
+        });
+      });
+    }
+
+    // Action button listeners
+    const btnAgain = document.getElementById('btnRevealPullAgain');
+    if (btnAgain) {
+      btnAgain.addEventListener('click', () => {
+        this.revealModal.classList.remove('active');
+        this.resetBag();
+        setTimeout(() => this.autoTearSequence(1), 300);
+      });
+    }
+
+    const btnCombo = document.getElementById('btnRevealPull5Combo');
+    if (btnCombo) {
+      btnCombo.addEventListener('click', () => {
+        this.revealModal.classList.remove('active');
+        this.resetBag();
+        setTimeout(() => this.autoTearSequence(5), 300);
+      });
+    }
+
+    const btnCodex = document.getElementById('btnRevealOpenCodex');
+    if (btnCodex) {
+      btnCodex.addEventListener('click', () => {
+        this.revealModal.classList.remove('active');
+        this.resetBag();
+        window.app.openCodex();
+      });
+    }
   }
 }
 
