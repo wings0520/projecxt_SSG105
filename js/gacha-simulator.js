@@ -386,52 +386,72 @@ class AudioSynthesizer {
     });
   }
 
-  // Futuristic Laser Beam Slice Sound (Sharp cutting transient + resonant energy sizzle)
-  playLaserSlice() {
+  // Futuristic Laser Beam Slice Sound (Sustained 3.0s Cinematic Laser Charge)
+  playLaserSlice(duration = 3.0) {
     if (!this.enabled) return;
     this.init();
     const now = this.ctx.currentTime;
-    const duration = 0.45;
 
-    // 1. High energy laser oscillator pitch drop
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(2400, now);
-    osc.frequency.exponentialRampToValueAtTime(160, now + duration);
+    // 1. Initial cutting strike (Slash transient)
+    const slashOsc = this.ctx.createOscillator();
+    const slashGain = this.ctx.createGain();
+    slashOsc.type = 'sawtooth';
+    slashOsc.frequency.setValueAtTime(2800, now);
+    slashOsc.frequency.exponentialRampToValueAtTime(320, now + 0.35);
+    slashGain.gain.setValueAtTime(0.4, now);
+    slashGain.gain.exponentialRampToValueAtTime(0.02, now + 0.35);
+    slashOsc.connect(slashGain);
+    slashGain.connect(this.ctx.destination);
+    slashOsc.start(now);
+    slashOsc.stop(now + 0.38);
 
-    gain.gain.setValueAtTime(0.35, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    // 2. Continuous 3-second energetic laser beam plasma hum (Rising pitch & volume)
+    const humOsc = this.ctx.createOscillator();
+    const humGain = this.ctx.createGain();
+    humOsc.type = 'triangle';
+    humOsc.frequency.setValueAtTime(240, now);
+    humOsc.frequency.exponentialRampToValueAtTime(960, now + duration);
 
-    // Resonant bandpass filter
-    const bp = this.ctx.createBiquadFilter();
-    bp.type = 'bandpass';
-    bp.frequency.setValueAtTime(3200, now);
-    bp.frequency.exponentialRampToValueAtTime(800, now + duration);
-    bp.Q.setValueAtTime(5.0, now);
+    // Dynamic tremolo LFO for electric laser vibration
+    const lfo = this.ctx.createOscillator();
+    const lfoGain = this.ctx.createGain();
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(16, now); // 16Hz electric buzz
+    lfo.frequency.linearRampToValueAtTime(36, now + duration);
+    lfoGain.gain.setValueAtTime(0.08, now);
+    lfo.connect(humGain.gain);
 
-    osc.connect(bp);
-    bp.connect(gain);
-    gain.connect(this.ctx.destination);
-    osc.start(now);
-    osc.stop(now + duration);
+    humGain.gain.setValueAtTime(0.08, now);
+    humGain.gain.linearRampToValueAtTime(0.32, now + duration * 0.88);
+    humGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
-    // 2. High-speed white noise laser sizzle
+    humOsc.connect(humGain);
+    humGain.connect(this.ctx.destination);
+
+    lfo.start(now);
+    humOsc.start(now);
+    lfo.stop(now + duration);
+    humOsc.stop(now + duration);
+
+    // 3. Sizzling high-frequency laser sparks & electric arcs across cut line
     const sampleRate = this.ctx.sampleRate;
-    const bufferSize = Math.floor(sampleRate * 0.22);
+    const bufferSize = Math.floor(sampleRate * duration);
     const buffer = this.ctx.createBuffer(1, bufferSize, sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
+      const t = i / bufferSize;
+      const isSpark = Math.random() < (0.02 + 0.06 * t);
+      data[i] = isSpark ? (Math.random() * 2 - 1) * 0.85 : (Math.random() * 0.12 - 0.06);
     }
     const noise = this.ctx.createBufferSource();
     noise.buffer = buffer;
     const hp = this.ctx.createBiquadFilter();
     hp.type = 'highpass';
-    hp.frequency.setValueAtTime(3000, now);
+    hp.frequency.setValueAtTime(3200, now);
     const noiseGain = this.ctx.createGain();
-    noiseGain.gain.setValueAtTime(0.4, now);
-    noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
+    noiseGain.gain.setValueAtTime(0.14, now);
+    noiseGain.gain.linearRampToValueAtTime(0.4, now + duration * 0.92);
+    noiseGain.gain.exponentialRampToValueAtTime(0.01, now + duration);
     noise.connect(hp);
     hp.connect(noiseGain);
     noiseGain.connect(this.ctx.destination);

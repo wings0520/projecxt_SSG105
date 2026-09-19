@@ -1608,30 +1608,53 @@ body {
 }
 
 .laser-flare-slice.active {
-  animation: laserSliceSweep 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: laserSliceSweep 3.0s cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
 }
 
 @keyframes laserSliceSweep {
   0% {
     opacity: 0;
-    transform: translateY(-50%) scaleX(0.1) scaleY(0.5);
+    transform: translateY(-50%) scaleX(0.05) scaleY(0.4);
+    filter: drop-shadow(0 0 10px #ffffff);
+  }
+  6% {
+    opacity: 1;
+    transform: translateY(-50%) scaleX(1.15) scaleY(1.4);
+    filter: drop-shadow(0 0 35px #ffffff) drop-shadow(0 0 65px #00f2fe);
   }
   15% {
-    opacity: 1;
-    transform: translateY(-50%) scaleX(1.1) scaleY(1.3);
-  }
-  50% {
-    opacity: 1;
+    opacity: 0.95;
     transform: translateY(-50%) scaleX(1) scaleY(1);
-    filter: drop-shadow(0 0 25px #ffffff) drop-shadow(0 0 45px #ffe600);
+    filter: drop-shadow(0 0 25px #ffffff) drop-shadow(0 0 50px #ffd700);
   }
-  85% {
-    opacity: 0.9;
-    transform: translateY(-50%) scaleX(1.05) scaleY(0.8);
+  35% {
+    opacity: 1;
+    transform: translateY(-50%) scaleX(1.05) scaleY(1.15);
+    filter: drop-shadow(0 0 30px #ffffff) drop-shadow(0 0 60px #00f2fe) drop-shadow(0 0 80px #ffd700);
+  }
+  60% {
+    opacity: 0.95;
+    transform: translateY(-50%) scaleX(1.02) scaleY(1.05);
+    filter: drop-shadow(0 0 35px #ffffff) drop-shadow(0 0 70px #ffd700);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(-50%) scaleX(1.12) scaleY(1.35);
+    filter: drop-shadow(0 0 45px #ffffff) drop-shadow(0 0 85px #00f2fe) drop-shadow(0 0 100px #ffd700);
+  }
+  92% {
+    opacity: 1;
+    transform: translateY(-50%) scaleX(1.28) scaleY(1.7);
+    filter: drop-shadow(0 0 60px #ffffff) drop-shadow(0 0 120px #ffffff);
+  }
+  98% {
+    opacity: 1;
+    transform: translateY(-50%) scaleX(1.45) scaleY(2.2);
+    filter: brightness(2.6) drop-shadow(0 0 80px #ffffff) drop-shadow(0 0 150px #ffe600);
   }
   100% {
     opacity: 0;
-    transform: translateY(-50%) scaleX(1.15) scaleY(0.2);
+    transform: translateY(-50%) scaleX(1.5) scaleY(0.2);
     filter: none;
   }
 }
@@ -1643,30 +1666,43 @@ body {
   background: linear-gradient(90deg, transparent 0%, rgba(0, 242, 254, 0.8) 12%, #ffffff 45%, #ffffff 55%, rgba(255, 230, 100, 0.9) 88%, transparent 100%);
   border-radius: 99px;
   box-shadow: 0 0 16px #ffffff, 0 0 32px #00f2fe, 0 0 48px #ffe600;
+  animation: laserCorePulse 0.35s ease-in-out infinite alternate;
+}
+
+@keyframes laserCorePulse {
+  0% { transform: scaleY(0.9); opacity: 0.9; }
+  100% { transform: scaleY(1.3); opacity: 1; filter: drop-shadow(0 0 10px #fff); }
 }
 
 .laser-beam-flare {
   position: absolute;
-  width: 120%;
-  height: 20px;
+  width: 130%;
+  height: 22px;
   background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.95) 0%, rgba(0, 242, 254, 0.65) 30%, rgba(255, 215, 0, 0.35) 65%, transparent 85%);
   filter: blur(3px);
   border-radius: 50%;
+  animation: flareBreathe 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes flareBreathe {
+  0% { transform: scaleY(0.85); opacity: 0.8; }
+  100% { transform: scaleY(1.3); opacity: 1; }
 }
 
 .laser-spark-burst {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   background: #ffffff;
   border-radius: 50%;
-  box-shadow: 0 0 20px #ffffff, 0 0 40px #00f2fe, 0 0 60px #ffe600;
-  animation: sparkBurstPulse 0.4s infinite alternate;
+  box-shadow: 0 0 25px #ffffff, 0 0 50px #00f2fe, 0 0 75px #ffe600;
+  animation: sparkSweepPath 1.5s ease-in-out infinite alternate;
 }
 
-@keyframes sparkBurstPulse {
-  0% { transform: scale(0.8) rotate(0deg); opacity: 0.8; }
-  100% { transform: scale(1.4) rotate(45deg); opacity: 1; }
+@keyframes sparkSweepPath {
+  0% { left: 8%; transform: scale(0.8) rotate(0deg); opacity: 0.85; }
+  50% { left: 50%; transform: scale(1.6) rotate(180deg); opacity: 1; filter: drop-shadow(0 0 25px #fff); }
+  100% { left: 92%; transform: scale(0.8) rotate(360deg); opacity: 0.85; }
 }
 
 /* Volumetric God-Rays Erupting from inside Bag Slit */
@@ -1686,6 +1722,16 @@ body {
 
 .slit-god-rays.active {
   opacity: 1;
+  animation: godRaysSurge 3.0s ease-in-out forwards;
+}
+
+@keyframes godRaysSurge {
+  0% { transform: scaleY(0.5) translateY(25px); opacity: 0.2; }
+  15% { transform: scaleY(1) translateY(0); opacity: 0.95; }
+  50% { transform: scaleY(1.15) translateY(-10px); opacity: 1; }
+  85% { transform: scaleY(1.35) translateY(-20px); opacity: 1; filter: brightness(1.4); }
+  98% { transform: scaleY(1.55) translateY(-30px); opacity: 1; filter: brightness(2.2); }
+  100% { transform: scaleY(1.6) translateY(-35px); opacity: 0; }
 }
 
 .god-ray {
