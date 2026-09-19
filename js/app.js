@@ -481,8 +481,8 @@ class App {
             </div>
           </div>
         </td>
-        <td>
-          <span class="card-tier-pill pill-${char.tier}" style="position:static;">${char.tierLabel}</span>
+        <td style="white-space:nowrap;">
+          <span class="card-tier-pill pill-${char.tier}" style="position:static; display:inline-block; white-space:nowrap;">${char.tierLabel}</span>
         </td>
         <td>
           <strong style="color:var(--gold-bright); font-size:1.1rem;">${char.odds}%</strong>

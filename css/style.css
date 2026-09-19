@@ -939,6 +939,10 @@ body {
   padding: 4px 12px;
   border-radius: var(--radius-pill);
   backdrop-filter: blur(12px);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pill-common {
@@ -1856,6 +1860,23 @@ input[type="range"].custom-slider::-webkit-slider-thumb:hover {
 .matrix-table td {
   padding: 20px 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.matrix-table th:nth-child(2),
+.matrix-table td:nth-child(2),
+.matrix-table th:nth-child(3),
+.matrix-table td:nth-child(3),
+.matrix-table th:nth-child(4),
+.matrix-table td:nth-child(4),
+.matrix-table th:nth-child(6),
+.matrix-table td:nth-child(6) {
+  white-space: nowrap;
+}
+
+.matrix-table .card-tier-pill {
+  position: static;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .matrix-table th {
