@@ -2,104 +2,113 @@
 
 Website showroom và bách khoa phân loại nhân vật cho dự án SSG105 của nhóm **TECHCORN - FPT University**. Dự án kết hợp văn hóa đèn lồng Trung Thu với trải nghiệm blind bag hiện đại, nhằm giới thiệu 6 mẫu nhân vật, mô phỏng cơ chế mở túi ngẫu nhiên và truyền tải thông điệp gây quỹ thiện nguyện.
 
-Đây là một website tĩnh, không có backend và không yêu cầu cài đặt framework hay package bên ngoài.
+Đây là một website tĩnh cao cấp, không có backend và không yêu cầu cài đặt framework hay package phức tạp bên ngoài.
+
+---
 
 ## Tổng quan chức năng
 
-- Trang giới thiệu thương hiệu **Em Mơ** và câu chuyện Chú Cuội, Cung Trăng.
-- Bảng phân cấp độ hiếm và tỉ lệ xuất hiện công khai:
-	- **Phổ biến:** 55% gồm Cá Vàng Phát Lộc 30% và Ngôi Sao Như Ý 25%.
-	- **Hiếm:** 35% gồm Ngựa Phi Vân 20% và Thỏ Ngọc Trung Thu 15%.
-	- **Cực hiếm:** 10% gồm Doraemon Đèn Lồng 7% và Đầu Lân Vàng 3%.
-- Showroom 6 nhân vật với thẻ 3D, hiệu ứng nghiêng theo con trỏ, ảnh, tỉ lệ, độ tinh xảo và mô tả văn hóa.
-- Bộ lọc theo cấp độ hiếm và tìm kiếm theo tên, mô tả hoặc nhóm nhân vật.
-- Modal hồ sơ chi tiết cho từng nhân vật: câu chuyện, nguồn cảm hứng, vật liệu, độ tinh xảo và đặc thù nổi bật.
-- Giả lập khui túi mù 3D:
-	- Nhấn từng bước hoặc kéo chuột/chạm để xé túi giấy kraft.
-	- Có thể mở nhanh 1 túi hoặc combo 5 túi.
-	- Hiệu ứng xé giấy, mảnh giấy bay, ánh sáng, đếm ngược hồi hộp 3 giây và âm thanh tạo bằng Web Audio API.
-	- Kết quả được chọn bằng weighted random theo tỉ lệ của 6 nhân vật.
-- Sổ tay sưu tập (Codex), tự động mở khóa nhân vật sau mỗi lần khui và lưu vào `localStorage`.
-- Máy tính xác suất từ 1 đến 20 túi, sử dụng công thức:
+- **Giới thiệu & Văn hóa dân gian**: Câu chuyện thương hiệu **Em Mơ**, sự tích Chú Cuội & Cây Đa Thần, Chị Hằng Nga và ý nghĩa thiện nguyện trao đèn lồng cho trẻ em khó khăn.
+- **Bảng phân cấp độ hiếm & tỉ lệ xuất hiện công khai**:
+  - **Phổ biến (Common - 55%)**: Cá Vàng Phát Lộc (30%) và Ngôi Sao Như Ý (25%).
+  - **Hiếm (Rare - 35%)**: Ngựa Phi Vân (20%) và Thỏ Ngọc Trung Thu (15%).
+  - **Cực hiếm (Epic/SSR - 10%)**: Doraemon Đèn Lồng (7%) và Đầu Lân Vàng (3%).
+- **Showroom 6 nhân vật 3D tương tác**:
+  - Thẻ bài 3D có hiệu ứng nghiêng theo con trỏ chuột (*dynamic 3D parallax tilt*), viền hào quang, tỉ lệ, độ tinh xảo và câu chuyện văn hóa.
+  - Bộ lọc tức thì theo độ hiếm và thanh tìm kiếm đa năng theo tên, nhóm, đặc tính.
+  - Modal hồ sơ chi tiết (Inspect Character): nguồn cảm hứng, vật liệu chế tác, độ tinh xảo và triết lý thiết kế.
+- **Giả lập khui túi mù 3D chân thực (Gacha Simulator)**:
+  - Tương tác xé túi 5 nhịp: chạm từng bước hoặc kéo chuột/vuốt cảm ứng ngang đường răng cưa để xé mở túi giấy kraft.
+  - Hỗ trợ mở nhanh 1 túi hoặc Combo 5 túi.
+  - Cơ chế đếm ngược hồi hộp 3.0 giây (*Dramatic Suspense Countdown*) đồng bộ với hiệu ứng túi lơ lửng, thẻ bài nhô lên, ánh sáng laser flare và rèm hào quang.
+  - Kết quả mở ngẫu nhiên theo thuật toán Weighted RNG chuẩn xác.
+- **Hệ thống âm thanh tương tác đa tầng (Hybrid Web Audio System)**:
+  - **Âm thanh xé túi (`Tear_paper.MP3`)**: Âm thanh xé giấy thực tế với độ cao tăng dần theo từng nhịp xé (`0.96x` – `1.08x`), kết hợp tiếng bụp trầm túi giấy kraft và tiếng xé bung dứt khoát ở nhịp 5.
+  - **Âm thanh đếm ngược hồi hộp (`delay_sound_effect.mp3`)**: Được tinh chỉnh chuẩn xác khớp từng mili-giây với chu kỳ delay 3.0s, tạo cao trào kịch tính trước khi mở thẻ.
+  - **Âm thanh khai mở sau delay (`after_delay_sound.mp3`)**: Vang lên ngay thời điểm bừng sáng màn hình (*gold flash*), mang giai điệu hoành tráng chào mừng thẻ bài xuất hiện.
+  - **Độ trễ 0ms & Tương thích 100%**: Giải mã bằng Web Audio API decode buffer, có Audio Pool fallback và Base64 offline backup, hoạt động mượt mà cả trên server lẫn mở trực tiếp file `index.html` (`file:///`).
+  - Hỗ trợ bật/tắt âm thanh nhanh qua nút chuông 🔔 / 🔕 trên Header.
+- **Sổ tay sưu tập cá nhân (Codex Drawer)**:
+  - Tự động mở khóa và cập nhật tiến độ nhân vật sau mỗi lượt khui túi mù.
+  - Lưu trữ bền vững bằng `localStorage`.
+- **Máy tính xác suất mở túi (Probability Calculator)**:
+  - Cho phép người dùng kéo thanh trượt từ 1 đến 20 túi, áp dụng công thức xác suất thực tế:
+    $$P(\text{ít nhất 1 lần}) = 1 - (1 - p)^n$$
+- **Bảng so sánh toàn diện 6 mẫu đèn lồng**: So sánh trực quan theo độ hiếm, kích thước, chất liệu và thời gian chế tác.
+- **Hiệu ứng mỹ thuật sân khấu**: Rèm nhung mở màn (*Grand Red Curtain*), preloader đếm số, spotlight, hạt sáng lung linh và pháo kim tuyến rực rỡ khi trúng SSR.
 
-	`P(ít nhất 1 lần) = 1 - (1 - p)^n`
+---
 
-- Bảng so sánh toàn diện 6 nhân vật.
-- Preloader, rèm sân khấu, chuyển cảnh theo từng khu vực, thanh tiến độ cuộn, hiệu ứng spotlight và hạt sáng nền.
-- Hỗ trợ thao tác chuột, cảm ứng và bàn phím Enter/Space tại khu vực túi mù.
-
-## Nhân vật
+## Bảng nhân vật
 
 | Nhân vật | Cấp độ | Tỉ lệ | Điểm nổi bật |
 | --- | --- | ---: | --- |
-| Cá Vàng Phát Lộc | Phổ biến | 30% | Cá chép, may mắn và thịnh vượng |
-| Ngôi Sao Như Ý | Phổ biến | 25% | Đèn ông sao năm cánh truyền thống |
-| Ngựa Phi Vân | Hiếm | 20% | Tuấn mã đạp mây, chạm khắc đa tầng |
-| Thỏ Ngọc Trung Thu | Hiếm | 15% | Tích Thỏ Ngọc trên cung trăng |
-| Doraemon Đèn Lồng | Cực hiếm | 7% | Giao thoa nhân vật tuổi thơ và đèn lồng Việt |
-| Đầu Lân Vàng | Cực hiếm | 3% | Mẫu hiếm nhất, chạm trổ và dát nhũ vàng |
+| **Cá Vàng Phát Lộc** | Phổ biến (Common) | 30% | Biểu tượng cá chép may mắn, hanh thông tài lộc |
+| **Ngôi Sao Như Ý** | Phổ biến (Common) | 25% | Đèn ông sao năm cánh truyền thống rực rỡ tuổi thơ |
+| **Ngựa Phi Vân** | Hiếm (Rare) | 20% | Tuấn mã đạp mây, kỹ nghệ chạm khắc đa tầng |
+| **Thỏ Ngọc Trung Thu** | Hiếm (Rare) | 15% | Tích Thỏ Ngọc giã thuốc tiên trên cung trăng |
+| **Doraemon Đèn Lồng** | Cực hiếm (Epic) | 7% | Giao thoa nhân vật tuổi thơ quốc dân và lồng đèn Việt |
+| **Đầu Lân Vàng** | Cực hiếm (Epic) | 3% | Mẫu hiếm nhất, chạm trổ lân sư và dát nhũ vàng |
+
+---
 
 ## Cấu trúc thư mục
 
 ```text
 .
 ├── index.html                 # Trang chính, showroom và toàn bộ trải nghiệm tương tác
-├── tui-mu-rarity.html         # Catalogue tĩnh rút gọn theo 3 cấp độ hiếm
-├── README.md
-├── asset/                     # Ảnh nhân vật, ảnh hero, túi mù và rèm sân khấu
+├── tui-mu-rarity.html         # Catalogue tĩnh rút gọn độc lập theo 3 cấp độ hiếm
+├── README.md                  # Tài liệu hướng dẫn và giới thiệu dự án
+├── asset/                     # Tài nguyên đồ họa (ảnh nhân vật, ảnh hero, túi mù, rèm nhung)
 ├── css/
-│   └── style.css              # Design system, bố cục, responsive và animation
-└── js/
-		├── app.js                 # Bộ điều khiển chính và dữ liệu nhân vật
-		├── codex.js               # Quản lý sổ tay sưu tập bằng localStorage
-		└── gacha-simulator.js     # Giả lập xé túi, random, âm thanh và kết quả
+│   └── style.css              # Design system, bố cục, responsive, 3D transform và keyframes
+├── js/
+│   ├── app.js                 # Controller chính, dữ liệu 6 nhân vật và điều phối giao diện
+│   ├── codex.js               # Quản lý sổ tay sưu tập bằng localStorage
+│   ├── gacha-simulator.js     # Giả lập khui túi, random RNG, bộ tổng hợp âm thanh Web Audio
+│   └── tear-audio-data.js     # Asset âm thanh xé giấy offline zero-latency
+└── sound/
+    ├── Tear_paper.MP3         # Sound effect xé túi mù giấy kraft chân thực
+    ├── delay_sound_effect.mp3 # Sound effect đếm ngược hồi hộp 3.0s chuẩn xác
+    └── after_delay_sound.mp3  # Sound effect ăn mừng và khai mở thẻ sau delay
 ```
 
-## Cách chạy
+---
 
-### Cách 1: Mở trực tiếp
+## Hướng dẫn cài đặt & khởi chạy
 
-Mở [index.html](index.html) bằng trình duyệt hiện đại. Cách này phù hợp để xem giao diện cơ bản.
+### Cách 1: Mở trực tiếp (Không cần cài đặt)
 
-### Cách 2: Dùng máy chủ tĩnh
+Nhấp đúp chuột mở file [index.html](index.html) bằng bất kỳ trình duyệt web hiện đại nào (Chrome, Edge, Firefox, Safari).
 
-Nên dùng Live Server hoặc một static server để các asset và hành vi trình duyệt hoạt động ổn định.
+### Cách 2: Sử dụng máy chủ tĩnh (Khuyên dùng)
 
-Ví dụ với Python:
+Khởi chạy bằng một máy chủ tĩnh nhẹ (như Live Server của VS Code, Python, hoặc Node.js):
 
+**Với Python:**
 ```bash
 python -m http.server 8000
 ```
+Sau đó truy cập: `http://localhost:8000/`.
 
-Sau đó truy cập `http://localhost:8000/`.
+**Với Node.js (npx):**
+```bash
+npx serve .
+```
 
-Không cần `npm install`, không cần build và không cần biến môi trường.
+---
 
 ## Công nghệ sử dụng
 
-- HTML5 semantic markup.
-- CSS3: CSS variables, Grid, Flexbox, responsive media queries, 3D transforms, gradients và animations.
-- JavaScript thuần ES6 class, không dùng framework.
-- Canvas 2D cho các hạt sáng nền.
-- Web Audio API cho hiệu ứng âm thanh tương tác.
-- `localStorage` để lưu tiến độ sưu tập trên từng trình duyệt.
-- Google Fonts: Fraunces và Be Vietnam Pro.
+- **Cốt lõi**: HTML5 Semantic, CSS3 thuần hiện đại (CSS Variables, Grid, Flexbox, 3D Transform, Glassmorphism).
+- **JavaScript**: ES6+ Class-based Architecture, phân tách module rõ ràng, không dùng framework cồng kềnh.
+- **Âm thanh**: Web Audio API (BiquadFilter, Oscillator, AudioBufferSource, GainNode envelope) kết hợp HTML5 Audio pool.
+- **Đồ họa & Hiệu ứng**: HTML5 Canvas 2D Particle System, Confetti Burst, CSS Keyframes Animation.
+- **Lưu trữ cục bộ**: Web Storage API (`localStorage`).
+- **Typography**: Phông chữ Google Fonts chuẩn tiếng Việt (`Fraunces` & `Be Vietnam Pro`).
 
-## Luồng sử dụng chính
+---
 
-1. Mở trang chính và bỏ qua hoặc chờ preloader hoàn tất.
-2. Xem bảng tỉ lệ để hiểu ba nhóm rarity.
-3. Vào Showroom, lọc hoặc tìm kiếm nhân vật, rồi mở hồ sơ chi tiết.
-4. Vào Simulator, nhấn túi 5 lần, kéo đường xé hoặc chọn nút mở nhanh.
-5. Xem kết quả, kiểm tra tiến độ trong Codex và dùng máy tính xác suất để thử các kịch bản khác.
+## Bối cảnh & Mục tiêu dự án
 
-## Lưu ý kỹ thuật
-
-- Tiến độ Codex được lưu với key `emmo_codex_collection` trong `localStorage`; xóa dữ liệu site sẽ xóa bộ sưu tập đã mở khóa.
-- Âm thanh chỉ được phát sau tương tác của người dùng theo chính sách autoplay của trình duyệt. Có thể bật/tắt bằng nút chuông trên thanh điều hướng.
-- Tỉ lệ từng nhân vật trong simulator là 30%, 25%, 20%, 15%, 7% và 3%, tổng cộng 100%.
-- `tui-mu-rarity.html` là phiên bản catalogue độc lập, dùng inline CSS và ảnh WebP nhúng Base64; trang này không dùng các module JavaScript của trang chính.
-
-## Bối cảnh dự án
-
-**Em Mơ** được thực hiện trong khuôn khổ môn SSG105 bởi nhóm TECHCORN, FPT University. Dự án hướng tới việc đưa nghệ thuật đèn lồng và các tích truyện Trung Thu đến gần hơn với cách kể chuyện tương tác, đồng thời gắn sản phẩm với hoạt động thiện nguyện dành cho học sinh tại các trường tiểu học và mầm non.
+Dự án **Em Mơ** được thực hiện trong khuôn khổ môn học **SSG105** bởi nhóm **TECHCORN - FPT University**. Dự án ra đời với mong muốn gìn giữ nét đẹp văn hóa Trung Thu truyền thống Việt Nam thông qua lăng kính công nghệ số và phong cách hộp mù hiện đại, lan tỏa tình yêu văn hóa dân gian và kết nối các hoạt động thiện nguyện mang lồng đèn trao tặng các em nhỏ vùng khó khăn.

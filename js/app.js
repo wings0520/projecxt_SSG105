@@ -237,11 +237,15 @@ class App {
     if (btnCloseReveal && revealModal) {
       btnCloseReveal.addEventListener('click', () => {
         revealModal.classList.remove('active');
+        if (this.gacha && this.gacha.audio) this.gacha.audio.stopAfterDelay();
       });
     }
     if (revealModal) {
       revealModal.addEventListener('click', (e) => {
-        if (e.target === revealModal) revealModal.classList.remove('active');
+        if (e.target === revealModal) {
+          revealModal.classList.remove('active');
+          if (this.gacha && this.gacha.audio) this.gacha.audio.stopAfterDelay();
+        }
       });
     }
 
@@ -271,7 +275,10 @@ class App {
       if (e.key === 'Escape') {
         if (legendModal && legendModal.classList.contains('active')) this.closeLegendModal();
         if (inspectModal && inspectModal.classList.contains('active')) inspectModal.classList.remove('active');
-        if (revealModal && revealModal.classList.contains('active')) revealModal.classList.remove('active');
+        if (revealModal && revealModal.classList.contains('active')) {
+          revealModal.classList.remove('active');
+          if (this.gacha && this.gacha.audio) this.gacha.audio.stopAfterDelay();
+        }
         this.closeCodex();
       }
     });

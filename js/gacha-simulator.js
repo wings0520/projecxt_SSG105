@@ -8,6 +8,47 @@ class AudioSynthesizer {
   constructor() {
     this.ctx = null;
     this.enabled = true;
+    this.tearAudioUrl = 'sound/Tear_paper.MP3';
+    this.tearAudioBuffer = null;
+    this.isTearLoading = false;
+    this.tearAudioPool = [];
+
+    // Delay audio (suspense countdown)
+    this.delayAudioUrl = 'sound/delay_sound_effect.mp3';
+    this.delayAudioBuffer = null;
+    this.isDelayLoading = false;
+    this.delayAudioEl = null;
+    this.currentSuspenseSource = null;
+    this.currentSuspenseGain = null;
+
+    // After-delay audio (reveal & fanfare)
+    this.afterDelayAudioUrl = 'sound/after_delay_sound.mp3';
+    this.afterDelayAudioBuffer = null;
+    this.isAfterDelayLoading = false;
+    this.afterDelayAudioEl = null;
+    this.currentAfterDelaySource = null;
+    this.currentAfterDelayGain = null;
+
+    this.initAudioPool();
+  }
+
+  // Pre-initialize HTML5 Audio elements for zero-delay fallback
+  initAudioPool() {
+    try {
+      if (typeof Audio !== 'undefined') {
+        for (let i = 0; i < 5; i++) {
+          const a = new Audio(this.tearAudioUrl);
+          a.preload = 'auto';
+          this.tearAudioPool.push(a);
+        }
+        this.delayAudioEl = new Audio(this.delayAudioUrl);
+        this.delayAudioEl.preload = 'auto';
+        this.afterDelayAudioEl = new Audio(this.afterDelayAudioUrl);
+        this.afterDelayAudioEl.preload = 'auto';
+      }
+    } catch (e) {
+      console.warn('Audio element pool init notice:', e);
+    }
   }
 
   init() {
@@ -18,10 +59,134 @@ class AudioSynthesizer {
     if (this.ctx.state === 'suspended') {
       this.ctx.resume();
     }
+    if (!this.tearAudioBuffer && !this.isTearLoading) {
+      this.loadTearAudio();
+    }
+    if ((!this.delayAudioBuffer && !this.isDelayLoading) || (!this.afterDelayAudioBuffer && !this.isAfterDelayLoading)) {
+      this.loadDelayAndAfterDelayAudio();
+    }
+  }
+
+  loadDelayAndAfterDelayAudio() {
+    if (!this.ctx) return;
+    
+    if (!this.delayAudioBuffer && !this.isDelayLoading) {
+      this.isDelayLoading = true;
+      fetch(this.delayAudioUrl)
+        .then(res => {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.arrayBuffer();
+        })
+        .then(arrayBuffer => this.ctx.decodeAudioData(arrayBuffer))
+        .then(decoded => {
+          this.delayAudioBuffer = decoded;
+          this.isDelayLoading = false;
+        })
+        .catch(() => {
+          this.isDelayLoading = false;
+        });
+    }
+
+    if (!this.afterDelayAudioBuffer && !this.isAfterDelayLoading) {
+      this.isAfterDelayLoading = true;
+      fetch(this.afterDelayAudioUrl)
+        .then(res => {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.arrayBuffer();
+        })
+        .then(arrayBuffer => this.ctx.decodeAudioData(arrayBuffer))
+        .then(decoded => {
+          this.afterDelayBuffer = decoded;
+          this.isAfterDelayLoading = false;
+        })
+        .catch(() => {
+          this.isAfterDelayLoading = false;
+        });
+    }
+  }
+
+  // Load and decode the user-provided Tear_paper.MP3 into an AudioBuffer
+  loadTearAudio() {
+    if (this.tearAudioBuffer || this.isTearLoading) return;
+    this.isTearLoading = true;
+
+    const decodeData = (arrayBuffer) => {
+      if (!this.ctx) return;
+      this.ctx.decodeAudioData(
+        arrayBuffer,
+        (decoded) => {
+          this.tearAudioBuffer = decoded;
+          this.isTearLoading = false;
+        },
+        (err) => {
+          console.warn('Error decoding tear audio buffer:', err);
+          this.isTearLoading = false;
+        }
+      );
+    };
+
+    // 1. Try fetching sound/Tear_paper.MP3 directly (works on http/https/localhost)
+    if (typeof window !== 'undefined' && window.fetch && window.location.protocol !== 'file:') {
+      fetch(this.tearAudioUrl)
+        .then((res) => {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.arrayBuffer();
+        })
+        .then(decodeData)
+        .catch(() => {
+          this.decodeFromBase64(decodeData);
+        });
+    } else {
+      // 2. Decode from window.TEAR_AUDIO_BASE64 (supports offline and file://)
+      this.decodeFromBase64(decodeData);
+    }
+  }
+
+  decodeFromBase64(callback) {
+    try {
+      const b64 = typeof window !== 'undefined' && window.TEAR_AUDIO_BASE64 ? window.TEAR_AUDIO_BASE64 : null;
+      if (!b64) {
+        this.isTearLoading = false;
+        return;
+      }
+      const binaryString = window.atob(b64);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      callback(bytes.buffer);
+    } catch (e) {
+      console.warn('Base64 tear audio decode error:', e);
+      this.isTearLoading = false;
+    }
+  }
+
+  // Fallback player using HTML5 Audio element pool
+  playTearElement(volume = 1.0) {
+    try {
+      const el = this.tearAudioPool.find((a) => a.paused || a.ended) || this.tearAudioPool[0];
+      if (el) {
+        el.volume = Math.max(0, Math.min(1, volume));
+        el.currentTime = 0;
+        const p = el.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+      } else {
+        const temp = new Audio(this.tearAudioUrl);
+        temp.volume = volume;
+        temp.play().catch(() => {});
+      }
+    } catch (e) {
+      // ignore
+    }
   }
 
   toggle() {
     this.enabled = !this.enabled;
+    if (!this.enabled) {
+      this.stopSuspenseCharge();
+      this.stopAfterDelay();
+    }
     return this.enabled;
   }
 
@@ -46,137 +211,93 @@ class AudioSynthesizer {
     osc.stop(now + 0.16);
   }
 
-  // Crisp, loud, realistic paper tearing step sound (1 to 5)
+  // Authentic paper tearing step sound using provided Tear_paper.MP3 (1 to 5)
   playTearStep(step = 1) {
     if (!this.enabled) return;
     this.init();
-    const now = this.ctx.currentTime;
 
-    const duration = 0.22 + step * 0.04;
-    const sampleRate = this.ctx.sampleRate;
-    const bufferSize = Math.floor(sampleRate * duration);
-    const buffer = this.ctx.createBuffer(1, bufferSize, sampleRate);
-    const data = buffer.getChannelData(0);
+    // Use decoded Web Audio buffer if ready
+    if (this.ctx && this.tearAudioBuffer) {
+      const now = this.ctx.currentTime;
+      const src = this.ctx.createBufferSource();
+      src.buffer = this.tearAudioBuffer;
 
-    // Physical modeling of kraft paper fibers snapping under tension
-    let brownNoise = 0;
-    const snapDensity = 0.02 + step * 0.014;
-    for (let i = 0; i < bufferSize; i++) {
-      const t = i / bufferSize;
-      const white = Math.random() * 2 - 1;
-      brownNoise = (brownNoise + 0.06 * white) / 1.06;
+      // Realistic pitch nuance across 5 steps
+      const pitch = step >= 5 ? 1.0 : (0.92 + step * 0.04);
+      src.playbackRate.setValueAtTime(pitch, now);
 
-      // Random micro-transient spikes (individual paper fiber snaps)
-      const isSnap = Math.random() < snapDensity;
-      const snapVal = isSnap ? (Math.random() > 0.5 ? 1 : -1) * (0.75 + Math.random() * 0.25) : 0;
+      const gain = this.ctx.createGain();
+      const vol = Math.min(1.0, 0.85 + step * 0.04);
+      gain.gain.setValueAtTime(vol, now);
 
-      // Amplitude envelope: sharp attack, sustained rough tearing friction, decay
-      const env = Math.pow(Math.sin(Math.PI * Math.pow(t, 0.4)), 1.2);
-      data[i] = (white * 0.4 + brownNoise * 0.35 + snapVal * 0.6) * env;
+      // Low-frequency kraft pouch cavity thump
+      const subOsc = this.ctx.createOscillator();
+      const subGain = this.ctx.createGain();
+      subOsc.type = 'triangle';
+      subOsc.frequency.setValueAtTime(180, now);
+      subOsc.frequency.exponentialRampToValueAtTime(55, now + 0.16);
+      subGain.gain.setValueAtTime(0.3 + step * 0.04, now);
+      subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+      subOsc.connect(subGain);
+      subGain.connect(this.ctx.destination);
+      subOsc.start(now);
+      subOsc.stop(now + 0.17);
+
+      src.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      // Sliced playback: steps 1-4 play crisp progressive segments, step 5 plays full rip
+      const duration = this.tearAudioBuffer.duration;
+      if (step < 5) {
+        const offset = Math.min(duration * 0.5, (step - 1) * 0.06);
+        const playLen = 0.16 + step * 0.05;
+        src.start(now, offset, playLen);
+      } else {
+        src.start(now, 0, duration);
+      }
+      return;
     }
 
-    const noiseSrc = this.ctx.createBufferSource();
-    noiseSrc.buffer = buffer;
-
-    // 1. High-pass filter to isolate crisp ripping crunch
-    const hp = this.ctx.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.setValueAtTime(650, now);
-
-    // 2. Resonant peaking filter (+9dB boost) at 2600Hz - 3800Hz for sharp paper bite
-    const peak = this.ctx.createBiquadFilter();
-    peak.type = 'peaking';
-    peak.frequency.setValueAtTime(2600 + step * 250, now);
-    peak.Q.setValueAtTime(3.2, now);
-    peak.gain.setValueAtTime(9.0, now);
-
-    // 3. Sweeping lowpass formant simulating tear propagation
-    const lp = this.ctx.createBiquadFilter();
-    lp.type = 'lowpass';
-    lp.frequency.setValueAtTime(6000, now);
-    lp.frequency.exponentialRampToValueAtTime(1400, now + duration);
-
-    // 4. Low-frequency kraft pouch cavity thump
-    const subOsc = this.ctx.createOscillator();
-    const subGain = this.ctx.createGain();
-    subOsc.type = 'triangle';
-    subOsc.frequency.setValueAtTime(190, now);
-    subOsc.frequency.exponentialRampToValueAtTime(60, now + 0.18);
-    subGain.gain.setValueAtTime(0.35 + step * 0.05, now);
-    subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
-    subOsc.connect(subGain);
-    subGain.connect(this.ctx.destination);
-    subOsc.start(now);
-    subOsc.stop(now + 0.19);
-
-    // Master Gain: High presence and clarity
-    const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(0.85 + step * 0.05, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
-
-    noiseSrc.connect(hp);
-    hp.connect(peak);
-    peak.connect(lp);
-    lp.connect(gain);
-    gain.connect(this.ctx.destination);
-
-    noiseSrc.start(now);
+    // Fallback: HTML5 Audio element with volume scaling
+    this.playTearElement(Math.min(1.0, 0.85 + step * 0.04));
   }
 
-  // Massive continuous paper rip when bag bursts open (Step 5 / Rip Open)
+  // Full authentic paper tear when bag bursts open (Step 5 / Rip Open)
   playTear() {
     if (!this.enabled) return;
     this.init();
-    const now = this.ctx.currentTime;
 
-    const duration = 0.55;
-    const sampleRate = this.ctx.sampleRate;
-    const bufferSize = Math.floor(sampleRate * duration);
-    const buffer = this.ctx.createBuffer(1, bufferSize, sampleRate);
-    const data = buffer.getChannelData(0);
+    // Use decoded Web Audio buffer if ready
+    if (this.ctx && this.tearAudioBuffer) {
+      const now = this.ctx.currentTime;
+      const src = this.ctx.createBufferSource();
+      src.buffer = this.tearAudioBuffer;
+      src.playbackRate.setValueAtTime(1.0, now);
 
-    let brown = 0;
-    for (let i = 0; i < bufferSize; i++) {
-      const t = i / bufferSize;
-      const white = Math.random() * 2 - 1;
-      brown = (brown + 0.08 * white) / 1.08;
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(1.0, now);
 
-      const isSnap = Math.random() < 0.06;
-      const snapVal = isSnap ? (Math.random() > 0.5 ? 1 : -1) * 0.9 : 0;
+      // Sub-bass burst thump
+      const subOsc = this.ctx.createOscillator();
+      const subGain = this.ctx.createGain();
+      subOsc.type = 'triangle';
+      subOsc.frequency.setValueAtTime(200, now);
+      subOsc.frequency.exponentialRampToValueAtTime(50, now + 0.22);
+      subGain.gain.setValueAtTime(0.45, now);
+      subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+      subOsc.connect(subGain);
+      subGain.connect(this.ctx.destination);
+      subOsc.start(now);
+      subOsc.stop(now + 0.23);
 
-      const env = Math.sin(Math.PI * Math.pow(t, 0.5));
-      data[i] = (white * 0.5 + brown * 0.4 + snapVal * 0.7) * env;
+      src.connect(gain);
+      gain.connect(this.ctx.destination);
+      src.start(now, 0, this.tearAudioBuffer.duration);
+      return;
     }
 
-    const noiseSrc = this.ctx.createBufferSource();
-    noiseSrc.buffer = buffer;
-
-    const hp = this.ctx.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.setValueAtTime(500, now);
-
-    const peak = this.ctx.createBiquadFilter();
-    peak.type = 'peaking';
-    peak.frequency.setValueAtTime(3200, now);
-    peak.Q.setValueAtTime(2.8, now);
-    peak.gain.setValueAtTime(10.0, now);
-
-    const lp = this.ctx.createBiquadFilter();
-    lp.type = 'lowpass';
-    lp.frequency.setValueAtTime(7000, now);
-    lp.frequency.exponentialRampToValueAtTime(900, now + duration);
-
-    const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(0.95, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
-
-    noiseSrc.connect(hp);
-    hp.connect(peak);
-    peak.connect(lp);
-    lp.connect(gain);
-    gain.connect(this.ctx.destination);
-
-    noiseSrc.start(now);
+    // Fallback: HTML5 Audio element
+    this.playTearElement(1.0);
   }
 
   // Tactile micro-crackle when dragging mouse along cut line
@@ -215,54 +336,142 @@ class AudioSynthesizer {
     noiseSrc.start(now);
   }
 
-  // 3-Second Dramatic Suspense Audio Crescendo
+  // 3-Second Dramatic Suspense Audio Crescendo fine-tuned to exactly 3.0s using provided delay_sound_effect.mp3
   playSuspenseCharge(duration = 3.0) {
     if (!this.enabled) return;
     this.init();
-    const now = this.ctx.currentTime;
+    this.stopSuspenseCharge();
 
-    // 1. Drumroll-style sub-bass rumble
-    const rumbleOsc = this.ctx.createOscillator();
-    const rumbleGain = this.ctx.createGain();
-    rumbleOsc.type = 'triangle';
-    rumbleOsc.frequency.setValueAtTime(65, now);
-    rumbleOsc.frequency.exponentialRampToValueAtTime(150, now + duration);
-    rumbleGain.gain.setValueAtTime(0.12, now);
-    rumbleGain.gain.linearRampToValueAtTime(0.35, now + duration * 0.85);
-    rumbleGain.gain.exponentialRampToValueAtTime(0.01, now + duration);
-    rumbleOsc.connect(rumbleGain);
-    rumbleGain.connect(this.ctx.destination);
-    rumbleOsc.start(now);
-    rumbleOsc.stop(now + duration);
+    const targetSec = duration || 3.0;
 
-    // 2. Rising harmonic celestial energy
-    const shimmerOsc = this.ctx.createOscillator();
-    const shimmerGain = this.ctx.createGain();
-    shimmerOsc.type = 'sine';
-    shimmerOsc.frequency.setValueAtTime(330, now);
-    shimmerOsc.frequency.exponentialRampToValueAtTime(1300, now + duration);
-    shimmerGain.gain.setValueAtTime(0.03, now);
-    shimmerGain.gain.exponentialRampToValueAtTime(0.28, now + duration * 0.9);
-    shimmerGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-    shimmerOsc.connect(shimmerGain);
-    shimmerGain.connect(this.ctx.destination);
-    shimmerOsc.start(now);
-    shimmerOsc.stop(now + duration);
+    // A) If Web Audio buffer of delay_sound_effect is ready:
+    if (this.ctx && this.delayAudioBuffer) {
+      const now = this.ctx.currentTime;
+      const src = this.ctx.createBufferSource();
+      src.buffer = this.delayAudioBuffer;
 
-    // 3. Three distinct heartbeat pulses at 1s, 2s, 3s
-    [0.1, 1.0, 2.0].forEach((offset, idx) => {
-      const pingTime = now + offset;
-      const pingOsc = this.ctx.createOscillator();
-      const pingGain = this.ctx.createGain();
-      pingOsc.type = 'sine';
-      pingOsc.frequency.setValueAtTime(523.25 * (1 + idx * 0.25), pingTime);
-      pingGain.gain.setValueAtTime(0.22 + idx * 0.05, pingTime);
-      pingGain.gain.exponentialRampToValueAtTime(0.01, pingTime + 0.4);
-      pingOsc.connect(pingGain);
-      pingGain.connect(this.ctx.destination);
-      pingOsc.start(pingTime);
-      pingOsc.stop(pingTime + 0.42);
-    });
+      // The sound effect active build-up lasts ~5.143s.
+      // Tuning playbackRate so the build-up reaches its full climax exactly at 3.0s!
+      const activeDuration = Math.min(this.delayAudioBuffer.duration, 5.143);
+      const rate = activeDuration / targetSec; // ~1.714
+      src.playbackRate.setValueAtTime(rate, now);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.85, now);
+      // Tension swells steadily to maximum at 3.0s
+      gain.gain.linearRampToValueAtTime(1.0, now + targetSec * 0.88);
+      gain.gain.linearRampToValueAtTime(0.92, now + targetSec);
+
+      src.connect(gain);
+      gain.connect(this.ctx.destination);
+      src.start(now, 0, activeDuration);
+      src.stop(now + targetSec);
+
+      this.currentSuspenseSource = src;
+      this.currentSuspenseGain = gain;
+      return;
+    }
+
+    // B) HTML5 Audio Element fallback with playbackRate tuned to 3.0s
+    try {
+      if (this.delayAudioEl) {
+        this.delayAudioEl.playbackRate = 5.143 / targetSec;
+        this.delayAudioEl.currentTime = 0;
+        this.delayAudioEl.volume = 0.9;
+        const p = this.delayAudioEl.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+      }
+    } catch (e) {}
+
+    // Sub-bass cinematic support
+    if (this.ctx) {
+      const now = this.ctx.currentTime;
+      const rumbleOsc = this.ctx.createOscillator();
+      const rumbleGain = this.ctx.createGain();
+      rumbleOsc.type = 'triangle';
+      rumbleOsc.frequency.setValueAtTime(60, now);
+      rumbleOsc.frequency.exponentialRampToValueAtTime(140, now + targetSec);
+      rumbleGain.gain.setValueAtTime(0.08, now);
+      rumbleGain.gain.linearRampToValueAtTime(0.25, now + targetSec * 0.85);
+      rumbleGain.gain.exponentialRampToValueAtTime(0.01, now + targetSec);
+      rumbleOsc.connect(rumbleGain);
+      rumbleGain.connect(this.ctx.destination);
+      rumbleOsc.start(now);
+      rumbleOsc.stop(now + targetSec);
+    }
+  }
+
+  stopSuspenseCharge() {
+    if (this.currentSuspenseSource) {
+      try {
+        this.currentSuspenseSource.stop();
+      } catch (e) {}
+      this.currentSuspenseSource = null;
+      this.currentSuspenseGain = null;
+    }
+    if (this.delayAudioEl) {
+      try {
+        this.delayAudioEl.pause();
+        this.delayAudioEl.currentTime = 0;
+      } catch (e) {}
+    }
+  }
+
+  // Combined Celebration & Reveal Audio (played right as 3.0s delay completes) using provided after_delay_sound.mp3
+  playAfterDelay() {
+    if (!this.enabled) return;
+    this.init();
+    this.stopAfterDelay();
+
+    if (this.ctx && this.afterDelayBuffer) {
+      const now = this.ctx.currentTime;
+      const src = this.ctx.createBufferSource();
+      src.buffer = this.afterDelayBuffer;
+      src.playbackRate.setValueAtTime(1.0, now);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.95, now);
+
+      src.connect(gain);
+      gain.connect(this.ctx.destination);
+      src.start(now);
+
+      this.currentAfterDelaySource = src;
+      this.currentAfterDelayGain = gain;
+      return;
+    }
+
+    // HTML5 Audio fallback
+    try {
+      if (this.afterDelayAudioEl) {
+        this.afterDelayAudioEl.currentTime = 0;
+        this.afterDelayAudioEl.volume = 0.95;
+        const p = this.afterDelayAudioEl.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+      }
+    } catch (e) {}
+  }
+
+  stopAfterDelay() {
+    if (this.currentAfterDelaySource) {
+      try {
+        if (this.currentAfterDelayGain && this.ctx) {
+          const now = this.ctx.currentTime;
+          this.currentAfterDelayGain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+          this.currentAfterDelaySource.stop(now + 0.28);
+        } else {
+          this.currentAfterDelaySource.stop();
+        }
+      } catch (e) {}
+      this.currentAfterDelaySource = null;
+      this.currentAfterDelayGain = null;
+    }
+    if (this.afterDelayAudioEl) {
+      try {
+        this.afterDelayAudioEl.pause();
+        this.afterDelayAudioEl.currentTime = 0;
+      } catch (e) {}
+    }
   }
 
   playReveal(tier) {
@@ -1066,6 +1275,10 @@ class GachaSimulator {
     setTimeout(() => {
       clearInterval(countdownInterval);
 
+      // Stop delay sound cleanly & trigger after-delay sound effect
+      this.audio.stopSuspenseCharge();
+      this.audio.playAfterDelay();
+
       // Trigger blinding white-gold flash immediately
       if (this.flashOverlay) {
         this.flashOverlay.classList.add('flashing');
@@ -1121,6 +1334,8 @@ class GachaSimulator {
   }
 
   resetBag() {
+    this.audio.stopSuspenseCharge();
+    this.audio.stopAfterDelay();
     this.tearStep = 0;
     this.tearProgress = 0;
     this.isRolling = false;
