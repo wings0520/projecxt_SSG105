@@ -5,50 +5,58 @@
    ========================================================================== */
 
 :root {
-  /* Color Tokens */
-  --bg-deep: #160408;
-  --bg-dark: #22060c;
+  /* Royal Palace Color Tokens (Đỏ Chu Sa Hoàng Triều & Vàng Dát Nhũ) */
+  --bg-deep: #140306;
+  --bg-dark: #1f050b;
   --bg-lantern: #380812;
-  --bg-card: rgba(45, 11, 19, 0.72);
-  --bg-card-hover: rgba(65, 16, 28, 0.85);
-  --bg-card-glass: rgba(36, 9, 15, 0.65);
+  --bg-chu-sa-deep: #26050b;
+  --bg-chu-sa-rich: #540d1a;
+  --bg-card: rgba(46, 11, 20, 0.78);
+  --bg-card-hover: rgba(76, 16, 32, 0.9);
+  --bg-card-glass: rgba(36, 8, 15, 0.72);
   
-  --ink-primary: #fff2e0;
-  --ink-secondary: rgba(255, 238, 220, 0.75);
-  --ink-tertiary: rgba(255, 238, 220, 0.52);
-  --ink-faint: rgba(255, 238, 220, 0.28);
+  --ink-primary: #fff5e6;
+  --ink-secondary: rgba(255, 238, 220, 0.82);
+  --ink-tertiary: rgba(255, 238, 220, 0.58);
+  --ink-faint: rgba(255, 238, 220, 0.32);
   
   /* Rarity Colors */
   --tier-common: #df8a48;
-  --tier-common-glow: rgba(223, 138, 72, 0.4);
-  --tier-common-bg: rgba(223, 138, 72, 0.12);
+  --tier-common-glow: rgba(223, 138, 72, 0.45);
+  --tier-common-bg: rgba(223, 138, 72, 0.14);
   
-  --tier-rare: #e5b33d;
-  --tier-rare-glow: rgba(229, 179, 61, 0.5);
-  --tier-rare-bg: rgba(229, 179, 61, 0.15);
+  /* Lam Ngọc Cổ Điển (Rare) */
+  --tier-rare: #00e1d9;
+  --tier-rare-accent: #0099ff;
+  --tier-rare-glow: rgba(0, 225, 217, 0.55);
+  --tier-rare-bg: rgba(0, 225, 217, 0.15);
   
+  /* Vàng Hoàng Kim Dát Nhũ (Epic / SSR) */
   --tier-epic: #f6d166;
-  --tier-epic-glow: rgba(246, 209, 102, 0.7);
-  --tier-epic-bg: rgba(246, 209, 102, 0.2);
+  --tier-epic-gold: #e5a93c;
+  --tier-epic-glow: rgba(246, 209, 102, 0.8);
+  --tier-epic-bg: rgba(246, 209, 102, 0.22);
   --tier-epic-purple: #c084fc;
   
   /* Metallic Gold */
-  --gold-bright: #ffe08a;
-  --gold-primary: #d4a63a;
+  --gold-bright: #ffe699;
+  --gold-primary: #f6d166;
+  --gold-amber: #e5a93c;
   --gold-dim: #987320;
-  --gold-gradient: linear-gradient(135deg, #ffe599 0%, #d4a63a 50%, #946816 100%);
-  --epic-gradient: linear-gradient(135deg, #fff3c4 0%, #f6d166 40%, #c084fc 100%);
+  --gold-gradient: linear-gradient(135deg, #fff2cc 0%, #f6d166 40%, #e5a93c 75%, #946816 100%);
+  --epic-gradient: linear-gradient(135deg, #ffffff 0%, #ffe08a 35%, #f6d166 70%, #e5a93c 100%);
+  --royal-jade-gradient: linear-gradient(135deg, #bbfaf6 0%, #00e1d9 50%, #0088cc 100%);
 
   /* Borders & Shadows */
-  --glass-border: 1px solid rgba(255, 225, 160, 0.14);
-  --glass-border-hover: 1px solid rgba(255, 225, 160, 0.45);
-  --glass-blur: blur(24px) saturate(170%);
+  --glass-border: 1px solid rgba(246, 209, 102, 0.22);
+  --glass-border-hover: 1px solid rgba(246, 209, 102, 0.65);
+  --glass-blur: blur(24px) saturate(180%);
   
   --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.55);
-  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.7);
-  --shadow-gold: 0 12px 40px rgba(212, 166, 58, 0.25);
-  --shadow-epic: 0 14px 45px rgba(246, 209, 102, 0.35);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.75);
+  --shadow-gold: 0 12px 40px rgba(246, 209, 102, 0.35);
+  --shadow-epic: 0 14px 45px rgba(246, 209, 102, 0.45);
 
   /* Dimensions & Transitions */
   --radius-sm: 10px;
@@ -512,6 +520,67 @@ body {
 .btn-primary:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 12px 40px rgba(212, 166, 58, 0.6);
+}
+
+/* Radiant Royal Gold Button */
+.btn-gold-radiant {
+  position: relative;
+  background: var(--gold-gradient);
+  color: #1a0409 !important;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  padding: 15px 32px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 10px 35px rgba(246, 209, 102, 0.5), 0 0 20px rgba(246, 209, 102, 0.35);
+  overflow: hidden;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.35s var(--ease-spring);
+  z-index: 1;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-gold-radiant::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(90deg, #ff9f43, #ffeaa7, #ffd700, #ff6b81, #ff9f43);
+  background-size: 300% 100%;
+  border-radius: inherit;
+  z-index: -1;
+  animation: radiantSheen 3s linear infinite;
+}
+
+@keyframes radiantSheen {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+.btn-gold-radiant:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 16px 45px rgba(246, 209, 102, 0.75), 0 0 35px rgba(255, 215, 0, 0.65);
+  color: #120205 !important;
+}
+
+.btn-try-free {
+  background: rgba(38, 8, 16, 0.8) !important;
+  border: 1.5px solid rgba(246, 209, 102, 0.5) !important;
+  color: var(--ink-primary) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(14px);
+  padding: 14px 28px;
+}
+
+.btn-try-free:hover {
+  background: rgba(84, 13, 26, 0.9) !important;
+  border-color: var(--gold-bright) !important;
+  color: #ffffff !important;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(246, 209, 102, 0.3);
 }
 
 .btn-secondary {
@@ -1016,19 +1085,212 @@ body {
   color: var(--gold-bright);
 }
 
-.inspect-cue {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--gold-primary);
-  display: flex;
+/* Ancient Jade & Gold Pendant Button (Ngọc Bội Cổ Phong) */
+.pendant-btn {
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
-  transition: gap 0.2s ease, color 0.2s ease;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, rgba(38, 8, 16, 0.95), rgba(84, 13, 26, 0.9));
+  border: 1px solid rgba(246, 209, 102, 0.55);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 235, 180, 0.3);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  letter-spacing: 0.02em;
+  transition: all 0.3s var(--ease-spring);
+  cursor: pointer;
 }
 
-.character-card:hover .inspect-cue {
-  color: var(--gold-bright);
+.pendant-gem {
+  font-size: 0.9rem;
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+  transition: transform 0.3s ease;
+}
+
+.pendant-arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.character-card:hover .pendant-btn {
+  background: var(--gold-gradient);
+  color: #1a050a;
+  border-color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(246, 209, 102, 0.55);
+}
+
+.character-card:hover .pendant-gem {
+  transform: rotate(15deg) scale(1.15);
+}
+
+.character-card:hover .pendant-arrow {
+  transform: translateX(4px);
+}
+
+/* Holographic Foil Sheen Effect */
+.card-hologram-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    125deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(0, 225, 217, 0.12) 40%,
+    rgba(255, 215, 0, 0.16) 55%,
+    rgba(255, 105, 180, 0.12) 70%,
+    transparent 100%
+  );
+  background-size: 250% 250%;
+  background-position: var(--mouse-x, 50%) var(--mouse-y, 50%);
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  mix-blend-mode: color-dodge;
+  transition: opacity 0.35s ease;
+  border-radius: inherit;
+}
+
+.character-card:hover .card-hologram-sheen {
+  opacity: 1;
+}
+
+/* Epic Firefly Golden Sparks (Orbital sparks for SSR cards) */
+.epic-firefly-sparks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.epic-firefly-sparks span {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ffe600, 0 0 20px #ff9f43;
+  animation: sparkFloat 4s ease-in-out infinite;
+}
+
+.epic-firefly-sparks span:nth-child(1) { top: 15%; left: 20%; animation-delay: 0s; }
+.epic-firefly-sparks span:nth-child(2) { top: 65%; left: 80%; animation-delay: 1.2s; }
+.epic-firefly-sparks span:nth-child(3) { top: 30%; left: 85%; animation-delay: 2.3s; }
+.epic-firefly-sparks span:nth-child(4) { top: 80%; left: 25%; animation-delay: 3.1s; }
+
+@keyframes sparkFloat {
+  0%, 100% { transform: translate(0, 0) scale(0.8); opacity: 0.3; }
+  50% { transform: translate(12px, -18px) scale(1.4); opacity: 1; }
+}
+
+/* Gacha Recent Pulls Ribbon (Lịch sử khui gần đây) */
+.gacha-recent-history {
+  width: 100%;
+  max-width: 680px;
+  margin: 20px auto 26px;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  background: rgba(18, 3, 7, 0.7);
+  border: 1px solid rgba(246, 209, 102, 0.25);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+.recent-history-header {
+  display: flex;
+  align-items: center;
   gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  letter-spacing: 0.04em;
+}
+
+.recent-history-track {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 8px;
+  scrollbar-width: thin;
+}
+
+.recent-history-track::-webkit-scrollbar {
+  height: 4px;
+}
+.recent-history-track::-webkit-scrollbar-thumb {
+  background: rgba(246, 209, 102, 0.3);
+  border-radius: 99px;
+}
+
+.recent-history-empty {
+  font-size: 0.82rem;
+  color: var(--ink-tertiary);
+  font-style: italic;
+  padding: 4px 0;
+}
+
+.recent-history-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border-radius: var(--radius-pill);
+  background: rgba(45, 10, 20, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-spring);
+}
+
+.recent-history-chip:hover {
+  transform: translateY(-2px) scale(1.05);
+  border-color: var(--gold-bright);
+}
+
+.recent-history-chip img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.recent-history-chip .chip-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+  white-space: nowrap;
+}
+
+.recent-history-chip.chip-epic {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 10px rgba(246, 209, 102, 0.4);
+}
+
+.recent-history-chip.chip-rare {
+  border-color: #00e1d9;
+}
+
+/* Download Souvenir Card Button */
+.btn-download-souvenir {
+  background: linear-gradient(135deg, rgba(84, 13, 26, 0.9), rgba(46, 11, 20, 0.95)) !important;
+  border: 1.5px solid var(--gold-bright) !important;
+  color: var(--gold-bright) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 15px rgba(246, 209, 102, 0.3) !important;
+  transition: all 0.25s var(--ease-spring) !important;
+}
+
+.btn-download-souvenir:hover {
+  background: var(--gold-gradient) !important;
+  color: #1a050a !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 6px 25px rgba(246, 209, 102, 0.6) !important;
 }
 
 /* ==========================================================================

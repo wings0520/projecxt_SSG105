@@ -354,6 +354,25 @@ class App {
     };
 
     document.querySelectorAll('.character-card').forEach(attachTilt);
+
+    // 3D Tilt for Hero Levitating Blind Box
+    const royalShowcase = document.getElementById('heroShowcaseRoyal');
+    const royalBox = document.getElementById('heroLevitatingBox');
+    if (royalShowcase && royalBox) {
+      royalShowcase.addEventListener('mousemove', (e) => {
+        const rect = royalShowcase.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -12;
+        const rotateY = ((x - centerX) / centerX) * 14;
+        royalBox.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-20px) scale(1.06)`;
+      });
+      royalShowcase.addEventListener('mouseleave', () => {
+        royalBox.style.transform = '';
+      });
+    }
   }
 
   renderCharacters() {
@@ -387,6 +406,8 @@ class App {
       <div class="character-card" data-tier="${char.tier}" onclick="window.app.inspectCharacter('${char.id}')">
         <div class="card-inner">
           <div class="card-sheen"></div>
+          <div class="card-hologram-sheen"></div>
+          ${char.tier === 'epic' ? '<div class="epic-firefly-sparks"><span></span><span></span><span></span><span></span></div>' : ''}
           <div class="card-thumb-wrap">
             <span class="card-tier-pill pill-${char.tier}">${char.tierLabel}</span>
             <span class="card-odds-tag">${char.odds}%</span>
@@ -399,9 +420,10 @@ class App {
               <div class="card-craft-rating" title="Độ tinh xảo gia công: ${char.craftRating}">
                 <span>${char.craftStars}</span>
               </div>
-              <div class="inspect-cue">
-                <span>Khám phá</span>
-                <span>→</span>
+              <div class="pendant-btn">
+                <span class="pendant-gem">🏮</span>
+                <span class="pendant-text">Hồ sơ chi tiết</span>
+                <span class="pendant-arrow">➔</span>
               </div>
             </div>
           </div>

@@ -590,6 +590,7 @@ class GachaSimulator {
     this.isRolling = false;
     this.totalPulls = 0;
     this.epicPulls = 0;
+    this.recentPulls = [];
 
     // 5-step progressive tearing state
     this.tearStep = 0;       // 0 to 5
@@ -636,6 +637,9 @@ class GachaSimulator {
     this.statPullsEl = document.getElementById('statTotalPulls');
     this.statEpicEl = document.getElementById('statEpicPulls');
 
+    this.recentHistoryContainer = document.getElementById('gachaRecentHistory');
+    this.recentHistoryTrack = document.getElementById('recentHistoryTrack');
+
     // Button triggers
     if (this.btnPull1) {
       this.btnPull1.addEventListener('click', () => {
@@ -653,6 +657,23 @@ class GachaSimulator {
 
     // Reset bag when reveal modal closes
     this.setupModalReset();
+  }
+
+  addRecentPulls(items) {
+    if (!items || !items.length) return;
+    this.recentPulls = [...items, ...this.recentPulls].slice(0, 10);
+
+    if (this.recentHistoryTrack) {
+      this.recentHistoryTrack.innerHTML = this.recentPulls.map(item => `
+        <div class="recent-history-chip chip-${item.tier}" onclick="window.app.inspectCharacter('${item.id}')" title="Nhấp xem chi tiết ${item.name}">
+          <img src="${item.image}" alt="${item.name}" loading="lazy">
+          <span class="chip-name">${item.name}</span>
+          <span style="font-size: 0.68rem; padding: 2px 6px; border-radius: 99px; background: rgba(0,0,0,0.4); color: ${item.tier === 'epic' ? '#f6d166' : (item.tier === 'rare' ? '#00e1d9' : '#df8a48')}">
+            ${item.tier === 'epic' ? 'SSR' : (item.tier === 'rare' ? 'SR' : 'R')}
+          </span>
+        </div>
+      `).join('');
+    }
   }
 
   setupInteractions() {
@@ -1062,6 +1083,7 @@ class GachaSimulator {
           }
         });
 
+        this.addRecentPulls(precalculatedResults);
         this.showReveal(precalculatedResults, bestTier);
         this.updateStats();
 
@@ -1093,6 +1115,7 @@ class GachaSimulator {
       }
     }
 
+    this.addRecentPulls(results);
     this.showReveal(results, bestTier);
     this.updateStats();
   }
@@ -1236,6 +1259,9 @@ class GachaSimulator {
         <button class="btn btn-secondary" id="btnRevealPull5Combo">
           ✨ Mở Combo 5 túi
         </button>
+        <button class="btn btn-secondary btn-download-souvenir" id="btnDownloadSouvenir" title="Lưu lại tấm thẻ kỷ niệm hoàng gia kết quả mở túi">
+          <span>📸 Tải Ảnh Kết Quả Kỷ Niệm</span>
+        </button>
         <button class="btn btn-secondary" id="btnRevealOpenCodex">
           📖 Xem Sổ Tay (${this.codex.getUnlockedCount()}/${this.codex.getTotalCharacters()})
         </button>
@@ -1264,6 +1290,7 @@ class GachaSimulator {
         this.audio.playReveal(bestTier);
         if (bestTier === 'epic') {
           this.audio.playEpicFanfare();
+          this.fireGoldenConfetti();
         }
       } else {
         if (subTitleEl) {
@@ -1287,6 +1314,11 @@ class GachaSimulator {
 
       // Audio feedback
       this.audio.playCardFlip(item.tier);
+
+      // Trigger Golden Confetti on single epic discovery
+      if (item.tier === 'epic') {
+        this.fireGoldenConfetti();
+      }
 
       checkAllFlipped();
     };
@@ -1340,6 +1372,13 @@ class GachaSimulator {
       });
     }
 
+    const btnDownload = document.getElementById('btnDownloadSouvenir');
+    if (btnDownload) {
+      btnDownload.addEventListener('click', () => {
+        this.downloadSouvenirCard(items);
+      });
+    }
+
     const btnCodex = document.getElementById('btnRevealOpenCodex');
     if (btnCodex) {
       btnCodex.addEventListener('click', () => {
@@ -1348,6 +1387,332 @@ class GachaSimulator {
         window.app.openCodex();
       });
     }
+  }
+
+  // Golden Confetti Particle Effect (SSR Celebration)
+  fireGoldenConfetti() {
+    let canvas = document.getElementById('gachaConfettiCanvas');
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvas.id = 'gachaConfettiCanvas';
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100vw';
+      canvas.style.height = '100vh';
+      canvas.style.pointerEvents = 'none';
+      canvas.style.zIndex = '999999';
+      document.body.appendChild(canvas);
+    }
+
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.scale(dpr, dpr);
+
+    const colors = ['#f6d166', '#e5a93c', '#ffd700', '#fff3b0', '#ffaa00', '#ffffff', '#e60023'];
+    const particleCount = 100;
+    const particles = [];
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: width * 0.5 + (Math.random() * 240 - 120),
+        y: height * 0.42 + (Math.random() * 80 - 40),
+        vx: (Math.random() - 0.5) * 18,
+        vy: -Math.random() * 15 - 7,
+        size: Math.random() * 8 + 6,
+        aspectRatio: Math.random() * 0.6 + 0.4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rot: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.18,
+        wobble: Math.random() * Math.PI * 2,
+        wobbleSpeed: Math.random() * 0.14 + 0.06,
+        gravity: 0.35 + Math.random() * 0.14,
+        drag: 0.965,
+        alpha: 1,
+        decay: Math.random() * 0.006 + 0.005
+      });
+    }
+
+    const startTime = performance.now();
+
+    const renderFrame = (now) => {
+      const elapsed = (now - startTime) / 1000;
+      ctx.clearRect(0, 0, width, height);
+
+      let activeCount = 0;
+      particles.forEach(p => {
+        p.vy += p.gravity;
+        p.vx *= p.drag;
+        p.vy *= p.drag;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.rotSpeed;
+        p.wobble += p.wobbleSpeed;
+        if (elapsed > 1.8) {
+          p.alpha -= p.decay * 3.5;
+        }
+
+        if (p.alpha > 0.01 && p.y < height + 60) {
+          activeCount++;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.scale(Math.cos(p.wobble), 1);
+          ctx.globalAlpha = Math.max(0, p.alpha);
+          ctx.fillStyle = p.color;
+          ctx.shadowColor = '#e5a93c';
+          ctx.shadowBlur = 8;
+          ctx.fillRect(-p.size / 2, (-p.size * p.aspectRatio) / 2, p.size, p.size * p.aspectRatio);
+          ctx.restore();
+        }
+      });
+
+      if (activeCount > 0 && elapsed < 4.2) {
+        requestAnimationFrame(renderFrame);
+      } else {
+        ctx.clearRect(0, 0, width, height);
+        if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+      }
+    };
+
+    requestAnimationFrame(renderFrame);
+  }
+
+  // Generate and Download Imperial Postcard Souvenir (Canvas 2D)
+  downloadSouvenirCard(items) {
+    if (!items || !items.length) return;
+
+    // Pick featured character: priority epic > rare > common
+    const tierPriority = { epic: 3, rare: 2, common: 1 };
+    const sorted = [...items].sort((a, b) => (tierPriority[b.tier] || 0) - (tierPriority[a.tier] || 0));
+    const featured = sorted[0];
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 900;
+    canvas.height = 1260;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Background Gradient (Deep Imperial Vermilion)
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, 1260);
+    bgGrad.addColorStop(0, '#3a0812');
+    bgGrad.addColorStop(0.4, '#24040a');
+    bgGrad.addColorStop(1, '#120205');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, 900, 1260);
+
+    // Radial Glow behind character
+    const radGlow = ctx.createRadialGradient(450, 480, 50, 450, 480, 420);
+    radGlow.addColorStop(0, featured.tier === 'epic' ? 'rgba(246, 209, 102, 0.35)' : (featured.tier === 'rare' ? 'rgba(0, 225, 217, 0.3)' : 'rgba(223, 138, 72, 0.25)'));
+    radGlow.addColorStop(1, 'transparent');
+    ctx.fillStyle = radGlow;
+    ctx.fillRect(0, 0, 900, 1260);
+
+    // Golden Borders
+    ctx.strokeStyle = '#e5a93c';
+    ctx.lineWidth = 3.5;
+    ctx.strokeRect(34, 34, 832, 1192);
+
+    ctx.strokeStyle = '#f6d166';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(46, 46, 808, 1168);
+
+    // Corner Accents
+    const drawCornerOrnament = (x, y) => {
+      ctx.save();
+      ctx.fillStyle = '#f6d166';
+      ctx.shadowColor = '#f6d166';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.arc(x, y, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    };
+    drawCornerOrnament(46, 46);
+    drawCornerOrnament(854, 46);
+    drawCornerOrnament(46, 1214);
+    drawCornerOrnament(854, 1214);
+
+    // Top Header Banner
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#f6d166';
+    ctx.font = '700 16px "Inter", "Segoe UI", sans-serif';
+    ctx.fillText('✦ DỰ ÁN TÚI MÙ TRUNG THU GÂY QUỸ THIỆN NGUYỆN ✦', 450, 96);
+
+    ctx.font = 'bold 38px "Fraunces", Georgia, serif';
+    ctx.fillStyle = '#fff4d4';
+    ctx.shadowColor = 'rgba(246, 209, 102, 0.5)';
+    ctx.shadowBlur = 12;
+    ctx.fillText('EM MƠ · KHOẢNH KHẮC KỲ DUYÊN', 450, 148);
+    ctx.shadowBlur = 0;
+
+    ctx.font = 'italic 16px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = 'rgba(255, 238, 220, 0.75)';
+    ctx.fillText('Chứng nhận kết quả mở túi mù hoàng gia mùa Lễ hội', 450, 180);
+
+    // Decorative Separator
+    ctx.strokeStyle = 'rgba(246, 209, 102, 0.4)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(250, 205);
+    ctx.lineTo(650, 205);
+    ctx.stroke();
+
+    ctx.fillStyle = '#f6d166';
+    ctx.font = '16px serif';
+    ctx.fillText('❖', 450, 210);
+
+    // Render Character and Export
+    const renderContentAndSave = (imgEl) => {
+      const imgX = 270;
+      const imgY = 240;
+      const imgSize = 360;
+      const radius = 24;
+
+      // Glow behind image frame
+      ctx.save();
+      ctx.shadowColor = featured.tier === 'epic' ? '#f6d166' : (featured.tier === 'rare' ? '#00e1d9' : '#df8a48');
+      ctx.shadowBlur = 24;
+      ctx.strokeStyle = featured.tier === 'epic' ? '#f6d166' : (featured.tier === 'rare' ? '#00e1d9' : '#e5a93c');
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.roundRect(imgX, imgY, imgSize, imgSize, radius);
+      ctx.stroke();
+      ctx.restore();
+
+      // Clip image to rounded rectangle
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(imgX, imgY, imgSize, imgSize, radius);
+      ctx.clip();
+      if (imgEl) {
+        ctx.drawImage(imgEl, imgX, imgY, imgSize, imgSize);
+      } else {
+        ctx.fillStyle = '#22060b';
+        ctx.fillRect(imgX, imgY, imgSize, imgSize);
+      }
+      ctx.restore();
+
+      // Tier Badge Pill
+      const tierBadgeY = 645;
+      const tierColor = featured.tier === 'epic' ? '#f6d166' : (featured.tier === 'rare' ? '#00e1d9' : '#df8a48');
+      const tierLabel = featured.tier === 'epic' ? '👑 CỰC PHẨM HOÀNG KIM (SSR)' : (featured.tier === 'rare' ? '⭐ PHẨM VẬT HIẾM CÓ (SR)' : '🏮 PHẨM VẬT PHỔ BIẾN (R)');
+      
+      ctx.fillStyle = 'rgba(20, 3, 7, 0.85)';
+      ctx.strokeStyle = tierColor;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(260, tierBadgeY, 380, 42, 21);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = tierColor;
+      ctx.font = 'bold 15px "Inter", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(tierLabel, 450, tierBadgeY + 27);
+
+      // Character Name
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 36px "Fraunces", Georgia, serif';
+      ctx.shadowColor = 'rgba(246, 209, 102, 0.4)';
+      ctx.shadowBlur = 10;
+      ctx.fillText(featured.name, 450, 735);
+      ctx.shadowBlur = 0;
+
+      // Odds Tag
+      ctx.fillStyle = 'rgba(255, 238, 220, 0.8)';
+      ctx.font = '600 15px "Inter", sans-serif';
+      ctx.fillText(`Tỉ lệ xuất hiện toàn máy chủ: ${featured.odds}% · Độ tinh xảo: ${featured.craftStars || '★★★★☆'}`, 450, 770);
+
+      // Flavor description
+      ctx.fillStyle = 'rgba(255, 238, 220, 0.7)';
+      ctx.font = 'italic 16px "Inter", sans-serif';
+      const flavorText = `"${featured.flavor}"`;
+      ctx.fillText(flavorText, 450, 815);
+
+      // If Combo 5: Draw thumbnails row
+      if (items.length > 1) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+        ctx.beginPath();
+        ctx.roundRect(100, 860, 700, 110, 16);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(246, 209, 102, 0.2)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(246, 209, 102, 0.85)';
+        ctx.font = '600 13px "Inter", sans-serif';
+        ctx.fillText('COMBO 5 TÚI ĐÃ KHUI TRONG LƯỢT:', 450, 888);
+
+        const slotW = 120;
+        const startX = 450 - ((items.length - 1) * slotW) / 2;
+        items.forEach((it, i) => {
+          const cx = startX + i * slotW;
+          ctx.fillStyle = it.tier === 'epic' ? '#f6d166' : (it.tier === 'rare' ? '#00e1d9' : '#df8a48');
+          ctx.font = 'bold 13px "Inter", sans-serif';
+          ctx.fillText(it.name.length > 13 ? it.name.slice(0, 12) + '…' : it.name, cx, 925);
+          ctx.font = '11px "Inter", sans-serif';
+          ctx.fillStyle = 'rgba(255, 238, 220, 0.6)';
+          ctx.fillText(it.tierLabel, cx, 945);
+        });
+      }
+
+      // Project & Charity Mission Statement
+      const footerBoxY = 1000;
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+      ctx.beginPath();
+      ctx.roundRect(80, footerBoxY, 740, 120, 14);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(246, 209, 102, 0.25)';
+      ctx.stroke();
+
+      ctx.fillStyle = '#f6d166';
+      ctx.font = 'bold 15px "Inter", sans-serif';
+      ctx.fillText('TRÁI TIM DỰ ÁN & SỨ MỆNH VÌ CỘNG ĐỒNG', 450, footerBoxY + 35);
+
+      ctx.fillStyle = 'rgba(255, 238, 220, 0.75)';
+      ctx.font = '13px "Inter", sans-serif';
+      ctx.fillText('Toàn bộ lợi nhuận ròng được trao gửi đến hoạt động thiện nguyện tại các trường tiểu học khó khăn.', 450, footerBoxY + 62);
+      ctx.fillText('Nhóm TECHCORN · ĐH FPT (SSG105) · 2026', 450, footerBoxY + 86);
+
+      // Bottom Timestamp
+      const nowStr = new Date().toLocaleString('vi-VN');
+      ctx.fillStyle = 'rgba(255, 238, 220, 0.45)';
+      ctx.font = '12px "Inter", sans-serif';
+      ctx.fillText(`Thời khắc ghi nhận: ${nowStr} · ID: SSG105-${Math.floor(100000 + Math.random() * 900000)}`, 450, 1160);
+
+      // Trigger Download
+      try {
+        const link = document.createElement('a');
+        link.download = `EmMo_KyNiem_${featured.id}_${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        const btnDownload = document.getElementById('btnDownloadSouvenir');
+        if (btnDownload) {
+          const originalText = btnDownload.innerHTML;
+          btnDownload.innerHTML = '<span>✅ Đã Tải Ảnh Kỷ Niệm!</span>';
+          setTimeout(() => {
+            btnDownload.innerHTML = originalText;
+          }, 2500);
+        }
+      } catch (err) {
+        console.error('Lỗi khi tải ảnh kỷ niệm:', err);
+      }
+    };
+
+    // Preload image
+    const charImg = new Image();
+    charImg.crossOrigin = 'anonymous';
+    charImg.onload = () => renderContentAndSave(charImg);
+    charImg.onerror = () => renderContentAndSave(null);
+    charImg.src = featured.image;
   }
 }
 
