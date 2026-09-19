@@ -1081,16 +1081,18 @@ body {
 .suspense-flash-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 45%, #ffffff 0%, rgba(255, 224, 138, 0.9) 45%, rgba(212, 166, 58, 0.3) 70%, transparent 90%);
+  background: radial-gradient(circle at 50% 45%, #ffffff 0%, rgba(255, 224, 138, 0.95) 45%, rgba(212, 166, 58, 0.4) 70%, transparent 95%);
   opacity: 0;
   pointer-events: none;
   z-index: 50;
-  transition: opacity 0.25s ease-out;
+  will-change: opacity;
+  transform: translateZ(0);
+  transition: opacity 0.2s ease-out;
 }
 
 .suspense-flash-overlay.flashing {
   opacity: 1;
-  transition: none;
+  transition: opacity 0.08s ease-in;
 }
 
 /* Atmospheric Ambient Lighting & Rotating Sunburst Rays */
@@ -1113,20 +1115,21 @@ body {
   border-radius: 50%;
   pointer-events: none;
   opacity: 0;
-  transform: scale(0.6);
+  transform: scale(0.6) translateZ(0);
   transition: opacity 0.6s ease, transform 0.6s ease;
   z-index: 1;
   animation: spinSunburst 15s linear infinite;
+  will-change: transform, opacity;
 }
 
 .sunburst-rays.active {
   opacity: 1;
-  transform: scale(1.18);
+  transform: scale(1.18) translateZ(0);
 }
 
 @keyframes spinSunburst {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { transform: rotate(0deg) translateZ(0); }
+  100% { transform: rotate(360deg) translateZ(0); }
 }
 
 /* Tear Status HUD Box */
@@ -1177,6 +1180,10 @@ body {
 .suspense-countdown-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-width: 280px;
+  contain: layout paint;
+  font-variant-numeric: tabular-nums;
   gap: 10px;
   padding: 9px 24px;
   border-radius: var(--radius-pill);
@@ -1188,21 +1195,32 @@ body {
   font-size: 0.95rem;
   letter-spacing: 0.02em;
   animation: countdownPulse 0.7s infinite alternate;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes countdownPulse {
-  0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
-  100% { transform: scale(1.05); box-shadow: 0 0 35px rgba(255, 215, 0, 0.9); }
+  0% { transform: scale(1) translateZ(0); box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+  100% { transform: scale(1.05) translateZ(0); box-shadow: 0 0 35px rgba(255, 215, 0, 0.9); }
 }
 
 .countdown-spinner {
+  display: inline-block;
   font-size: 1.3rem;
   animation: spinLanternIcon 1.2s infinite linear;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes spinLanternIcon {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { transform: rotate(0deg) translateZ(0); }
+  100% { transform: rotate(360deg) translateZ(0); }
+}
+
+.countdown-text {
+  display: inline-block;
+  min-width: 220px;
+  text-align: left;
 }
 
 .tear-progress-wrapper {
@@ -1283,8 +1301,8 @@ body {
 .blind-bag-stage {
   position: relative;
   width: 100%;
-  filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 35px rgba(212, 166, 58, 0.25));
-  transition: transform 0.2s ease, filter 0.3s ease;
+  transform: translateZ(0);
+  transition: transform 0.2s ease;
 }
 
 .bag-image-container {
@@ -1294,6 +1312,7 @@ body {
   perspective: 1000px;
   transform-style: preserve-3d;
   overflow: visible;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), 0 0 35px rgba(212, 166, 58, 0.22);
 }
 
 /* Interior Cavity (Hollow dark & glowing interior revealed when split) */
@@ -1336,7 +1355,7 @@ body {
   position: absolute;
   top: 10%;
   left: 50%;
-  transform: translate(-50%, 25px) scale(0.65);
+  transform: translate3d(-50%, 25px, 0) scale(0.65);
   width: 140px;
   height: 190px;
   border-radius: var(--radius-md);
@@ -1351,11 +1370,12 @@ body {
   pointer-events: none;
   z-index: 3;
   transition: transform 1.8s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.5s ease;
+  will-change: transform, opacity;
 }
 
 .suspense-peek-card.peeking {
   opacity: 1;
-  transform: translate(-50%, -85px) scale(0.96);
+  transform: translate3d(-50%, -85px, 0) scale(0.96);
 }
 
 .peek-card-inner {
@@ -1368,11 +1388,13 @@ body {
 .peek-lantern-icon {
   font-size: 42px;
   animation: pulsePeekIcon 0.6s ease-in-out infinite alternate;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes pulsePeekIcon {
-  0% { transform: scale(0.92); }
-  100% { transform: scale(1.15); }
+  0% { transform: scale(0.92) translateZ(0); }
+  100% { transform: scale(1.15) translateZ(0); }
 }
 
 .peek-text {
@@ -1604,7 +1626,8 @@ body {
   pointer-events: none;
   z-index: 30;
   opacity: 0;
-  transform: translateY(-50%) scaleX(0.2);
+  transform: translateY(-50%) scaleX(0.2) translateZ(0);
+  will-change: transform, opacity;
 }
 
 .laser-flare-slice.active {
@@ -1614,48 +1637,39 @@ body {
 @keyframes laserSliceSweep {
   0% {
     opacity: 0;
-    transform: translateY(-50%) scaleX(0.05) scaleY(0.4);
-    filter: drop-shadow(0 0 10px #ffffff);
+    transform: translateY(-50%) scaleX(0.05) scaleY(0.4) translateZ(0);
   }
   6% {
     opacity: 1;
-    transform: translateY(-50%) scaleX(1.15) scaleY(1.4);
-    filter: drop-shadow(0 0 35px #ffffff) drop-shadow(0 0 65px #00f2fe);
+    transform: translateY(-50%) scaleX(1.15) scaleY(1.4) translateZ(0);
   }
   15% {
     opacity: 0.95;
-    transform: translateY(-50%) scaleX(1) scaleY(1);
-    filter: drop-shadow(0 0 25px #ffffff) drop-shadow(0 0 50px #ffd700);
+    transform: translateY(-50%) scaleX(1) scaleY(1) translateZ(0);
   }
   35% {
     opacity: 1;
-    transform: translateY(-50%) scaleX(1.05) scaleY(1.15);
-    filter: drop-shadow(0 0 30px #ffffff) drop-shadow(0 0 60px #00f2fe) drop-shadow(0 0 80px #ffd700);
+    transform: translateY(-50%) scaleX(1.05) scaleY(1.15) translateZ(0);
   }
   60% {
     opacity: 0.95;
-    transform: translateY(-50%) scaleX(1.02) scaleY(1.05);
-    filter: drop-shadow(0 0 35px #ffffff) drop-shadow(0 0 70px #ffd700);
+    transform: translateY(-50%) scaleX(1.02) scaleY(1.05) translateZ(0);
   }
   80% {
     opacity: 1;
-    transform: translateY(-50%) scaleX(1.12) scaleY(1.35);
-    filter: drop-shadow(0 0 45px #ffffff) drop-shadow(0 0 85px #00f2fe) drop-shadow(0 0 100px #ffd700);
+    transform: translateY(-50%) scaleX(1.15) scaleY(1.35) translateZ(0);
   }
   92% {
     opacity: 1;
-    transform: translateY(-50%) scaleX(1.28) scaleY(1.7);
-    filter: drop-shadow(0 0 60px #ffffff) drop-shadow(0 0 120px #ffffff);
+    transform: translateY(-50%) scaleX(1.3) scaleY(1.7) translateZ(0);
   }
   98% {
     opacity: 1;
-    transform: translateY(-50%) scaleX(1.45) scaleY(2.2);
-    filter: brightness(2.6) drop-shadow(0 0 80px #ffffff) drop-shadow(0 0 150px #ffe600);
+    transform: translateY(-50%) scaleX(1.45) scaleY(2.2) translateZ(0);
   }
   100% {
     opacity: 0;
-    transform: translateY(-50%) scaleX(1.5) scaleY(0.2);
-    filter: none;
+    transform: translateY(-50%) scaleX(1.5) scaleY(0.2) translateZ(0);
   }
 }
 
@@ -1667,11 +1681,12 @@ body {
   border-radius: 99px;
   box-shadow: 0 0 16px #ffffff, 0 0 32px #00f2fe, 0 0 48px #ffe600;
   animation: laserCorePulse 0.35s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 @keyframes laserCorePulse {
-  0% { transform: scaleY(0.9); opacity: 0.9; }
-  100% { transform: scaleY(1.3); opacity: 1; filter: drop-shadow(0 0 10px #fff); }
+  0% { transform: scaleY(0.9) translateZ(0); opacity: 0.9; }
+  100% { transform: scaleY(1.3) translateZ(0); opacity: 1; }
 }
 
 .laser-beam-flare {
@@ -1682,27 +1697,33 @@ body {
   filter: blur(3px);
   border-radius: 50%;
   animation: flareBreathe 0.5s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 @keyframes flareBreathe {
-  0% { transform: scaleY(0.85); opacity: 0.8; }
-  100% { transform: scaleY(1.3); opacity: 1; }
+  0% { transform: scaleY(0.85) translateZ(0); opacity: 0.8; }
+  100% { transform: scaleY(1.3) translateZ(0); opacity: 1; }
 }
 
 .laser-spark-burst {
   position: absolute;
+  top: 50%;
+  left: 50%;
   width: 24px;
   height: 24px;
+  margin-top: -12px;
+  margin-left: -12px;
   background: #ffffff;
   border-radius: 50%;
   box-shadow: 0 0 25px #ffffff, 0 0 50px #00f2fe, 0 0 75px #ffe600;
   animation: sparkSweepPath 1.5s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 @keyframes sparkSweepPath {
-  0% { left: 8%; transform: scale(0.8) rotate(0deg); opacity: 0.85; }
-  50% { left: 50%; transform: scale(1.6) rotate(180deg); opacity: 1; filter: drop-shadow(0 0 25px #fff); }
-  100% { left: 92%; transform: scale(0.8) rotate(360deg); opacity: 0.85; }
+  0% { transform: translate3d(-115px, 0, 0) scale(0.8) rotate(0deg); opacity: 0.85; }
+  50% { transform: translate3d(0, 0, 0) scale(1.6) rotate(180deg); opacity: 1; }
+  100% { transform: translate3d(115px, 0, 0) scale(0.8) rotate(360deg); opacity: 0.85; }
 }
 
 /* Volumetric God-Rays Erupting from inside Bag Slit */
@@ -1716,7 +1737,8 @@ body {
   z-index: 5;
   overflow: visible;
   opacity: 0;
-  transform: translateY(0);
+  transform: translateY(0) translateZ(0);
+  will-change: transform, opacity;
   transition: opacity 0.45s ease;
 }
 
@@ -1726,12 +1748,12 @@ body {
 }
 
 @keyframes godRaysSurge {
-  0% { transform: scaleY(0.5) translateY(25px); opacity: 0.2; }
-  15% { transform: scaleY(1) translateY(0); opacity: 0.95; }
-  50% { transform: scaleY(1.15) translateY(-10px); opacity: 1; }
-  85% { transform: scaleY(1.35) translateY(-20px); opacity: 1; filter: brightness(1.4); }
-  98% { transform: scaleY(1.55) translateY(-30px); opacity: 1; filter: brightness(2.2); }
-  100% { transform: scaleY(1.6) translateY(-35px); opacity: 0; }
+  0% { transform: scaleY(0.5) translateY(25px) translateZ(0); opacity: 0.2; }
+  15% { transform: scaleY(1) translateY(0) translateZ(0); opacity: 0.95; }
+  50% { transform: scaleY(1.15) translateY(-10px) translateZ(0); opacity: 1; }
+  85% { transform: scaleY(1.35) translateY(-20px) translateZ(0); opacity: 1; }
+  98% { transform: scaleY(1.55) translateY(-30px) translateZ(0); opacity: 1; }
+  100% { transform: scaleY(1.6) translateY(-35px) translateZ(0); opacity: 0; }
 }
 
 .god-ray {
@@ -1741,19 +1763,21 @@ body {
   height: 210px;
   transform-origin: bottom center;
   background: linear-gradient(to top, rgba(255, 245, 180, 0.95) 0%, rgba(255, 215, 0, 0.5) 45%, rgba(255, 170, 40, 0.15) 75%, transparent 100%);
-  filter: blur(5px);
+  filter: blur(4px);
+  will-change: transform;
+  transform: translateZ(0);
   animation: rayBreathe 1.8s ease-in-out infinite alternate;
 }
 
-.god-ray.ray-1 { left: 14%; transform: rotate(-32deg); animation-delay: 0.1s; }
-.god-ray.ray-2 { left: 32%; transform: rotate(-15deg); animation-delay: 0.35s; width: 32px; }
-.god-ray.ray-3 { left: 50%; transform: rotate(0deg); animation-delay: 0s; width: 42px; filter: blur(6px); }
-.god-ray.ray-4 { left: 68%; transform: rotate(15deg); animation-delay: 0.2s; width: 32px; }
-.god-ray.ray-5 { left: 86%; transform: rotate(32deg); animation-delay: 0.45s; }
+.god-ray.ray-1 { left: 14%; --angle: -32deg; animation-delay: 0.1s; }
+.god-ray.ray-2 { left: 32%; --angle: -15deg; animation-delay: 0.35s; width: 32px; }
+.god-ray.ray-3 { left: 50%; --angle: 0deg; animation-delay: 0s; width: 42px; filter: blur(5px); }
+.god-ray.ray-4 { left: 68%; --angle: 15deg; animation-delay: 0.2s; width: 32px; }
+.god-ray.ray-5 { left: 86%; --angle: 32deg; animation-delay: 0.45s; }
 
 @keyframes rayBreathe {
-  0% { transform: scaleY(0.85) rotate(var(--angle, 0deg)); opacity: 0.65; }
-  100% { transform: scaleY(1.15) rotate(var(--angle, 0deg)); opacity: 1; }
+  0% { transform: scaleY(0.85) rotate(var(--angle, 0deg)) translateZ(0); opacity: 0.65; }
+  100% { transform: scaleY(1.15) rotate(var(--angle, 0deg)) translateZ(0); opacity: 1; }
 }
 
 /* Lotus Pedestal Platform under the bag */
@@ -1863,18 +1887,19 @@ body {
   80% { transform: rotate(4deg) translateY(-4px) scale(1.07); }
 }
 
-/* 3-Second Levitation and Ripping Open Suspense Animation */
+/* 3-Second Levitation and Ripping Open Suspense Animation (GPU Hardware-Accelerated) */
 .bag-ripping-open {
   animation: suspenseLevitate 3.0s ease-in-out forwards !important;
+  will-change: transform;
 }
 
 @keyframes suspenseLevitate {
-  0% { transform: translateY(0) scale(1.02); filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8)); }
-  20% { transform: translateY(-16px) scale(1.06) rotate(-2deg); filter: brightness(1.25) drop-shadow(0 25px 60px rgba(255, 215, 0, 0.6)); }
-  40% { transform: translateY(-24px) scale(1.08) rotate(2deg); filter: brightness(1.45) drop-shadow(0 30px 70px rgba(255, 215, 0, 0.8)); }
-  70% { transform: translateY(-30px) scale(1.12) rotate(-3deg); filter: brightness(1.75) drop-shadow(0 35px 85px rgba(255, 215, 0, 1)); }
-  90% { transform: translateY(-35px) scale(1.15) rotate(1deg); filter: brightness(2) drop-shadow(0 40px 100px #ffd700); }
-  100% { transform: translateY(-36px) scale(1.15); filter: brightness(2.2) drop-shadow(0 40px 110px #ffffff); }
+  0% { transform: translateY(0) scale(1.02) translateZ(0); }
+  20% { transform: translateY(-16px) scale(1.06) rotate(-2deg) translateZ(0); }
+  40% { transform: translateY(-24px) scale(1.08) rotate(2deg) translateZ(0); }
+  70% { transform: translateY(-30px) scale(1.12) rotate(-3deg) translateZ(0); }
+  90% { transform: translateY(-35px) scale(1.15) rotate(1deg) translateZ(0); }
+  100% { transform: translateY(-36px) scale(1.15) translateZ(0); }
 }
 
 .sim-actions {

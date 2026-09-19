@@ -433,29 +433,33 @@ class AudioSynthesizer {
     lfo.stop(now + duration);
     humOsc.stop(now + duration);
 
-    // 3. Sizzling high-frequency laser sparks & electric arcs across cut line
+    // 3. Sizzling high-frequency laser sparks & electric arcs across cut line (0.5s optimized looping buffer)
     const sampleRate = this.ctx.sampleRate;
-    const bufferSize = Math.floor(sampleRate * duration);
+    const bufferDuration = 0.5;
+    const bufferSize = Math.floor(sampleRate * bufferDuration);
     const buffer = this.ctx.createBuffer(1, bufferSize, sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
-      const t = i / bufferSize;
-      const isSpark = Math.random() < (0.02 + 0.06 * t);
+      const isSpark = Math.random() < 0.04;
       data[i] = isSpark ? (Math.random() * 2 - 1) * 0.85 : (Math.random() * 0.12 - 0.06);
     }
     const noise = this.ctx.createBufferSource();
     noise.buffer = buffer;
+    noise.loop = true;
+    noise.loopEnd = bufferDuration;
+
     const hp = this.ctx.createBiquadFilter();
     hp.type = 'highpass';
     hp.frequency.setValueAtTime(3200, now);
     const noiseGain = this.ctx.createGain();
     noiseGain.gain.setValueAtTime(0.14, now);
-    noiseGain.gain.linearRampToValueAtTime(0.4, now + duration * 0.92);
+    noiseGain.gain.linearRampToValueAtTime(0.38, now + duration * 0.9);
     noiseGain.gain.exponentialRampToValueAtTime(0.01, now + duration);
     noise.connect(hp);
     hp.connect(noiseGain);
     noiseGain.connect(this.ctx.destination);
     noise.start(now);
+    noise.stop(now + duration);
   }
 
   // Card Deal Flying Slide Sound
@@ -1001,31 +1005,73 @@ class GachaSimulator {
       this.peekCard.classList.add('peeking');
     }
 
-    // 6. Show 3-second live countdown HUD
+    // 6. Pre-calculate RNG results early to eliminate main-thread calculations at the 3.0s mark
+    const precalculatedResults = [];
+    let bestTier = 'common';
+    for (let i = 0; i < count; i++) {
+      const item = this.pullOne();
+      precalculatedResults.push(item);
+      if (item.tier === 'epic') {
+        bestTier = 'epic';
+      } else if (item.tier === 'rare' && bestTier !== 'epic') {
+        bestTier = 'rare';
+      }
+    }
+
+    // 7. Show 3-second live countdown HUD (Smoothed non-blocking timer)
     if (this.hintBadge) this.hintBadge.style.display = 'none';
     if (this.countdownBadge) this.countdownBadge.style.display = 'inline-flex';
 
-    let timeLeft = 3.0;
+    const startTime = performance.now();
+    const totalDuration = 3000;
+    let lastSecondText = '';
+
     const countdownInterval = setInterval(() => {
-      timeLeft = Math.max(0, timeLeft - 0.1);
-      if (this.countdownText) {
-        this.countdownText.textContent = `Đang giải mã nhân vật... ${timeLeft.toFixed(1)}s`;
+      const elapsed = performance.now() - startTime;
+      const remainingSec = Math.max(0, (totalDuration - elapsed) / 1000);
+      const textToSet = remainingSec > 0.1 ? remainingSec.toFixed(1) + 's' : '0.0s';
+      
+      if (this.countdownText && textToSet !== lastSecondText) {
+        lastSecondText = textToSet;
+        this.countdownText.textContent = `Đang giải mã nhân vật... ${textToSet}`;
       }
-      if (timeLeft <= 0.05) {
+      
+      if (remainingSec <= 0.05) {
         clearInterval(countdownInterval);
       }
-    }, 100);
+    }, 120);
 
-    // 7. Exactly at 3.0 seconds: Screen flash + Finish Unboxing
+    // 8. Exactly at 3.0 seconds: Trigger flash overlay + Decoupled Unboxing Reveal
     setTimeout(() => {
+      clearInterval(countdownInterval);
+
+      // Trigger blinding white-gold flash immediately
       if (this.flashOverlay) {
         this.flashOverlay.classList.add('flashing');
-        setTimeout(() => {
-          this.flashOverlay.classList.remove('flashing');
-        }, 350);
       }
 
-      this.finishUnboxing(count);
+      // Decouple heavy card rendering: mount cards when screen is blinded in white
+      // This completely hides any DOM render/layout cost from the user!
+      setTimeout(() => {
+        // Unlock codex and update player stats
+        precalculatedResults.forEach(item => {
+          this.codex.unlock(item.id);
+          this.totalPulls++;
+          if (item.tier === 'epic') {
+            this.epicPulls++;
+          }
+        });
+
+        this.showReveal(precalculatedResults, bestTier);
+        this.updateStats();
+
+        // Fade out flash overlay smoothly after cards are mounted
+        setTimeout(() => {
+          if (this.flashOverlay) {
+            this.flashOverlay.classList.remove('flashing');
+          }
+        }, 120);
+      }, 70);
     }, 3000);
   }
 
