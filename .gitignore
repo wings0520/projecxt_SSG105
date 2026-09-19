@@ -1,0 +1,11 @@
+# Video files
+*.mp4
+*.webm
+*.mov
+*.avi
+
+# OS & Editor temp files
+.DS_Store
+Thumbs.db
+*.tmp
+.vscode/
