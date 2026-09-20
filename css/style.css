@@ -4007,4 +4007,715 @@ input[type="range"].custom-slider::-webkit-slider-thumb:hover {
   transition: opacity 0.3s ease, visibility 0s linear 0.3s !important;
 }
 
+/* ==========================================================================
+   ROYAL ORNATE CARD FRAMES & GACHA UNBOXING REVEAL FX
+   Thiết kế khung viền Hoàng Gia Baroque (Cực hiếm SSR) & Nguyệt Thần (Hiếm SR)
+   Lấy cảm hứng từ hoa văn Baroque mạ vàng và dải lụa cánh phượng
+   ========================================================================== */
+
+/* The Master Frame Overlay Container */
+.card-royal-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  border-radius: 14px;
+  z-index: 8;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+/* Outer & Inner Dual Borders */
+.card-royal-frame .frame-border-outer {
+  position: absolute;
+  inset: 4px;
+  border-radius: 11px;
+  border: 1.8px solid transparent;
+  pointer-events: none;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-royal-frame .frame-border-inner {
+  position: absolute;
+  inset: 8px;
+  border-radius: 8px;
+  border: 1px dashed transparent;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+/* 4 Corner Baroque Filigrees */
+.card-royal-frame .frame-corner {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 10;
+  filter: drop-shadow(0 1.5px 3px rgba(0, 0, 0, 0.8));
+  transition: transform 0.4s var(--ease-spring);
+}
+
+.card-royal-frame .corner-tl { top: 0px; left: 0px; }
+.card-royal-frame .corner-tr { top: 0px; right: 0px; transform: scaleX(-1); }
+.card-royal-frame .corner-bl { bottom: 0px; left: 0px; transform: scaleY(-1); }
+.card-royal-frame .corner-br { bottom: 0px; right: 0px; transform: scale(-1); }
+
+/* Flanking Side Wings (Image 2 style) */
+.card-royal-frame .frame-wing {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 96px;
+  transform: translateY(-50%);
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 9;
+  opacity: 0.92;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+.card-royal-frame .wing-left { left: -6px; background-position: left center; }
+.card-royal-frame .wing-right { right: -6px; transform: translateY(-50%) scaleX(-1); }
+
+.gacha-card-item:hover .card-royal-frame .wing-left {
+  transform: translateY(-50%) translateX(-2px) scale(1.05);
+}
+.gacha-card-item:hover .card-royal-frame .wing-right {
+  transform: translateY(-50%) scaleX(-1) translateX(-2px) scale(1.05);
+}
+
+/* Top Crown / Crest */
+.card-royal-frame .frame-crest {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 22px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  z-index: 12;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.85));
+}
+
+/* --- TIER EPIC / CỰC HIẾM (ROYAL GOLD BAROQUE SSR) --- */
+.card-royal-frame.tier-epic .frame-border-outer {
+  border: 2px solid #ffd700;
+  border-image: linear-gradient(135deg, #ffffff 0%, #ffe699 25%, #f6d166 50%, #e5a93c 75%, #fff0b3 90%, #9a6b18 100%) 1;
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.6), inset 0 0 12px rgba(255, 215, 0, 0.3);
+}
+
+.card-royal-frame.tier-epic .frame-border-inner {
+  border: 1px solid rgba(255, 240, 180, 0.55);
+}
+
+.card-royal-frame.tier-epic .frame-corner {
+  background-image: url('../asset/royal-baroque-corner.svg');
+}
+
+.card-royal-frame.tier-epic .frame-wing {
+  background-image: url('../asset/royal-side-flourish.svg');
+}
+
+.card-royal-frame.tier-epic .frame-crest {
+  background-image: url('../asset/royal-crown-crest.svg');
+}
+
+/* Light sweep across the frame */
+.card-royal-frame.tier-epic::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 215, 0, 0.4) 56%,
+    transparent 66%,
+    transparent 100%
+  );
+  background-size: 250% 250%;
+  animation: royalSheenSweep 3.2s ease-in-out infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 11;
+}
+
+@keyframes royalSheenSweep {
+  0% { background-position: 200% 0%; }
+  45% { background-position: -50% 100%; }
+  100% { background-position: -50% 100%; }
+}
+
+/* Floating Gold Dust in Epic Cards */
+.card-gold-dust {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+  z-index: 7;
+}
+.card-gold-dust span {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #fffbe8;
+  box-shadow: 0 0 6px #ffd700, 0 0 12px #f6d166;
+  border-radius: 50%;
+  animation: goldMoteFloat 3s ease-in-out infinite;
+  opacity: 0.85;
+}
+.card-gold-dust span:nth-child(1) { top: 18%; left: 15%; animation-delay: 0s; animation-duration: 2.8s; }
+.card-gold-dust span:nth-child(2) { top: 72%; left: 82%; animation-delay: 0.7s; animation-duration: 3.4s; }
+.card-gold-dust span:nth-child(3) { top: 45%; left: 88%; animation-delay: 1.3s; animation-duration: 2.5s; }
+.card-gold-dust span:nth-child(4) { top: 82%; left: 18%; animation-delay: 1.9s; animation-duration: 3.1s; }
+
+@keyframes goldMoteFloat {
+  0%, 100% { transform: translateY(0) scale(0.8); opacity: 0.3; }
+  50% { transform: translateY(-12px) scale(1.3); opacity: 1; }
+}
+
+/* --- TIER RARE / HIẾM (CELESTIAL MOONLIT CYAN SR) --- */
+.card-royal-frame.tier-rare .frame-border-outer {
+  border: 1.8px solid #00e1d9;
+  border-image: linear-gradient(135deg, #ffffff 0%, #bbfaf6 35%, #00e1d9 70%, #0088cc 100%) 1;
+  box-shadow: 0 0 14px rgba(0, 225, 217, 0.6), inset 0 0 8px rgba(0, 225, 217, 0.25);
+}
+
+.card-royal-frame.tier-rare .frame-border-inner {
+  border: 1px dashed rgba(187, 250, 246, 0.6);
+}
+
+.card-royal-frame.tier-rare .frame-corner {
+  background-image: url('../asset/rare-moonlit-corner.svg');
+}
+
+.card-royal-frame.tier-rare .frame-crest {
+  background-image: url('../asset/rare-starlight-crest.svg');
+}
+
+.card-royal-frame.tier-rare::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 42%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(0, 225, 217, 0.4) 56%,
+    transparent 66%,
+    transparent 100%
+  );
+  background-size: 250% 250%;
+  animation: rareSheenSweep 3.6s ease-in-out infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 11;
+}
+
+@keyframes rareSheenSweep {
+  0% { background-position: 200% 0%; }
+  45% { background-position: -50% 100%; }
+  100% { background-position: -50% 100%; }
+}
+
+/* --- TIER COMMON / PHỔ BIẾN (HERITAGE BRONZE R) --- */
+.card-royal-frame.tier-common .frame-border-outer {
+  border: 1.5px solid rgba(223, 138, 72, 0.55);
+  box-shadow: 0 0 10px rgba(223, 138, 72, 0.25);
+}
+
+.card-royal-frame.tier-common .frame-border-inner {
+  border: 1px dashed rgba(223, 138, 72, 0.35);
+}
+
+/* --- DRAMATIC GACHA UNBOXING REVEAL FX --- */
+
+/* Corner Bloom on Card Flip */
+.gacha-card-item.flipped .card-royal-frame.tier-epic .frame-corner {
+  animation: cornerBloomEpic 0.85s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+@keyframes cornerBloomEpic {
+  0% { transform: scale(0.2) rotate(20deg); opacity: 0; filter: brightness(3.5); }
+  60% { transform: scale(1.18) rotate(-4deg); opacity: 1; filter: brightness(1.6); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; filter: brightness(1); }
+}
+
+.gacha-card-item.flipped .card-royal-frame.tier-epic .corner-tr {
+  animation-name: cornerBloomEpicTR;
+}
+@keyframes cornerBloomEpicTR {
+  0% { transform: scaleX(-1) scale(0.2) rotate(-20deg); opacity: 0; filter: brightness(3.5); }
+  60% { transform: scaleX(-1) scale(1.18) rotate(4deg); opacity: 1; filter: brightness(1.6); }
+  100% { transform: scaleX(-1) scale(1) rotate(0deg); opacity: 1; filter: brightness(1); }
+}
+
+.gacha-card-item.flipped .card-royal-frame.tier-epic .corner-bl {
+  animation-name: cornerBloomEpicBL;
+}
+@keyframes cornerBloomEpicBL {
+  0% { transform: scaleY(-1) scale(0.2) rotate(-20deg); opacity: 0; filter: brightness(3.5); }
+  60% { transform: scaleY(-1) scale(1.18) rotate(4deg); opacity: 1; filter: brightness(1.6); }
+  100% { transform: scaleY(-1) scale(1) rotate(0deg); opacity: 1; filter: brightness(1); }
+}
+
+.gacha-card-item.flipped .card-royal-frame.tier-epic .corner-br {
+  animation-name: cornerBloomEpicBR;
+}
+@keyframes cornerBloomEpicBR {
+  0% { transform: scale(-1) scale(0.2) rotate(20deg); opacity: 0; filter: brightness(3.5); }
+  60% { transform: scale(-1) scale(1.18) rotate(-4deg); opacity: 1; filter: brightness(1.6); }
+  100% { transform: scale(-1) scale(1) rotate(0deg); opacity: 1; filter: brightness(1); }
+}
+
+/* Supernova Radial Flare Burst on Epic Card Reveal */
+.epic-supernova-flare {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.98) 0%, rgba(255, 225, 120, 0.85) 20%, rgba(246, 175, 40, 0.5) 45%, transparent 72%);
+  pointer-events: none;
+  z-index: 30;
+  border-radius: 50%;
+  animation: supernovaBurst 0.95s cubic-bezier(0.1, 0.85, 0.25, 1) forwards;
+}
+
+@keyframes supernovaBurst {
+  0% { transform: translate(-50%, -50%) scale(0.1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.95; }
+  100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+}
+
+/* Cyan Starlight Pulse Flare on Rare Card Reveal */
+.rare-starlight-flare {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(0, 225, 217, 0.75) 25%, rgba(0, 153, 255, 0.4) 50%, transparent 70%);
+  pointer-events: none;
+  z-index: 30;
+  border-radius: 50%;
+  animation: supernovaBurst 0.85s cubic-bezier(0.1, 0.85, 0.25, 1) forwards;
+}
+
+/* Screen Tremor on Epic Unbox */
+.gacha-cards-stage.epic-screen-shake {
+  animation: stageEpicTremor 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes stageEpicTremor {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  15% { transform: translate(-5px, 4px) scale(1.02); }
+  30% { transform: translate(5px, -4px) scale(1.01); }
+  45% { transform: translate(-4px, -3px) scale(1.015); }
+  60% { transform: translate(3px, 3px) scale(1.005); }
+  75% { transform: translate(-2px, -1px) scale(1.002); }
+}
+
+/* Front Thumbnail Ornate Framing */
+.front-thumb-wrap.royal-framed {
+  border: 1.8px solid rgba(246, 209, 102, 0.75);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(246, 209, 102, 0.3);
+}
+.tier-epic .front-thumb-wrap.royal-framed {
+  border: 2px solid #ffd700;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 16px rgba(255, 215, 0, 0.65), inset 0 0 12px rgba(255, 235, 140, 0.45);
+}
+.tier-rare .front-thumb-wrap.royal-framed {
+  border: 1.8px solid #00e1d9;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7), 0 0 14px rgba(0, 225, 217, 0.55), inset 0 0 10px rgba(0, 225, 217, 0.3);
+}
+
+/* --- HOME PAGE CHARACTER CARD FRAME INTEGRATION --- */
+.character-card[data-tier="epic"] .card-inner {
+  border: 2px solid #ffd700;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 215, 0, 0.5), inset 0 0 16px rgba(255, 235, 140, 0.25);
+  position: relative;
+}
+.character-card[data-tier="rare"] .card-inner {
+  border: 1.8px solid #00e1d9;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75), 0 0 25px rgba(0, 225, 217, 0.45), inset 0 0 12px rgba(0, 225, 217, 0.18);
+  position: relative;
+}
+
+/* Home Card Corner Filigrees on card-thumb-wrap */
+.card-thumb-wrap.royal-framed {
+  border: 2px solid #ffd700;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 0 20px rgba(255, 215, 0, 0.45);
+  position: relative;
+}
+.card-thumb-wrap.royal-framed .thumb-corner {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  background-image: url('../asset/royal-baroque-corner.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 4;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.75));
+}
+.card-thumb-wrap.royal-framed .thumb-corner.tl { top: 2px; left: 2px; }
+.card-thumb-wrap.royal-framed .thumb-corner.tr { top: 2px; right: 2px; transform: scaleX(-1); }
+.card-thumb-wrap.royal-framed .thumb-corner.bl { bottom: 2px; left: 2px; transform: scaleY(-1); }
+.card-thumb-wrap.royal-framed .thumb-corner.br { bottom: 2px; right: 2px; transform: scale(-1); }
+
+.card-thumb-wrap.rare-framed {
+  border: 1.8px solid #00e1d9;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.65), 0 0 18px rgba(0, 225, 217, 0.4);
+  position: relative;
+}
+.card-thumb-wrap.rare-framed .thumb-corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-image: url('../asset/rare-moonlit-corner.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 4;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7));
+}
+.card-thumb-wrap.rare-framed .thumb-corner.tl { top: 2px; left: 2px; }
+.card-thumb-wrap.rare-framed .thumb-corner.tr { top: 2px; right: 2px; transform: scaleX(-1); }
+.card-thumb-wrap.rare-framed .thumb-corner.bl { bottom: 2px; left: 2px; transform: scaleY(-1); }
+.card-thumb-wrap.rare-framed .thumb-corner.br { bottom: 2px; right: 2px; transform: scale(-1); }
+
+/* --- INSPECT MODAL MUSEUM LUXURY FRAME --- */
+.inspect-media.royal-museum-frame {
+  border: 3.5px solid #ffd700;
+  border-image: linear-gradient(135deg, #ffffff 0%, #ffe699 25%, #f6d166 50%, #e5a93c 75%, #fff0b3 90%, #9a6b18 100%) 1;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(255, 215, 0, 0.6), inset 0 0 25px rgba(255, 215, 0, 0.3);
+  position: relative;
+  overflow: visible;
+}
+.inspect-media.royal-museum-frame .inspect-corner {
+  position: absolute;
+  width: 68px;
+  height: 68px;
+  background-image: url('../asset/royal-baroque-corner.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.85));
+}
+.inspect-media.royal-museum-frame .corner-tl { top: -6px; left: -6px; }
+.inspect-media.royal-museum-frame .corner-tr { top: -6px; right: -6px; transform: scaleX(-1); }
+.inspect-media.royal-museum-frame .corner-bl { bottom: -6px; left: -6px; transform: scaleY(-1); }
+.inspect-media.royal-museum-frame .corner-br { bottom: -6px; right: -6px; transform: scale(-1); }
+
+.inspect-media.royal-museum-frame .inspect-crest {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86px;
+  height: 38px;
+  background-image: url('../asset/royal-crown-crest.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.inspect-media.rare-museum-frame {
+  border: 3px solid #00e1d9;
+  border-image: linear-gradient(135deg, #ffffff 0%, #bbfaf6 35%, #00e1d9 70%, #0088cc 100%) 1;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 225, 217, 0.55), inset 0 0 20px rgba(0, 225, 217, 0.25);
+  position: relative;
+  overflow: visible;
+}
+.inspect-media.rare-museum-frame .inspect-corner {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background-image: url('../asset/rare-moonlit-corner.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.85));
+}
+.inspect-media.rare-museum-frame .corner-tl { top: -5px; left: -5px; }
+.inspect-media.rare-museum-frame .corner-tr { top: -5px; right: -5px; transform: scaleX(-1); }
+.inspect-media.rare-museum-frame .corner-bl { bottom: -5px; left: -5px; transform: scaleY(-1); }
+.inspect-media.rare-museum-frame .corner-br { bottom: -5px; right: -5px; transform: scale(-1); }
+.inspect-media.rare-museum-frame .inspect-crest {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 76px;
+  height: 34px;
+  background-image: url('../asset/rare-starlight-crest.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 12;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   CONTACT WITH ME / FACEBOOK FANPAGE COMPONENTS
+   ========================================================================== */
+
+/* Top Navigation Header Button */
+.btn-contact-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(24, 119, 242, 0.15);
+  border: 1px solid rgba(24, 119, 242, 0.4);
+  color: #e4e6eb;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-contact-header svg {
+  fill: #1877f2;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.btn-contact-header:hover {
+  background: #1877f2;
+  border-color: #1877f2;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(24, 119, 242, 0.45);
+}
+
+.btn-contact-header:hover svg {
+  fill: #ffffff;
+  transform: scale(1.15) rotate(-5deg);
+}
+
+/* Dedicated Contact with Me Showcase Box (Above Footer) */
+.contact-with-me-card {
+  margin: 40px 0 28px;
+  padding: 30px 36px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(26, 12, 16, 0.92) 0%, rgba(42, 16, 24, 0.85) 50%, rgba(20, 24, 45, 0.88) 100%);
+  border: 1.5px solid rgba(24, 119, 242, 0.35);
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.7), 0 0 35px rgba(24, 119, 242, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.contact-with-me-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+  animation: contactSheenSweep 6s infinite;
+  pointer-events: none;
+}
+
+@keyframes contactSheenSweep {
+  0% { left: -100%; }
+  35% { left: 150%; }
+  100% { left: 150%; }
+}
+
+.contact-with-me-card:hover {
+  border-color: rgba(24, 119, 242, 0.7);
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8), 0 0 45px rgba(24, 119, 242, 0.28);
+  transform: translateY(-2px);
+}
+
+.contact-card-icon {
+  flex-shrink: 0;
+}
+
+.fb-icon-bubble {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #1877f2 0%, #0d5bbd 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(24, 119, 242, 0.45);
+  transition: transform 0.3s ease;
+}
+
+.contact-with-me-card:hover .fb-icon-bubble {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+.contact-card-info {
+  flex: 1;
+}
+
+.contact-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #60a5fa;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.contact-card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--paper);
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-card-desc {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(251, 238, 221, 0.72);
+  margin: 0;
+  max-width: 62ch;
+}
+
+.contact-card-action {
+  flex-shrink: 0;
+}
+
+.btn-facebook-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #1877f2 0%, #0f62c9 100%);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 25px rgba(24, 119, 242, 0.45);
+  transition: all 0.25s ease;
+}
+
+.btn-facebook-contact .contact-arrow {
+  transition: transform 0.25s ease;
+}
+
+.btn-facebook-contact:hover {
+  background: linear-gradient(135deg, #2b84f7 0%, #166ee2 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(24, 119, 242, 0.6);
+}
+
+.btn-facebook-contact:hover .contact-arrow {
+  transform: translateX(4px);
+}
+
+/* Floating Contact Widget (Góc dưới màn hình) */
+.floating-contact-pill {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: rgba(20, 14, 20, 0.88);
+  border: 1.5px solid rgba(24, 119, 242, 0.55);
+  border-radius: 999px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(24, 119, 242, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.floating-contact-pill .floating-fb-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #1877f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(24, 119, 242, 0.5);
+}
+
+.floating-contact-pill .floating-fb-icon svg {
+  width: 15px;
+  height: 15px;
+  fill: #ffffff;
+}
+
+.floating-contact-pill:hover {
+  background: rgba(24, 119, 242, 0.95);
+  border-color: #ffffff;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 35px rgba(24, 119, 242, 0.55), 0 0 25px rgba(24, 119, 242, 0.4);
+}
+
+.floating-contact-pill:hover .floating-fb-icon {
+  background: #ffffff;
+}
+
+.floating-contact-pill:hover .floating-fb-icon svg {
+  fill: #1877f2;
+}
+
+@media (max-width: 860px) {
+  .contact-with-me-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 20px;
+    gap: 18px;
+  }
+  .contact-card-desc {
+    max-width: 100%;
+  }
+  .floating-contact-pill {
+    bottom: 16px;
+    right: 16px;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+
 

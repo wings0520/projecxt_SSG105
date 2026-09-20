@@ -4,14 +4,15 @@
  */
 
 const CHARACTERS_DATA = [
+  // --- TIER 1: PHỔ BIẾN (COMMON - 50% TỔNG) ---
   {
     id: 'ca-vang',
     name: 'Cá Vàng Phát Lộc',
     tier: 'common',
     tierLabel: 'Phổ biến',
     tierBadge: 'Tier 1',
-    odds: 30,
-    groupOdds: '55%',
+    odds: 12.5,
+    groupOdds: '50%',
     image: 'asset/1789605343299_5176141762490889310_g5432164341293928425_505dd91408fd4b1bb78b769743f4d77e.jpg',
     flavor: 'Họa tiết cá chép truyền thống, tượng trưng cho may mắn, thịnh vượng và sung túc dư dả.',
     story: 'Lấy cảm hứng từ tích cổ dân gian "Cá chép hóa rồng" và bức tranh Đông Hồ trăng rằm. Thân cá được tạo hình uốn lượn uyển chuyển, vảy cá chạm rỗng tinh vi giúp ánh sáng đèn lồng tỏa ra huyền ảo như lân tinh dưới mặt hồ thu phẳng lặng.',
@@ -27,8 +28,8 @@ const CHARACTERS_DATA = [
     tier: 'common',
     tierLabel: 'Phổ biến',
     tierBadge: 'Tier 1',
-    odds: 25,
-    groupOdds: '55%',
+    odds: 12.5,
+    groupOdds: '50%',
     image: 'asset/1789605343329_5176141762490889310_g5432164341293928425_83d51e05fb20d709ec7b41115a848c3c.jpg',
     flavor: 'Dáng sao năm cánh cổ điển, đường nét hoa văn tay vẽ tỉ mỉ gợi nhớ ký ức tuổi thơ rước đèn.',
     story: 'Biểu tượng linh thiêng bất hủ của Tết Trung Thu bao thế hệ người Việt. Năm cánh sao đại diện cho ngũ hành cân bằng (Kim - Mộc - Thủy - Hỏa - Thổ), tâm sao trang trí họa tiết hoa cúc và đồng tiền cổ mang lại bình an, vạn sự như ý.',
@@ -39,13 +40,49 @@ const CHARACTERS_DATA = [
     specialTrait: 'Khung đối xứng hoàn hảo, bắt sáng đa góc nhìn khi xoay tròn'
   },
   {
+    id: 'tho-ngoc-chu-sa',
+    name: 'Thỏ Ngọc Chu Sa',
+    tier: 'common',
+    tierLabel: 'Phổ biến',
+    tierBadge: 'Tier 1',
+    odds: 12.5,
+    groupOdds: '50%',
+    image: 'asset/1789876638579_401249900163133978_401249900163133978_b7d5fdcb437d8e1fc089ca7da4f676e7.jpg',
+    flavor: 'Thỏ đỏ trăng rằm khoác áo hoa văn chu sa may mắn, mang nét vẽ dân gian truyền thống đầm ấm.',
+    story: 'Biến thể thỏ ngọc đỏ tươi truyền thống mang lại vượng khí và niềm vui đoàn viên ngày Tết Trung Thu. Đôi tai lớn điểm hoa văn mây tía, thân thỏ thêu hoa cúc vàng thanh tao, thích hợp cho mọi trẻ em rước đèn dưới trăng.',
+    inspiration: 'Tranh khắc gỗ dân gian Hàng Trống & Tích thỏ đón trăng',
+    craftStars: '★★★☆☆',
+    craftRating: '3/5 (Cổ truyền - Thân thuộc)',
+    materials: 'Khung nan tre chuốt tròn, giấy kiếng đỏ ruby, tua rua lụa đỏ',
+    specialTrait: 'Họa tiết hoa cúc trên thân thỏ bắt sáng rực rỡ'
+  },
+  {
+    id: 'ngoi-sao-vong-nguyet',
+    name: 'Ngôi Sao Vọng Nguyệt',
+    tier: 'common',
+    tierLabel: 'Phổ biến',
+    tierBadge: 'Tier 1 (N25-B)',
+    odds: 12.5,
+    groupOdds: '50%',
+    image: 'asset/1789876710904_401249900163133978_401249900163133978_9b0811a8b23ecde06df09ca2298674bc.jpg',
+    flavor: 'Đèn ông sao đa sắc viền bánh xe mặt trời lộng lẫy, tâm sao xoay tròn hoa văn pháo hoa rực rỡ.',
+    story: 'Đỉnh cao của nghệ thuật đèn ông sao cổ truyền (Mã N25-B). Khác với dáng sao cơ bản, mẫu Vọng Nguyệt có 5 vòng bánh xe mặt trời bao quanh các đỉnh cánh, tâm sao vẽ họa tiết pháo hoa bừng nở trên nền trời thu lộng gió.',
+    inspiration: 'Đèn ông sao cung đình Huế & Lễ hội rước đèn đêm rằm',
+    craftStars: '★★★☆☆',
+    craftRating: '3.5/5 (Rực rỡ - Cổ phong)',
+    materials: 'Tre bánh tẻ dẻo dai, giấy kính ngũ sắc dán đa lớp, hoa văn thủ công',
+    specialTrait: 'Vòng tròn bánh xe phụ ở 5 cánh tạo hiệu ứng hào quang kép'
+  },
+
+  // --- TIER 2: HIẾM (RARE / SR - 38% TỔNG) ---
+  {
     id: 'ngua-phi-van',
     name: 'Ngựa Phi Vân',
     tier: 'rare',
     tierLabel: 'Hiếm',
-    tierBadge: 'Tier 2',
-    odds: 20,
-    groupOdds: '35%',
+    tierBadge: 'Tier 2 (SR)',
+    odds: 6,
+    groupOdds: '38%',
     image: 'asset/1789605343347_5176141762490889310_g5432164341293928425_211d746b7e2ffb6990d4d3c1edb059a2.jpg',
     flavor: 'Dáng tuấn mã phi nước đại đạp mây, kèm tua rua đỏ thắm và nút thắt cát tường truyền thống.',
     story: 'Hình tượng tuấn mã dũng mãnh đạp mây ngũ sắc ("Phi Vân") tượng trưng cho chí tiến thủ, sự bứt phá và điềm lành "Mã Đáo Thành Công". Từng đường nét bờm ngựa và vân mây được chạm lộng đa tầng, tạo cảm giác chuyển động sống động trong gió thu.',
@@ -60,9 +97,9 @@ const CHARACTERS_DATA = [
     name: 'Thỏ Ngọc Trung Thu',
     tier: 'rare',
     tierLabel: 'Hiếm',
-    tierBadge: 'Tier 2',
-    odds: 15,
-    groupOdds: '35%',
+    tierBadge: 'Tier 2 (SR)',
+    odds: 6,
+    groupOdds: '38%',
     image: 'asset/1789605343375_5176141762490889310_g5432164341293928425_5f7b3a5fdadde01bafe23ea798792842.jpg',
     flavor: 'Cảm hứng từ tích Thỏ Ngọc cung trăng, hoạ tiết phối màu thanh thoát huyền ảo.',
     story: 'Người bạn đồng hành thân thiết của chị Hằng trên Cung Quảng Hàn. Đôi tai thỏ dựng cao thanh thoát, đôi mắt thỏ đính ngọc phản chiếu ánh trăng rằm. Đèn tỏa ánh sắc dịu êm mang năng lượng thuần khiết, an yên và chúc phúc trường thọ cho gia chủ.',
@@ -73,13 +110,100 @@ const CHARACTERS_DATA = [
     specialTrait: 'Hiệu ứng ánh sáng tỏa tròn mềm mịn, tạo bóng vầng trăng rằm'
   },
   {
+    id: 'nguoi-nhen',
+    name: 'Người Nhện Siêu Đẳng',
+    tier: 'rare',
+    tierLabel: 'Hiếm',
+    tierBadge: 'Tier 2 (SR Hộ Vệ - N14-A)',
+    odds: 6,
+    groupOdds: '38%',
+    image: 'asset/1789873373484_401249900163133978_401249900163133978_ffa393d4f7d972053db216b9157a5f3b.jpg',
+    flavor: 'Siêu anh hùng bắn tơ được tạo hình theo phong cách chibi đèn lồng rực rỡ, sẵn sàng bảo vệ đêm hội bình an.',
+    story: 'Sự kết hợp độc đáo giữa biểu tượng văn hóa đại chúng thế giới và nghệ thuật làm đèn lồng Việt. Spider-Man với dáng đứng vững chãi, đôi mắt phát quang và ngực áo nhện viền vàng, biểu trưng cho lòng quả cảm và tinh thần nghĩa hiệp bảo vệ trẻ thơ.',
+    inspiration: 'Siêu anh hùng bảo vệ bình yên & Đèn lồng hiện đại cho thiếu nhi',
+    craftStars: '★★★★☆',
+    craftRating: '4/5 (Dũng mãnh - Độc đáo)',
+    materials: 'Vật liệu dẻo tạo hình nhiệt, sơn tĩnh điện sắc sảo, nút thắt dây đỏ',
+    specialTrait: 'Mắt nhện phát quang nổi bật trong bóng tối'
+  },
+  {
+    id: 'pikachu',
+    name: 'Pikachu Bánh Donut',
+    tier: 'rare',
+    tierLabel: 'Hiếm',
+    tierBadge: 'Tier 2 (SR Đáng Yêu - N13-A)',
+    odds: 6,
+    groupOdds: '38%',
+    image: 'asset/1789873373507_401249900163133978_401249900163133978_381d8e85a79a6de22b8b1fa25ceb76db.jpg',
+    flavor: 'Chú chuột điện má hồng ôm chiếc bánh donut ngọt ngào kèm thẻ bài "Vui Tết Trung Thu" ngộ nghĩnh.',
+    story: 'Mẫu đèn lồng vui tươi (Mã N13-A) lấy cảm hứng từ Pikachu - chú chuột điện đáng yêu quen thuộc. Đôi tai vểnh đón gió, chiếc đuôi sấm sét tinh nghịch và vòng hào quang ánh vàng mang lại niềm vui rộn rã cho mọi gia đình.',
+    inspiration: 'Nhân vật hoạt hình quốc dân & Nét vẽ thư pháp Việt "Vui Tết Trung Thu"',
+    craftStars: '★★★★☆',
+    craftRating: '4/5 (Ngọt ngào - Rực rỡ)',
+    materials: 'Mica dẫn sáng màu hổ phách, viền dập vân mây cổ điển, thẻ gỗ thư pháp',
+    specialTrait: 'Tâm bánh donut phát sáng vàng óng như vầng trăng thu nhỏ'
+  },
+  {
+    id: 'kim-nguu',
+    name: 'Kim Ngưu Đạp Mây',
+    tier: 'rare',
+    tierLabel: 'Hiếm',
+    tierBadge: 'Tier 2 (SR Thịnh Vượng - N27-A)',
+    odds: 5,
+    groupOdds: '38%',
+    image: 'asset/1789876626189_401249900163133978_401249900163133978_a459c0b35b9bba65b4201ab64ec0ffd2.jpg',
+    flavor: 'Trâu vàng no ấm sải bước trên thảm mây ngũ sắc, hoa văn mặt trời và đồng tiền rước đại phú đại quý.',
+    story: 'Hình tượng "Con trâu là đầu cơ nghiệp" trong văn hóa nông nghiệp lúa nước Việt Nam được nâng tầm thành Kim Ngưu Thần Thoại (Mã N27-A). Thân trâu phủ sắc đỏ chu sa ấm áp, sừng vàng đón phúc, hoa văn vầng dương tỏa rạng cầu chúc mùa màng bội thu.',
+    inspiration: 'Hình tượng Trâu Vàng dân gian & Họa tiết trống đồng Đông Sơn',
+    craftStars: '★★★★☆',
+    craftRating: '4/5 (No ấm - Cát tường)',
+    materials: 'Gỗ ép uốn cong, giấy kiếng ngũ sắc truyền thống, đính hạt cườm đỏ',
+    specialTrait: 'Chân trâu dẫm mây phát quang xanh ngọc bích'
+  },
+  {
+    id: 'cinnamoroll',
+    name: 'Cinnamoroll Thiên Thần',
+    tier: 'rare',
+    tierLabel: 'Hiếm',
+    tierBadge: 'Tier 2 (SR Thuần Khiết)',
+    odds: 5,
+    groupOdds: '38%',
+    image: 'asset/1789876630073_401249900163133978_401249900163133978_a5c6e42ee8b35f1223b36d7f34a18a1a.jpg',
+    flavor: 'Chú cún tai dài trắng muốt mang đôi cánh thiên thần và vòng hào quang thiên sứ êm dịu trên đám mây sao.',
+    story: 'Tác phẩm ngọt ngào hòa trộn phong cách Kawaii và lồng đèn trăng sao. Cinnamoroll chắp tay ước nguyện giữa trời mây, điểm xuyết những chiếc nơ xanh pastel và quả bông đỏ may mắn, mang thông điệp an lành và niềm tin trong trẻo.',
+    inspiration: 'Nhân vật Cinnamoroll thiên thần & Bầu trời sao đêm rằm',
+    craftStars: '★★★★☆',
+    craftRating: '4/5 (Thanh nhã - Dịu ngọt)',
+    materials: 'Vải lụa mờ tán sắc pastel, nơ ruy băng satin, viền đèn LED đom đóm',
+    specialTrait: 'Vòng hào quang đỉnh đầu phát sáng mềm mịn dịu mắt'
+  },
+  {
+    id: 'tau-thuy',
+    name: 'Tàu Thủy Hoàng Sa Trường Sa',
+    tier: 'rare',
+    tierLabel: 'Hiếm',
+    tierBadge: 'Tier 2 (SR Biển Đảo Tự Hào)',
+    odds: 4,
+    groupOdds: '38%',
+    image: 'asset/1789876634407_401249900163133978_401249900163133978_880061db33188004874f84c73600e0fc.jpg',
+    flavor: 'Con tàu mang cờ đỏ sao vàng cưỡi sóng biển quê hương, khẳng định chủ quyền thiêng liêng Hoàng Sa - Trường Sa.',
+    story: 'Chiếc đèn lồng tàu thủy truyền thống từng thắp sáng tuổi thơ bao thế hệ, nay rạng rỡ với dòng chữ "VIỆT NAM" kiêu hãnh và hai ngọn hải đăng Hoàng Sa - Trường Sa. Từng đợt sóng biển xanh và chú cá heo uốn lượn dưới thân tàu là khúc tráng ca biển đảo quê hương.',
+    inspiration: 'Tàu thủy sắt tây phố cổ Khương Đình & Tình yêu biển đảo Tổ quốc',
+    craftStars: '★★★★☆',
+    craftRating: '4/5 (Ý nghĩa - Kiên trung)',
+    materials: 'Khung định hình sắt dẻo kết hợp giấy bóng kính ngũ sắc, cờ Tổ quốc',
+    specialTrait: 'Dải đèn gầm phản chiếu ánh sóng biển lung linh trên mặt nước'
+  },
+
+  // --- TIER 3: CỰC HIẾM (EPIC / SSR / UR - 12% TỔNG) ---
+  {
     id: 'doraemon',
     name: 'Doraemon Đèn Lồng',
     tier: 'epic',
     tierLabel: 'Cực hiếm',
     tierBadge: 'Tier 3 (SSR)',
-    odds: 7,
-    groupOdds: '10%',
+    odds: 3,
+    groupOdds: '12%',
     image: 'asset/1789605343386_5176141762490889310_g5432164341293928425_05acb51a68c446e75c05beda610dd314.jpg',
     flavor: 'Phiên bản giao thoa độc bản giữa chú mèo máy tuổi thơ và nghệ thuật đèn lồng cổ truyền dân gian.',
     story: 'Một tác phẩm giao thoa văn hóa đột phá: Chú mèo máy Doraemon gắn liền với tuổi thơ triệu đứa trẻ được các nghệ nhân tái hiện khéo léo trên cấu trúc đèn lồng nan tre truyền thống Việt Nam. Với chiếc chuông vàng đặc trưng và nụ cười rạng rỡ, đây là mẫu đèn lồng được săn đón nhất trong các buổi giao lưu.',
@@ -90,21 +214,72 @@ const CHARACTERS_DATA = [
     specialTrait: 'Tạo hình 3D tròn đầy đặn, chuông vàng rung leng keng khi cầm trên tay'
   },
   {
+    id: 'doraemon-dua-hau',
+    name: 'Doraemon Dưa Hấu',
+    tier: 'epic',
+    tierLabel: 'Cực hiếm',
+    tierBadge: 'Tier 3 (SSR Giới Hạn - N05-B)',
+    odds: 3,
+    groupOdds: '12%',
+    image: 'asset/1789876611793_401249900163133978_401249900163133978_68738b3978d13fee1200b0a6fa93c986.jpg',
+    flavor: 'Chú mèo máy đội nón vàng thưởng thức miếng dưa hấu ngọt lành bên khung cửa sổ đêm trăng rằm thơ mộng.',
+    story: 'Phiên bản đặc biệt mùa lễ hội (Mã N05-B): Doraemon trong khoảnh khắc bình yên ngắm trăng thưởng nguyệt, tay ôm miếng dưa hấu mát lành, xung quanh là bánh trung thu và những điều ước tuổi thơ bay xa. Chiếc đèn mang thông điệp "Những ước mơ sẽ luôn ở bên nhau".',
+    inspiration: 'Ký ức tuổi thơ ngắm trăng rằm & Nghệ thuật tranh kính màu',
+    craftStars: '★★★★★',
+    craftRating: '5/5 (Độc bản - Ký ức tuổi thơ)',
+    materials: 'Acrylic tán sáng đa lớp, viền mạ vàng chống oxy hóa, đèn LED ấm',
+    specialTrait: 'Tỏa ánh sáng dịu êm như tranh vẽ trong phòng ngủ đêm rằm'
+  },
+  {
+    id: 'su-tu-hi-cau',
+    name: 'Sư Tử Hí Cầu',
+    tier: 'epic',
+    tierLabel: 'Cực hiếm',
+    tierBadge: 'Tier 3 (UR Đại Cát)',
+    odds: 3,
+    groupOdds: '12%',
+    image: 'asset/1789876622988_401249900163133978_401249900163133978_72e1cc303e31ee34d28b81f1a9f06725.jpg',
+    flavor: 'Lân sư đỏ ôm quả cầu thái cực mang lại vạn điều đại cát, xua tan bóng tối và rước tài lộc sum vầy.',
+    story: 'Điệu múa "Lân Hí Cầu" trứ danh trong lễ hội cung đình xưa, biểu trưng cho sự hòa hợp âm dương và niềm vui chiến thắng. Chú lân lông đỏ chu sa rực rỡ, chân ôm quả cầu lăng kính đa sắc, sừng lân phát quang rực rỡ mang đến phúc lộc vẹn toàn.',
+    inspiration: 'Điệu múa Lân Hí Cầu Cung Đình & Tranh dân gian Kim Hoàng',
+    craftStars: '★★★★★',
+    craftRating: '5/5 (Đại cát - Tinh hoa thủ công)',
+    materials: 'Gỗ quý chạm lộng, nhũ vàng chu sa, quả cầu lăng kính phản quang',
+    specialTrait: 'Quả cầu xoay phản chiếu hoa văn thái cực đa sắc lên không gian'
+  },
+  {
     id: 'dau-lan',
     name: 'Đầu Lân Vàng',
     tier: 'epic',
     tierLabel: 'Cực hiếm',
     tierBadge: 'Tier 3 (UR Hoàng Gia)',
-    odds: 3,
-    groupOdds: '10%',
+    odds: 1.5,
+    groupOdds: '12%',
     image: 'asset/1789606808530_5176141762490889310_g5432164341293928425_d16f067c2c0d43a30233fbba767b57f7.jpg',
     flavor: 'Đỉnh cao chạm khắc với râu lân và mắt thần tinh xảo, linh vật tối thượng xua đuổi tà khí, rước đại cát.',
-    story: 'Mẫu đèn lồng hiếm nhất trong toàn bộ dự án (chỉ 3% cơ hội). Tái hiện thần thái oai phong, dũng mãnh của linh vật Lân Sư Rồng đêm hội trăng rằm. Từng chiếc râu lân, vảy trán, sừng ngọc và hàm lân đều được chạm khắc tỉ mỉ bằng tay với lớp nhũ vàng kim cương lấp lánh phản quang khi đón ánh sáng.',
+    story: 'Tái hiện thần thái oai phong, dũng mãnh của linh vật Lân Sư Rồng đêm hội trăng rằm. Từng chiếc râu lân, vảy trán, sừng ngọc và hàm lân đều được chạm khắc tỉ mỉ bằng tay với lớp nhũ vàng kim cương lấp lánh phản quang khi đón ánh sáng.',
     inspiration: 'Nghệ thuật múa Lân - Sư - Rồng cung đình Huế',
     craftStars: '★★★★★',
     craftRating: '5/5 (Kiệt tác thủ công đỉnh cao)',
     materials: 'Sơn mài dát nhũ vàng hoàng gia, râu tơ kim tuyến óng ánh, mắt lân đính hạt lăng kính',
     specialTrait: 'Chạm trổ hơn 120 chi tiết rỗng, tạo chùm tia sáng rạng ngời như vương miện rồng'
+  },
+  {
+    id: 'than-long',
+    name: 'Thần Long Dạ Quang',
+    tier: 'epic',
+    tierLabel: 'Cực hiếm',
+    tierBadge: 'Tier 3 (UR Thần Thoại)',
+    odds: 1.5,
+    groupOdds: '12%',
+    image: 'asset/1789876618892_401249900163133978_401249900163133978_b7766f695832842d09365da0c9003bc9.jpg',
+    flavor: 'Rồng thần ngũ sắc uốn lượn giữa trời đêm rằm, vảy rồng phát quang chói lọi, biểu trưng của thịnh vượng và uy quyền tối thượng.',
+    story: 'Lấy cảm hứng từ hình tượng Rồng thời Lý và truyền thuyết Thăng Long bay lên. Từng dải mây lành ngũ sắc bao bọc thân rồng uốn 12 khúc biểu trưng 12 tháng mưa thuận gió hòa. Khi thắp sáng, ánh đèn len qua lớp vảy lân tinh tỏa hào quang rực rỡ như rồng thần giáng thế.',
+    inspiration: 'Hình tượng Rồng Thăng Long Cung Đình & Nghệ thuật khảm xà cừ ngũ sắc',
+    craftStars: '★★★★★',
+    craftRating: '5/5 (Thần thoại - Kiệt tác tối thượng)',
+    materials: 'Khung mạ vàng ánh kim, sơn mài khắc nổi lân tinh phát quang, tơ ngũ sắc',
+    specialTrait: 'Thân rồng đa khúc uốn lượn 3D với 36 điểm phát sáng lộng lẫy'
   }
 ];
 
@@ -415,7 +590,18 @@ class App {
           <div class="card-sheen"></div>
           <div class="card-hologram-sheen"></div>
           ${char.tier === 'epic' ? '<div class="epic-firefly-sparks"><span></span><span></span><span></span><span></span></div>' : ''}
-          <div class="card-thumb-wrap">
+          <div class="card-thumb-wrap ${char.tier === 'epic' ? 'royal-framed' : (char.tier === 'rare' ? 'rare-framed' : '')}">
+            ${char.tier === 'epic' ? `
+              <div class="thumb-corner tl"></div>
+              <div class="thumb-corner tr"></div>
+              <div class="thumb-corner bl"></div>
+              <div class="thumb-corner br"></div>
+            ` : (char.tier === 'rare' ? `
+              <div class="thumb-corner tl"></div>
+              <div class="thumb-corner tr"></div>
+              <div class="thumb-corner bl"></div>
+              <div class="thumb-corner br"></div>
+            ` : '')}
             <span class="card-tier-pill pill-${char.tier}">${char.tierLabel}</span>
             <span class="card-odds-tag">${char.odds}%</span>
             <img src="${char.image}" alt="${char.name}" loading="lazy">
@@ -451,7 +637,20 @@ class App {
 
     content.innerHTML = `
       <div class="inspect-grid">
-        <div class="inspect-media">
+        <div class="inspect-media ${char.tier === 'epic' ? 'royal-museum-frame' : (char.tier === 'rare' ? 'rare-museum-frame' : '')}">
+          ${char.tier === 'epic' ? `
+            <div class="inspect-crest"></div>
+            <div class="inspect-corner corner-tl"></div>
+            <div class="inspect-corner corner-tr"></div>
+            <div class="inspect-corner corner-bl"></div>
+            <div class="inspect-corner corner-br"></div>
+          ` : (char.tier === 'rare' ? `
+            <div class="inspect-crest"></div>
+            <div class="inspect-corner corner-tl"></div>
+            <div class="inspect-corner corner-tr"></div>
+            <div class="inspect-corner corner-bl"></div>
+            <div class="inspect-corner corner-br"></div>
+          ` : '')}
           <img src="${char.image}" alt="${char.name}">
         </div>
         <div class="inspect-info">
@@ -546,12 +745,12 @@ class App {
       if (countDisplay) countDisplay.textContent = `${n} túi`;
 
       // Probability formulas:
-      // p(Epic) = 0.10 => P(>=1 Epic in n bags) = 1 - (1 - 0.10)^n
-      const pEpic = 1 - Math.pow(1 - 0.10, n);
-      // p(Rare or Epic) = 0.35 + 0.10 = 0.45 => P(>=1 Rare+) = 1 - (1 - 0.45)^n
-      const pRarePlus = 1 - Math.pow(1 - 0.45, n);
-      // Expected number of Epic lanterns = n * 0.10
-      const expectedEpic = (n * 0.10).toFixed(1);
+      // p(Epic) = 0.12 => P(>=1 Epic in n bags) = 1 - (1 - 0.12)^n
+      const pEpic = 1 - Math.pow(1 - 0.12, n);
+      // p(Rare or Epic) = 0.38 + 0.12 = 0.50 => P(>=1 Rare+) = 1 - (1 - 0.50)^n
+      const pRarePlus = 1 - Math.pow(1 - 0.50, n);
+      // Expected number of Epic lanterns = n * 0.12
+      const expectedEpic = (n * 0.12).toFixed(1);
 
       if (epicPctDisplay) {
         epicPctDisplay.textContent = `${(pEpic * 100).toFixed(1)}%`;

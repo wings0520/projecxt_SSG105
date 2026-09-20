@@ -8,12 +8,12 @@
 
   <!-- SEO Meta Tags -->
   <meta name="description"
-    content="Showroom và bách khoa phân loại nhân vật đặc thù đèn lồng túi mù mùa lễ hội. Phân tích chi tiết 6 mẫu đèn lồng, cơ chế tỉ lệ hiếm và công cụ giả lập mở túi 3D. Dự án nghiên cứu nhóm TECHCORN - FPT University.">
+    content="Showroom và bách khoa phân loại nhân vật đặc thù đèn lồng túi mù mùa lễ hội. Phân tích chi tiết 16 mẫu đèn lồng, cơ chế tỉ lệ hiếm và công cụ giả lập mở túi 3D. Dự án nghiên cứu nhóm TECHCORN - FPT University.">
   <meta name="keywords"
     content="túi mù, phân loại nhân vật, đèn lồng trung thu, rarity tier, TECHCORN, FPT University, gacha simulator, bách khoa nhân vật">
   <meta property="og:title" content="Em Mơ · Showroom & Bách Khoa Phân Loại Nhân Vật Túi Mù">
   <meta property="og:description"
-    content="Khám phá 6 mẫu nhân vật đèn lồng độc đáo với 3 cấp độ hiếm (Phổ biến, Hiếm, Cực hiếm). Trải nghiệm giả lập khui túi 3D sống động.">
+    content="Khám phá 16 mẫu nhân vật đèn lồng độc đáo với 3 cấp độ hiếm (Phổ biến, Hiếm, Cực hiếm). Trải nghiệm giả lập khui túi 3D sống động.">
   <meta property="og:type" content="website">
 
   <!-- Google Fonts -->
@@ -28,12 +28,6 @@
 </head>
 
 <body>
-
-  <!-- Top Reading / Scroll Progress Bar -->
-  <div class="site-scroll-progress" id="siteScrollProgress" role="progressbar" aria-label="Tiến độ cuộn trang"
-    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-    <div class="scroll-progress-glow"></div>
-  </div>
 
   <!-- Mid-Autumn Festive Preloader Screen -->
   <aside class="site-preloader" id="sitePreloader" role="dialog" aria-label="Màn hình tải dữ liệu Em Mơ">
@@ -150,12 +144,20 @@
       </nav>
 
       <div class="nav-actions">
+        <a href="https://www.facebook.com/share/1c75xEN3fK/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"
+          class="btn-contact-header" title="Liên hệ Fanpage Facebook TECHCORN" aria-label="Contact With Me Facebook">
+          <svg width="15" height="15" viewBox="0 0 24 24">
+            <path
+              d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+          </svg>
+          <span>Contact with Me</span>
+        </a>
         <button class="btn-icon" id="btnAudioToggle" title="Bật/Tắt âm thanh tương tác" aria-label="Toggle Sound">
           🔔
         </button>
         <button class="btn-codex-trigger" id="btnOpenCodex" aria-label="Mở sổ tay sưu tập">
           <span>📖 Codex</span>
-          <span class="badge-count" id="codexBadgeCount">0/6</span>
+          <span class="badge-count" id="codexBadgeCount">0/16</span>
         </button>
       </div>
     </div>
@@ -186,13 +188,14 @@
         </p>
 
         <p class="hero-lead">
-          Sáu mẫu đèn lồng Trung Thu được TECHCORN chọn lọc, chia theo ba mức độ hiếm. Toàn bộ lợi nhuận ròng sau vận
+          Mười sáu mẫu đèn lồng Trung Thu được TECHCORN chọn lọc, chia theo ba mức độ hiếm. Toàn bộ lợi nhuận ròng sau
+          vận
           hành được dành cho hoạt động thiện nguyện tại các trường tiểu học, mẫu giáo.
         </p>
 
         <div class="hero-meta-strip">
           <div class="meta-item">
-            <div class="meta-num">6</div>
+            <div class="meta-num">16</div>
             <div class="meta-label">Mẫu đèn lồng</div>
           </div>
           <div class="meta-item">
@@ -221,7 +224,7 @@
           <img src="asset/2e14bcdc-1ac5-4136-96bd-afb84cd3220e.png" alt="Bộ sưu tập đèn lồng Em Mơ TECHCORN">
           <div class="hero-card-badge">
             <div class="badge-text-group">
-              <div class="badge-name">Em Mơ · 6 Mẫu Đèn Lồng</div>
+              <div class="badge-name">Em Mơ · 16 Mẫu Đèn Lồng</div>
               <div class="badge-desc">✨ Bấm để đọc Giai thoại Cung Trăng</div>
             </div>
             <span class="card-tier-pill pill-epic badge-pill">Đọc Tích Cổ</span>
@@ -248,59 +251,62 @@
         <div class="rarity-tier-card tier-common">
           <div class="tier-top-tag">
             <span class="tier-badge">Tier 1 · Phổ biến</span>
-            <span style="font-size: 0.85rem; color: var(--ink-tertiary);">2 nhân vật</span>
+            <span style="font-size: 0.85rem; color: var(--ink-tertiary);">4 nhân vật</span>
           </div>
-          <div class="tier-rate-huge">55%</div>
+          <div class="tier-rate-huge">50%</div>
           <p class="tier-summary">
-            Nhóm mẫu nền tảng với biểu tượng dân gian thân thuộc. Số lượng phân bổ nhiều nhất, thanh thoát và mang đậm
+            Nhóm mẫu nền tảng với biểu tượng dân gian thân thuộc. Số lượng phân bổ dồi dào, thanh thoát và mang đậm
             phong vị hoài niệm.
           </p>
           <div class="tier-bar-track">
-            <div class="tier-bar-fill" style="width: 55%"></div>
+            <div class="tier-bar-fill" style="width: 50%"></div>
           </div>
           <div class="tier-characters-preview">
             <span>Gồm có:</span>
-            <strong>Cá Vàng Phát Lộc (30%)</strong> · <strong>Ngôi Sao Như Ý (25%)</strong>
+            <strong>Cá Vàng</strong> · <strong>Ngôi Sao</strong> · <strong>Thỏ Chu Sa</strong> · <strong>Sao Vọng
+              Nguyệt</strong>
           </div>
         </div>
 
         <!-- Rare Tier -->
         <div class="rarity-tier-card tier-rare">
           <div class="tier-top-tag">
-            <span class="tier-badge">Tier 2 · Hiếm</span>
-            <span style="font-size: 0.85rem; color: var(--ink-tertiary);">2 nhân vật</span>
+            <span class="tier-badge">Tier 2 · Hiếm (SR)</span>
+            <span style="font-size: 0.85rem; color: var(--ink-tertiary);">7 nhân vật</span>
           </div>
-          <div class="tier-rate-huge">35%</div>
+          <div class="tier-rate-huge">38%</div>
           <p class="tier-summary">
-            Đường nét uốn nhiệt và chạm trổ đa tầng phức tạp hơn. Đi kèm các phụ kiện truyền thống như nút thắt cát
-            tường và tua rua tơ óng ả.
+            Đường nét uốn nhiệt và chạm trổ đa tầng phức tạp. Tích hợp các nhân vật bảo vệ, linh vật cát tường và biểu
+            tượng biển đảo kiêu hãnh.
           </p>
           <div class="tier-bar-track">
-            <div class="tier-bar-fill" style="width: 35%"></div>
+            <div class="tier-bar-fill" style="width: 38%"></div>
           </div>
           <div class="tier-characters-preview">
             <span>Gồm có:</span>
-            <strong>Ngựa Phi Vân (20%)</strong> · <strong>Thỏ Ngọc Trung Thu (15%)</strong>
+            <strong>Ngựa Phi Vân</strong> · <strong>Thỏ Ngọc</strong> · <strong>Spider-Man</strong> ·
+            <strong>Pikachu</strong> · <strong>Kim Ngưu</strong> · <strong>Cinnamoroll</strong> · <strong>Tàu
+              Thủy</strong>
           </div>
         </div>
 
         <!-- Epic Tier -->
         <div class="rarity-tier-card tier-epic">
           <div class="tier-top-tag">
-            <span class="tier-badge">Tier 3 · Cực hiếm (SSR)</span>
-            <span style="font-size: 0.85rem; color: var(--gold-bright);">Giới hạn 2 mẫu</span>
+            <span class="tier-badge">Tier 3 · Cực hiếm (SSR / UR)</span>
+            <span style="font-size: 0.85rem; color: var(--gold-bright);">Giới hạn 5 mẫu</span>
           </div>
-          <div class="tier-rate-huge">10%</div>
+          <div class="tier-rate-huge">12%</div>
           <p class="tier-summary">
-            Kiệt tác chạm khắc công phu và phiên bản giao thoa đặc biệt. Số lượng tối thiểu, chế tác sơn mài dát nhũ
-            vàng kim cương độc bản.
+            Kiệt tác chạm khắc công phu, dát nhũ vàng kim cương và phiên bản độc bản giao thoa văn hóa đỉnh cao.
           </p>
           <div class="tier-bar-track">
-            <div class="tier-bar-fill" style="width: 10%"></div>
+            <div class="tier-bar-fill" style="width: 12%"></div>
           </div>
           <div class="tier-characters-preview">
             <span>Gồm có:</span>
-            <strong>Doraemon Đèn Lồng (7%)</strong> · <strong>Đầu Lân Vàng (3%)</strong>
+            <strong>Đầu Lân Vàng</strong> · <strong>Thần Long</strong> · <strong>Sư Tử Hí Cầu</strong> ·
+            <strong>Doraemon</strong> · <strong>Doraemon Dưa Hấu</strong>
           </div>
         </div>
       </div>
@@ -322,10 +328,10 @@
       <!-- Controls: Filter Pills & Search -->
       <div class="showroom-controls">
         <div class="filter-pills" role="tablist">
-          <button class="filter-pill active" data-filter="all">Tất cả (6)</button>
-          <button class="filter-pill" data-filter="common">Phổ biến (55%)</button>
-          <button class="filter-pill" data-filter="rare">Hiếm (35%)</button>
-          <button class="filter-pill" data-filter="epic">Cực hiếm (10%)</button>
+          <button class="filter-pill active" data-filter="all">Tất cả (16)</button>
+          <button class="filter-pill" data-filter="common">Phổ biến (50%)</button>
+          <button class="filter-pill" data-filter="rare">Hiếm (38%)</button>
+          <button class="filter-pill" data-filter="epic">Cực hiếm (12%)</button>
         </div>
 
         <div class="search-input-wrap">
@@ -349,8 +355,8 @@
         <div class="section-tag">Trải Nghiệm Tương Tác</div>
         <h2 class="section-title">Giả lập khui túi mù 3D thử vận may</h2>
         <p class="section-sub">
-          Trải nghiệm cảm giác hồi hộp mở túi mù ngẫu nhiên dựa trên thuật toán phân phối xác suất thực tế (55% Phổ
-          biến, 35% Hiếm, 10% Cực hiếm).
+          Trải nghiệm cảm giác hồi hộp mở túi mù ngẫu nhiên dựa trên thuật toán phân phối xác suất thực tế (50% Phổ
+          biến, 38% Hiếm, 12% Cực hiếm).
         </p>
       </div>
 
@@ -514,7 +520,7 @@
             <div class="sim-stat-lbl">Số lần trúng Cực Hiếm (SSR)</div>
           </div>
           <div>
-            <div class="sim-stat-val">55% / 35% / 10%</div>
+            <div class="sim-stat-val">50% / 38% / 12%</div>
             <div class="sim-stat-lbl">Thuật toán xác suất chuẩn</div>
           </div>
         </div>
@@ -597,8 +603,8 @@
   <section class="section" id="so-sanh">
     <div class="container">
       <div class="section-head">
-        <div class="section-tag">Bách Khoa Tinh Hoa Chế Tác 6 Mẫu Đèn</div>
-        <h2 class="section-title">Bách khoa tường minh đặc thù 6 linh vật</h2>
+        <div class="section-tag">Bách Khoa Tinh Hoa Chế Tác 16 Mẫu Đèn</div>
+        <h2 class="section-title">Bách khoa tường minh đặc thù 16 linh vật</h2>
         <p class="section-sub">
           Xem xét toàn diện các thuộc tính vật lý, độ tinh xảo chạm khắc và vật liệu cấu thành của từng mẫu đèn lồng
           trong bộ sưu tập.
@@ -667,6 +673,31 @@
   <!-- Site Footer -->
   <footer class="site-footer">
     <div class="container">
+      <!-- Contact With Me / Fanpage TECHCORN Box -->
+      <div class="contact-with-me-card" id="contact-with-me">
+        <div class="contact-card-icon">
+          <div class="fb-icon-bubble">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff">
+              <path
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+            </svg>
+          </div>
+        </div>
+        <div class="contact-card-info">
+          <span class="contact-tag">🌐 KẾT NỐI VỚI CHÚNG TÔI · TECHCORN FPT</span>
+          <h3 class="contact-card-title">Contact With Me · Fanpage Dự Án Em Mơ</h3>
+          <p class="contact-card-desc">Gặp gỡ nhóm tác giả TECHCORN (Đại học FPT), cập nhật các hoạt động thiện nguyện
+            trao gửi lồng đèn và cùng thảo luận câu chuyện văn hóa lễ hội truyền thống.</p>
+        </div>
+        <div class="contact-card-action">
+          <a href="https://www.facebook.com/share/1c75xEN3fK/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"
+            class="btn-facebook-contact">
+            <span>Ghé Thăm Fanpage</span>
+            <span class="contact-arrow">➔</span>
+          </a>
+        </div>
+      </div>
+
       <div class="footer-grid">
         <div class="footer-brand">
           <h4>Em Mơ — Bách Khoa Nhân Vật Mùa Lễ Hội</h4>
@@ -753,7 +784,7 @@
         <div class="legend-modal-footer">
           <button class="btn btn-primary"
             onclick="document.getElementById('legendModal').classList.remove('active'); if(window.app && window.app.transitionTo){ window.app.transitionTo('#showroom'); } else { window.location.href='#showroom'; }">
-            ✨ Khám Phá 6 Mẫu Đèn Lồng
+            ✨ Khám Phá 16 Mẫu Đèn Lồng
           </button>
           <button class="btn btn-secondary"
             onclick="document.getElementById('legendModal').classList.remove('active');">
@@ -775,7 +806,7 @@
       <div class="codex-progress-box">
         <div id="codexProgressText"
           style="font-size:0.9rem; font-weight:600; color:var(--ink-secondary); margin-bottom:8px;">
-          Đã khám phá 0/6 nhân vật (0%)
+          Đã khám phá 0/16 nhân vật (0%)
         </div>
         <div class="tier-bar-track" style="margin-bottom:0;">
           <div class="tier-bar-fill" id="codexProgressBar" style="width:0%; background: var(--gold-gradient);"></div>
@@ -797,6 +828,19 @@
   <audio id="audioTearPaper" src="sound/Tear_paper.MP3" preload="auto"></audio>
   <audio id="audioDelaySound" src="sound/delay_sound_effect.mp3" preload="auto"></audio>
   <audio id="audioAfterDelaySound" src="sound/after_delay_sound.mp3" preload="auto"></audio>
+
+  <!-- Floating Contact With Me Widget -->
+  <a href="https://www.facebook.com/share/1c75xEN3fK/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"
+    class="floating-contact-pill" title="Nhắn tin & Theo dõi Fanpage Facebook TECHCORN"
+    aria-label="Contact with Me on Facebook">
+    <div class="floating-fb-icon">
+      <svg viewBox="0 0 24 24">
+        <path
+          d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+      </svg>
+    </div>
+    <span>Contact with Me</span>
+  </a>
 
   <!-- JavaScript Modules -->
   <script src="js/tear-audio-data.js?v=5.0_gacha_update"></script>

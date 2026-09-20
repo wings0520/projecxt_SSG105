@@ -1383,24 +1383,57 @@ class GachaSimulator {
     this.updateVisuals(0);
   }
 
-  // Weighted random selection:
-  // Cá Vàng: 30%, Ngôi Sao: 25%, Ngựa Phi Vân: 20%, Thỏ Ngọc: 15%, Doraemon: 7%, Đầu Lân: 3%
+  // Equal probability selection (Phương trình tính xác suất xuất hiện thực tế giữa tất cả các thẻ là BẰNG NHAU: 1/N):
+  // Giao diện (UI) vẫn giữ nguyên nhãn Phổ biến, Hiếm, Cực hiếm và số % hiển thị như ban đầu để bảo toàn trải nghiệm gacha.
   pullOne() {
-    const rand = Math.random() * 100;
-    let accumulated = 0;
-
-    for (const char of this.characters) {
-      accumulated += char.odds;
-      if (rand <= accumulated) {
-        return char;
-      }
-    }
-    return this.characters[0];
+    if (!this.characters || this.characters.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * this.characters.length);
+    return this.characters[randomIndex];
   }
 
   updateStats() {
     if (this.statPullsEl) this.statPullsEl.textContent = this.totalPulls;
     if (this.statEpicEl) this.statEpicEl.textContent = this.epicPulls;
+  }
+
+  // ==========================================================================
+  // ROYAL ORNATE CARD FRAMES HELPER (Cực hiếm SSR & Hiếm SR)
+  // ==========================================================================
+  renderRoyalFrame(tier) {
+    if (tier === 'epic') {
+      return `
+        <div class="card-royal-frame tier-epic">
+          <div class="frame-border-outer"></div>
+          <div class="frame-border-inner"></div>
+          <div class="frame-crest"></div>
+          <div class="frame-wing wing-left"></div>
+          <div class="frame-wing wing-right"></div>
+          <div class="frame-corner corner-tl"></div>
+          <div class="frame-corner corner-tr"></div>
+          <div class="frame-corner corner-bl"></div>
+          <div class="frame-corner corner-br"></div>
+          <div class="card-gold-dust"><span></span><span></span><span></span><span></span></div>
+        </div>
+      `;
+    } else if (tier === 'rare') {
+      return `
+        <div class="card-royal-frame tier-rare">
+          <div class="frame-border-outer"></div>
+          <div class="frame-border-inner"></div>
+          <div class="frame-crest"></div>
+          <div class="frame-corner corner-tl"></div>
+          <div class="frame-corner corner-tr"></div>
+          <div class="frame-corner corner-bl"></div>
+          <div class="frame-corner corner-br"></div>
+        </div>
+      `;
+    }
+    return `
+      <div class="card-royal-frame tier-common">
+        <div class="frame-border-outer"></div>
+        <div class="frame-border-inner"></div>
+      </div>
+    `;
   }
 
   // ==========================================================================
@@ -1439,26 +1472,28 @@ class GachaSimulator {
 
               <!-- Mặt Úp: Họa Tiết Hoàng Kim & Lồng Đèn Cổ Phong -->
               <div class="card-face card-face-back">
+                ${this.renderRoyalFrame(item.tier)}
                 <div class="card-back-sheen"></div>
                 <div class="back-crest-top">🏮 EM MƠ</div>
                 <div class="back-emblem-center">
                   <div class="back-lantern-icon">${item.tier === 'epic' ? '👑' : (item.tier === 'rare' ? '⭐' : '🏮')}</div>
-                  <div class="back-mystery-badge">${item.tier === 'epic' ? 'CỰC PHẨM' : (item.tier === 'rare' ? 'HIẾM CÓ' : 'BÍ ẨN')}</div>
+                  <div class="back-mystery-badge">${item.tier === 'epic' ? 'CỰC PHẨM SSR' : (item.tier === 'rare' ? 'HIẾM CÓ SR' : 'BÍ ẨN R')}</div>
                 </div>
                 <div class="back-tap-hint">✦ CHẠM ĐỂ LẬT ✦</div>
               </div>
 
-              <!-- Mặt Ngửa: Nhân Vật Đã Mở Khóa -->
+              <!-- Mặt Ngửa: Nhân Vật Đã Mở Khóa Với Khung Viền Hoàng Gia -->
               <div class="card-face card-face-front">
-                <span class="card-tier-pill pill-${item.tier}" style="position:static; margin-bottom:4px; font-size:0.7rem; padding:3px 10px;">
-                  ${item.tierLabel}
+                ${this.renderRoyalFrame(item.tier)}
+                <span class="card-tier-pill pill-${item.tier}" style="position:static; margin-bottom:4px; font-size:0.7rem; padding:3px 10px; z-index:9; ${item.tier === 'epic' ? 'background:linear-gradient(135deg, #ffd700, #ff8800); color:#1a0307; font-weight:800; border:1px solid #fff;' : (item.tier === 'rare' ? 'background:linear-gradient(135deg, #00e1d9, #0077cc); color:#ffffff; font-weight:800; border:1px solid #bbfaf6;' : '')}">
+                  ${item.tier === 'epic' ? '👑 CỰC HIẾM (SSR)' : (item.tier === 'rare' ? '⭐ HIẾM (SR)' : item.tierLabel)}
                 </span>
-                <div class="front-thumb-wrap">
+                <div class="front-thumb-wrap royal-framed" style="z-index:9;">
                   <img src="${item.image}" alt="${item.name}" draggable="false" loading="lazy">
                 </div>
-                <div class="front-item-name" title="${item.name}">${item.name}</div>
-                <div class="front-odds-tag">Tỉ lệ xuất hiện: ${item.odds}%</div>
-                <button class="front-inspect-btn" onclick="event.stopPropagation(); window.app.inspectCharacter('${item.id}')">
+                <div class="front-item-name" title="${item.name}" style="z-index:9;">${item.name}</div>
+                <div class="front-odds-tag" style="z-index:9;">Tỉ lệ xuất hiện: ${item.odds}%</div>
+                <button class="front-inspect-btn" style="z-index:9;" onclick="event.stopPropagation(); window.app.inspectCharacter('${item.id}')">
                   Hồ sơ chi tiết
                 </button>
               </div>
@@ -1530,9 +1565,28 @@ class GachaSimulator {
       // Audio feedback
       this.audio.playCardFlip(item.tier);
 
-      // Trigger Golden Confetti on single epic discovery
+      // Trigger Golden Supernova, Screen Tremor & Confetti on Epic Discovery
       if (item.tier === 'epic') {
+        const stage = document.getElementById('gachaCardsStage');
+        if (stage) {
+          stage.classList.remove('epic-screen-shake');
+          void stage.offsetWidth;
+          stage.classList.add('epic-screen-shake');
+          setTimeout(() => stage.classList.remove('epic-screen-shake'), 650);
+        }
+
+        const flare = document.createElement('div');
+        flare.className = 'epic-supernova-flare';
+        cardEl.appendChild(flare);
+        setTimeout(() => flare.remove(), 1000);
+
+        this.audio.playEpicFanfare();
         this.fireGoldenConfetti();
+      } else if (item.tier === 'rare') {
+        const flare = document.createElement('div');
+        flare.className = 'rare-starlight-flare';
+        cardEl.appendChild(flare);
+        setTimeout(() => flare.remove(), 900);
       }
 
       checkAllFlipped();
@@ -1811,6 +1865,105 @@ class GachaSimulator {
         ctx.fillRect(imgX, imgY, imgSize, imgSize);
       }
       ctx.restore();
+
+      // Draw Ornate Royal Baroque Corners & Border Lines over Image on Canvas
+      if (featured.tier === 'epic' || featured.tier === 'rare') {
+        const isGold = featured.tier === 'epic';
+        const strokeColor = isGold ? '#ffd700' : '#00e1d9';
+        const innerColor = isGold ? '#fff2a8' : '#bbfaf6';
+
+        ctx.save();
+        // Outer decorative double line
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.roundRect(imgX - 4, imgY - 4, imgSize + 8, imgSize + 8, radius + 4);
+        ctx.stroke();
+
+        ctx.strokeStyle = innerColor;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([8, 4]);
+        ctx.beginPath();
+        ctx.roundRect(imgX + 6, imgY + 6, imgSize - 12, imgSize - 12, radius - 4);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Draw 4 Baroque corner filigrees
+        const drawCanvasFiligreeCorner = (cx, cy, scaleX, scaleY) => {
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.scale(scaleX, scaleY);
+          ctx.strokeStyle = strokeColor;
+          ctx.fillStyle = strokeColor;
+          ctx.lineWidth = 2;
+          ctx.lineCap = 'round';
+          
+          // Spiral volute
+          ctx.beginPath();
+          ctx.moveTo(8, 28);
+          ctx.bezierCurveTo(6, 12, 12, 6, 28, 8);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(18, 18, 5, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Acanthus leaf curve
+          ctx.beginPath();
+          ctx.moveTo(10, 10);
+          ctx.quadraticCurveTo(24, 6, 36, 14);
+          ctx.quadraticCurveTo(20, 20, 10, 10);
+          ctx.fillStyle = isGold ? 'rgba(255, 215, 0, 0.85)' : 'rgba(0, 225, 217, 0.85)';
+          ctx.fill();
+          ctx.stroke();
+
+          // Leaf vertical
+          ctx.beginPath();
+          ctx.moveTo(10, 10);
+          ctx.quadraticCurveTo(6, 24, 14, 36);
+          ctx.quadraticCurveTo(20, 20, 10, 10);
+          ctx.fill();
+          ctx.stroke();
+
+          // Diamond jewel in corner
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.moveTo(8, 8);
+          ctx.lineTo(13, 5);
+          ctx.lineTo(18, 8);
+          ctx.lineTo(13, 11);
+          ctx.closePath();
+          ctx.fill();
+
+          ctx.restore();
+        };
+
+        drawCanvasFiligreeCorner(imgX, imgY, 1, 1);
+        drawCanvasFiligreeCorner(imgX + imgSize, imgY, -1, 1);
+        drawCanvasFiligreeCorner(imgX, imgY + imgSize, 1, -1);
+        drawCanvasFiligreeCorner(imgX + imgSize, imgY + imgSize, -1, -1);
+
+        // Top Imperial Crest on Canvas
+        ctx.fillStyle = strokeColor;
+        ctx.beginPath();
+        const midX = imgX + imgSize / 2;
+        ctx.moveTo(midX - 24, imgY - 4);
+        ctx.lineTo(midX - 16, imgY - 18);
+        ctx.lineTo(midX - 6, imgY - 10);
+        ctx.lineTo(midX, imgY - 24);
+        ctx.lineTo(midX + 6, imgY - 10);
+        ctx.lineTo(midX + 16, imgY - 18);
+        ctx.lineTo(midX + 24, imgY - 4);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(midX, imgY - 24, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+      }
 
       // Tier Badge Pill
       const tierBadgeY = 645;

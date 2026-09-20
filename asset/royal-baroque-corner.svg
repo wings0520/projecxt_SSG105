@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="goldFiligree" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff9e6"/>
+      <stop offset="25%" stop-color="#f8d675"/>
+      <stop offset="50%" stop-color="#df9f28"/>
+      <stop offset="75%" stop-color="#ffeaa5"/>
+      <stop offset="100%" stop-color="#96630f"/>
+    </linearGradient>
+    <linearGradient id="goldHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#f8d675" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#cf8e1d" stop-opacity="0.5"/>
+    </linearGradient>
+    <filter id="royalShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.2" flood-color="rgba(20, 3, 7, 0.75)"/>
+    </filter>
+  </defs>
+  
+  <g filter="url(#royalShadow)">
+    <!-- Outer Corner Notched Border lines -->
+    <path d="M 8 115 L 8 28 C 8 17 17 8 28 8 L 115 8" fill="none" stroke="url(#goldFiligree)" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 16 115 L 16 34 C 16 24 24 16 34 16 L 115 16" fill="none" stroke="url(#goldFiligree)" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="8 3 2 3"/>
+    <path d="M 22 115 L 22 40 C 22 30 30 22 40 22 L 115 22" fill="none" stroke="url(#goldHighlight)" stroke-width="0.8" stroke-linecap="round"/>
+
+    <!-- Main Corner Baroque Acanthus Spiral (Volute) -->
+    <path d="M 32 32 C 26 26 24 16 34 12 C 44 8 48 20 40 26 C 35 30 28 29 27 24 C 26 20 30 17 33 19" 
+          fill="none" stroke="url(#goldFiligree)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 32 32 C 38 38 48 40 54 30 C 60 20 48 14 42 22 C 38 27 42 34 47 33 C 51 32 52 27 48 26" 
+          fill="none" stroke="url(#goldFiligree)" stroke-width="2.2" stroke-linecap="round"/>
+
+    <!-- Flourish Leaf Cluster 1 (Reaching along top border) -->
+    <path d="M 38 12 C 48 6 65 5 82 12 C 92 16 104 12 112 7 C 102 17 88 20 76 17 C 62 14 50 18 38 12 Z" 
+          fill="url(#goldFiligree)" stroke="url(#goldHighlight)" stroke-width="0.6"/>
+    <path d="M 52 14 C 64 8 78 9 90 14 C 78 18 66 17 52 14 Z" 
+          fill="#fff6d2" opacity="0.75"/>
+    <path d="M 68 15 C 80 13 96 6 106 2 C 100 8 92 14 84 17 Z" 
+          fill="url(#goldFiligree)"/>
+
+    <!-- Tendril & Flower Bud top -->
+    <path d="M 72 16 C 80 22 92 23 98 18 C 102 14 98 9 93 11 C 88 13 90 19 95 18" 
+          fill="none" stroke="url(#goldFiligree)" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="107" cy="8" r="2.5" fill="url(#goldFiligree)"/>
+    <circle cx="114" cy="4" r="1.5" fill="#fff9e6"/>
+
+    <!-- Flourish Leaf Cluster 2 (Reaching along left vertical border) -->
+    <path d="M 12 38 C 6 48 5 65 12 82 C 16 92 12 104 7 112 C 17 102 20 88 17 76 C 14 62 18 50 12 38 Z" 
+          fill="url(#goldFiligree)" stroke="url(#goldHighlight)" stroke-width="0.6"/>
+    <path d="M 14 52 C 8 64 9 78 14 90 C 18 78 17 66 14 52 Z" 
+          fill="#fff6d2" opacity="0.75"/>
+    <path d="M 15 68 C 13 80 6 96 2 106 C 8 100 14 92 17 84 Z" 
+          fill="url(#goldFiligree)"/>
+
+    <!-- Tendril & Flower Bud left -->
+    <path d="M 16 72 C 22 80 23 92 18 98 C 14 102 9 98 11 93 C 13 88 19 90 18 95" 
+          fill="none" stroke="url(#goldFiligree)" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="8" cy="107" r="2.5" fill="url(#goldFiligree)"/>
+    <circle cx="4" cy="114" r="1.5" fill="#fff9e6"/>
+
+    <!-- Inward Blooming Baroque Heart Petal / Acanthus Accent -->
+    <path d="M 28 28 C 36 36 44 48 38 58 C 34 64 26 62 25 55 C 24 48 32 44 35 48" 
+          fill="none" stroke="url(#goldFiligree)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 28 28 C 36 36 48 44 58 38 C 64 34 62 26 55 25 C 48 24 44 32 48 35" 
+          fill="none" stroke="url(#goldFiligree)" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Central Corner Diamond Gem / Star -->
+    <path d="M 22 22 L 25 17 L 30 22 L 25 27 Z" fill="#fffbe8" stroke="url(#goldFiligree)" stroke-width="0.8"/>
+    <circle cx="25" cy="22" r="1.5" fill="#e53935"/>
+  </g>
+</svg>
